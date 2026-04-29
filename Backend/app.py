@@ -76,20 +76,6 @@ def init_db():
             attempts INTEGER DEFAULT 0
         )
     ''')
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS addresses (
-            id         INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_email TEXT NOT NULL,
-            label      TEXT DEFAULT '',
-            name       TEXT DEFAULT '',
-            street     TEXT DEFAULT '',
-            city       TEXT DEFAULT '',
-            state      TEXT DEFAULT '',
-            zip        TEXT DEFAULT '',
-            country    TEXT DEFAULT 'India',
-            is_default INTEGER DEFAULT 0
-        )
-    ''')
     conn.commit()
     conn.close()
 
@@ -1038,7 +1024,6 @@ def verify_otp_register():
     data     = request.get_json()
     email    = data.get('email',    '').strip().lower()
     name     = data.get('name',     '').strip()
-    phone    = data.get('phone',    '').strip()
     password = data.get('password', '').strip()
     otp_code = data.get('otp',      '').strip()
 
@@ -1079,7 +1064,7 @@ def verify_otp_register():
     hashed_pw = generate_password_hash(password)
 
     try:
-        conn.execute('INSERT INTO users (email, name, password, phone) VALUES (?, ?, ?, ?)', (email, name, hashed_pw, phone or None))
+        conn.execute('INSERT INTO users (email, name, password) VALUES (?, ?, ?)', (email, name, hashed_pw))
         conn.commit()
     except Exception:
         conn.close()
@@ -1089,7 +1074,7 @@ def verify_otp_register():
     conn.commit()
     conn.close()
 
-    return jsonify({'status': 'success', 'user': {'name': name, 'email': email, 'phone': phone or ''}})
+    return jsonify({'status': 'success', 'user': {'name': name, 'email': email}})
 
 
 @app.route('/api/auth/login', methods=['POST'])
@@ -1112,7 +1097,7 @@ def login_customer():
     conn.close()
 
     if user and check_password_hash(user['password'], password):
-        return jsonify({"status": "success", "user": {"name": user['name'], "email": user['email'], "phone": user['phone'] or ''}})
+        return jsonify({"status": "success", "user": {"name": user['name'], "email": user['email']}})
 
     return jsonify({"status": "error", "message": "Invalid credentials."}), 401
 
@@ -1139,88 +1124,7 @@ def social_login():
         conn.commit()
 
     conn.close()
-    return jsonify({"status": "success", "user": {"name": real_name, "email": real_email, "phone": ""}})
-
-
-@app.route('/api/auth/forgot-password', methods=['POST'])
-def forgot_password():
-    data  = request.get_json()
-    email = data.get('email', '').strip().lower()
-
-    if not email:
-        return jsonify({'status': 'error', 'message': 'Email is required.'}), 400
-
-    conn = get_db_connection()
-    user = conn.execute('SELECT id, name FROM users WHERE email = ?', (email,)).fetchone()
-    conn.close()
-
-    if not user:
-        return jsonify({'status': 'error', 'message': 'No account found with this email.'}), 404
-
-    otp_code   = ''.join(random.choices(string.digits, k=6))
-    expires_at = (datetime.utcnow() + timedelta(minutes=OTP_EXPIRY_MINUTES)).strftime('%Y-%m-%d %H:%M:%S')
-
-    conn = get_db_connection()
-    conn.execute(
-        'INSERT OR REPLACE INTO otp_verifications (email, name, otp, expires_at, attempts) VALUES (?, ?, ?, ?, 0)',
-        (email, user['name'], otp_code, expires_at)
-    )
-    conn.commit()
-    conn.close()
-
-    if not send_otp_email(email, user['name'], otp_code):
-        return jsonify({'status': 'error', 'message': 'Failed to send OTP email.'}), 500
-
-    return jsonify({'status': 'success', 'message': 'OTP sent to your email.'})
-
-
-@app.route('/api/auth/reset-password', methods=['POST'])
-def reset_password():
-    data         = request.get_json()
-    email        = data.get('email',        '').strip().lower()
-    otp_code     = data.get('otp',          '').strip()
-    new_password = data.get('new_password', '').strip()
-
-    if not all([email, otp_code, new_password]):
-        return jsonify({'status': 'error', 'message': 'All fields are required.'}), 400
-
-    conn   = get_db_connection()
-    record = conn.execute('SELECT * FROM otp_verifications WHERE email = ?', (email,)).fetchone()
-
-    if not record:
-        conn.close()
-        return jsonify({'status': 'error', 'message': 'No OTP found. Please request a new one.'}), 404
-
-    attempts   = record['attempts']
-    stored_otp = record['otp']
-    expires_at = datetime.strptime(record['expires_at'], '%Y-%m-%d %H:%M:%S')
-
-    if attempts >= 5:
-        conn.execute('DELETE FROM otp_verifications WHERE email = ?', (email,))
-        conn.commit()
-        conn.close()
-        return jsonify({'status': 'error', 'message': 'Too many attempts. Please request a new OTP.'}), 429
-
-    conn.execute('UPDATE otp_verifications SET attempts = ? WHERE email = ?', (attempts + 1, email))
-    conn.commit()
-
-    if datetime.utcnow() > expires_at:
-        conn.execute('DELETE FROM otp_verifications WHERE email = ?', (email,))
-        conn.commit()
-        conn.close()
-        return jsonify({'status': 'error', 'message': 'OTP has expired. Please request a new one.'}), 410
-
-    if otp_code != stored_otp:
-        conn.close()
-        return jsonify({'status': 'error', 'message': 'Invalid OTP. Please try again.'}), 401
-
-    hashed_pw = generate_password_hash(new_password)
-    conn.execute('UPDATE users SET password = ? WHERE email = ?', (hashed_pw, email))
-    conn.execute('DELETE FROM otp_verifications WHERE email = ?', (email,))
-    conn.commit()
-    conn.close()
-
-    return jsonify({'status': 'success', 'message': 'Password reset successfully.'})
+    return jsonify({"status": "success", "user": {"name": real_name, "email": real_email}})
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1406,21 +1310,15 @@ def place_order():
     address    = data.get('address', '')
     payment    = data.get('payment', 'COD')
 
-    if not items or total <= 0:
-        return jsonify({"status": "error", "message": "Invalid order data"}), 400
-
     try:
-        conn    = get_db_connection()
-        cursor  = conn.execute(
-            '''INSERT INTO orders (user_email, items, total, address, payment, payment_id, status, created_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-            (user_email, json.dumps(items), total, address, payment,
-             None, 'Confirmed', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        conn = get_db_connection()
+        conn.execute(
+            'INSERT INTO orders (user_email, items, total, address, payment, payment_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            (user_email, json.dumps(items), total, address, payment, 'COD', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         )
-        order_id = cursor.lastrowid
         conn.commit()
         conn.close()
-        return jsonify({"status": "success", "message": "Order placed!", "order_id": order_id})
+        return jsonify({"status": "success", "message": "Order placed!"})
     except Exception as e:
         print(f"Order Error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -1487,16 +1385,14 @@ def verify_razorpay_payment():
             conn.close()
             return jsonify({"success": True})
 
-        cursor = conn.execute(
-            '''INSERT INTO orders (user_email, items, total, address, payment, payment_id, status, created_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+        conn.execute(
+            'INSERT INTO orders (user_email, items, total, address, payment, payment_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
             (user_email, json.dumps(items), total, address, payment_method,
-             razorpay_payment_id, 'Confirmed', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+             razorpay_payment_id, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         )
-        order_id = cursor.lastrowid
         conn.commit()
         conn.close()
-        return jsonify({"success": True, "order_id": order_id})
+        return jsonify({"success": True})
 
     except Exception as e:
         print(f"Verification Error: {e}")
@@ -1506,18 +1402,6 @@ def verify_razorpay_payment():
 # ══════════════════════════════════════════════════════════════════════════════
 # ADMIN ROUTES  (protected by HTTP Basic Auth)
 # ══════════════════════════════════════════════════════════════════════════════
-
-@app.route('/api/admin/login', methods=['POST'])
-def admin_login():
-    import base64
-    data     = request.get_json() or {}
-    username = data.get('username', '')
-    password = data.get('password', '')
-    if username == ADMIN_USER and password == ADMIN_PASS:
-        token = base64.b64encode(f"{username}:{password}".encode()).decode()
-        return jsonify({'status': 'success', 'token': token})
-    return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 401
-
 
 @app.route('/api/admin/product', methods=['POST'])
 @require_admin
@@ -1566,94 +1450,8 @@ def get_all_users():
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ADDRESSES
-# ══════════════════════════════════════════════════════════════════════════════
-
-@app.route('/api/addresses', methods=['GET'])
-def get_addresses():
-    email = request.headers.get('User-Email')
-    if not email:
-        return jsonify([])
-    conn = get_db_connection()
-    rows = conn.execute(
-        'SELECT * FROM addresses WHERE user_email = ? ORDER BY is_default DESC, id ASC',
-        (email,)
-    ).fetchall()
-    conn.close()
-    return jsonify([dict(r) for r in rows])
-
-
-@app.route('/api/addresses', methods=['POST'])
-def add_address():
-    email = request.headers.get('User-Email')
-    if not email:
-        return jsonify({'error': 'Unauthorized'}), 401
-    data = request.json or {}
-    conn = get_db_connection()
-    if data.get('is_default'):
-        conn.execute('UPDATE addresses SET is_default = 0 WHERE user_email = ?', (email,))
-    conn.execute(
-        '''INSERT INTO addresses (user_email, label, name, street, city, state, zip, country, is_default)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-        (email, data.get('label', ''), data.get('name', ''), data.get('street', ''),
-         data.get('city', ''), data.get('state', ''), data.get('zip', ''),
-         data.get('country', 'India'), 1 if data.get('is_default') else 0)
-    )
-    conn.commit()
-    conn.close()
-    return jsonify({'success': True})
-
-
-@app.route('/api/addresses/<int:addr_id>', methods=['PUT'])
-def update_address(addr_id):
-    email = request.headers.get('User-Email')
-    if not email:
-        return jsonify({'error': 'Unauthorized'}), 401
-    data = request.json or {}
-    conn = get_db_connection()
-    if data.get('is_default'):
-        conn.execute('UPDATE addresses SET is_default = 0 WHERE user_email = ?', (email,))
-    conn.execute(
-        '''UPDATE addresses SET label=?, name=?, street=?, city=?, state=?, zip=?, country=?, is_default=?
-           WHERE id=? AND user_email=?''',
-        (data.get('label', ''), data.get('name', ''), data.get('street', ''),
-         data.get('city', ''), data.get('state', ''), data.get('zip', ''),
-         data.get('country', 'India'), 1 if data.get('is_default') else 0,
-         addr_id, email)
-    )
-    conn.commit()
-    conn.close()
-    return jsonify({'success': True})
-
-
-@app.route('/api/addresses/<int:addr_id>', methods=['DELETE'])
-def delete_address(addr_id):
-    email = request.headers.get('User-Email')
-    if not email:
-        return jsonify({'error': 'Unauthorized'}), 401
-    conn = get_db_connection()
-    conn.execute('DELETE FROM addresses WHERE id = ? AND user_email = ?', (addr_id, email))
-    conn.commit()
-    conn.close()
-    return jsonify({'success': True})
-
-
-@app.route('/api/addresses/<int:addr_id>/default', methods=['PATCH'])
-def set_default_address(addr_id):
-    email = request.headers.get('User-Email')
-    if not email:
-        return jsonify({'error': 'Unauthorized'}), 401
-    conn = get_db_connection()
-    conn.execute('UPDATE addresses SET is_default = 0 WHERE user_email = ?', (email,))
-    conn.execute('UPDATE addresses SET is_default = 1 WHERE id = ? AND user_email = ?', (addr_id, email))
-    conn.commit()
-    conn.close()
-    return jsonify({'success': True})
-
-
-# ══════════════════════════════════════════════════════════════════════════════
 # RUN
 # ══════════════════════════════════════════════════════════════════════════════
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=8000)
