@@ -1,0 +1,390 @@
+/* src/pages/ProductDetails.css */
+
+.product-details-wrapper {
+    padding-top: 120px;
+    padding-bottom: 80px;
+    background: #fbfbfd;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #6a4c93;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: 0.2s;
+}
+.back-link:hover { opacity: 0.7; }
+
+/* Top Section */
+.pd-top-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    border: 1px solid #f0f0f5;
+    margin-bottom: 40px;
+}
+
+.pd-image-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fb;
+    border-radius: 12px;
+    padding: 20px;
+}
+.pd-image-col img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.pd-info-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.pd-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.pd-short-desc {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.pd-action-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.pd-call-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.pd-call-btn:hover { background: #1d4ed8; }
+
+.pd-moq-badge {
+    background: #f59e0b;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.pd-meta { margin-bottom: 25px; color: #444; }
+.pd-meta p { margin-bottom: 5px; }
+
+.pd-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.pd-features span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.pd-inquiry-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #1a1a1a;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.2s;
+    margin-bottom: 30px;
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    font-family: 'Inter', sans-serif;
+}
+.pd-inquiry-btn:hover { background: #6a4c93; transform: translateY(-2px); }
+
+.pd-logistics {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.pd-logistic-item strong {
+    font-size: 0.85rem;
+    color: #888;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Tabs Section */
+.pd-bottom-section {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    border: 1px solid #f0f0f5;
+    overflow: hidden;
+}
+
+.pd-tabs-header {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    background: #fafafa;
+}
+
+.pd-tab-btn {
+    flex: 1;
+    padding: 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 1rem;
+}
+.pd-tab-btn:hover { color: #1a1a1a; }
+.pd-tab-btn.active {
+    color: #6a4c93;
+    border-bottom-color: #6a4c93;
+    background: white;
+}
+
+.pd-tab-content { padding: 40px; }
+.tab-pane h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+}
+.tab-pane p { line-height: 1.8; color: #555; }
+
+/* Table styles for additional info */
+.pd-info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.pd-info-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+.table-key {
+    font-weight: 600;
+    color: #333;
+    width: 30%;
+    background: #fafafa;
+}
+.table-value { color: #666; }
+
+/* ==================================
+   PRODUCT INQUIRY MODAL STYLES
+   ================================== */
+.pd-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 20px;
+}
+
+.pd-modal-box {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    animation: pdModalSlideUp 0.3s ease-out;
+}
+
+@keyframes pdModalSlideUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.pd-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #999;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.pd-modal-close:hover { color: #1a1a1a; }
+
+.pd-modal-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+}
+
+.pd-modal-subtitle {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.pd-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pd-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pd-form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.pd-form-group input,
+.pd-form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    background: #f9f9fb;
+    color: #1a1a1a; /* <-- THE FIX: Added explicit dark text color */
+}
+
+.pd-form-group input:focus,
+.pd-form-group textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: white;
+    color: #1a1a1a; /* <-- Ensures it stays dark when focused */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.pd-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.pd-modal-submit-btn {
+    margin-top: 10px;
+    background: linear-gradient(135deg, hsl(240 20% 42%) 0%, hsl(280 25% 53%) 100%);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pd-modal-submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.pd-modal-submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.pd-success-box {
+    text-align: center;
+}
+
+.pd-success-icon {
+    width: 60px;
+    height: 60px;
+    background: #10b981;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin: 0 auto 20px;
+}
+
+/* Responsiveness */
+@media (max-width: 900px) {
+    .pd-top-section { grid-template-columns: 1fr; }
+    .pd-features { grid-template-columns: 1fr; }
+    .pd-tabs-header { flex-direction: column; }
+    .pd-tab-btn { border-bottom: none; border-left: 3px solid transparent; text-align: left; }
+    .pd-tab-btn.active { border-left-color: #6a4c93; }
+}
+
+@media (max-width: 500px) {
+    .pd-modal-box { padding: 30px 20px; }
+}
+
+/* ── Wishlist heart button ── */
+.pd-wishlist-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    flex-shrink: 0;
+    padding: 0;
+}
+.pd-wishlist-btn:hover {
+    border-color: #ff4757;
+    background: #fff5f5;
+    color: #ff4757;
+    transform: scale(1.08);
+}
+.pd-wishlist-btn--active {
+    border-color: #ff4757;
+    background: #fff5f5;
+}
