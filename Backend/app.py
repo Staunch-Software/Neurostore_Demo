@@ -1449,19 +1449,18 @@ def get_all_users():
     conn.close()
     return jsonify({"users": [dict(u) for u in users]})
 
-
 # ══════════════════════════════════════════════════════════════════════════════
-# RUN
+# SERVE REACT APP
 # ══════════════════════════════════════════════════════════════════════════════
 
-if __name__ == '__main__':
-    @app.route('/')
-    def serve():
-        return send_from_directory('static', 'index.html')
+@app.route('/')
+def serve():
+    return send_from_directory('static', 'index.html')
 
 @app.route('/<path:path>')
 def static_files(path):
     return send_from_directory('static', path)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
