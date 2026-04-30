@@ -1455,11 +1455,19 @@ def get_all_users():
 
 @app.route('/')
 def serve():
-    return send_from_directory('static', 'index.html')
+    try:
+        return send_from_directory('static', 'index.html')
+    except Exception as e:
+        print(f"Error serving index.html: {e}")
+        return {"error": str(e)}, 500
 
 @app.route('/<path:path>')
 def static_files(path):
-    return send_from_directory('static', path)
+    try:
+        return send_from_directory('static', path)
+    except Exception as e:
+        print(f"Error serving {path}: {e}")
+        return {"error": str(e)}, 500
 
 
 if __name__ == '__main__':
