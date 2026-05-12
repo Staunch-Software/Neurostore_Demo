@@ -1403,6 +1403,127 @@ def place_order():
         print(f"Order Error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 # ══════════════════════════════════════════════════════════════════════════════
+# ADDRESSES
+# ══════════════════════════════════════════════════════════════════════════════
+
+@app.route('/api/addresses', methods=['GET'])
+def get_addresses():
+    user_email = request.headers.get('User-Email')
+    if not user_email:
+        return jsonify([]), 400
+    conn = get_db_connection()
+    rows = conn.execute(
+        'SELECT * FROM addresses WHERE user_email = ? ORDER BY is_default DESC, id ASC',
+        (user_email,)
+    ).fetchall()
+    conn.close()
+    return jsonify([dict(r) for r in rows])
+
+
+@app.route('/api/addresses', methods=['POST'])
+def add_address():
+    user_email = request.headers.get('User-Email')
+    if not user_email:
+        return jsonify({'error': 'Unauthorized'}), 401
+    data = request.json
+    conn = get_db_connection()
+
+    # If new address is default, clear existing default first
+    if data.get('is_default'):
+        conn.execute(
+            'UPDATE addresses SET is_default = 0 WHERE user_email = ?',
+            (user_email,)
+        )
+
+    cursor = conn.execute(
+        '''INSERT INTO addresses (user_email, label, name, street, city, state, zip, country, is_default)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+        (
+            user_email,
+            data.get('label', ''),
+            data.get('name', ''),
+            data.get('street', ''),
+            data.get('city', ''),
+            data.get('state', ''),
+            data.get('zip', ''),
+            data.get('country', 'India'),
+            1 if data.get('is_default') else 0,
+        )
+    )
+    conn.commit()
+    new_id = cursor.lastrowid
+    conn.close()
+    return jsonify({'status': 'success', 'id': new_id})
+
+
+@app.route('/api/addresses/<int:addr_id>', methods=['PUT'])
+def update_address(addr_id):
+    user_email = request.headers.get('User-Email')
+    if not user_email:
+        return jsonify({'error': 'Unauthorized'}), 401
+    data = request.json
+    conn = get_db_connection()
+
+    if data.get('is_default'):
+        conn.execute(
+            'UPDATE addresses SET is_default = 0 WHERE user_email = ?',
+            (user_email,)
+        )
+
+    conn.execute(
+        '''UPDATE addresses SET label=?, name=?, street=?, city=?, state=?, zip=?, country=?, is_default=?
+           WHERE id=? AND user_email=?''',
+        (
+            data.get('label', ''),
+            data.get('name', ''),
+            data.get('street', ''),
+            data.get('city', ''),
+            data.get('state', ''),
+            data.get('zip', ''),
+            data.get('country', 'India'),
+            1 if data.get('is_default') else 0,
+            addr_id,
+            user_email,
+        )
+    )
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'success'})
+
+
+@app.route('/api/addresses/<int:addr_id>', methods=['DELETE'])
+def delete_address(addr_id):
+    user_email = request.headers.get('User-Email')
+    if not user_email:
+        return jsonify({'error': 'Unauthorized'}), 401
+    conn = get_db_connection()
+    conn.execute(
+        'DELETE FROM addresses WHERE id = ? AND user_email = ?',
+        (addr_id, user_email)
+    )
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'success'})
+
+
+@app.route('/api/addresses/<int:addr_id>/default', methods=['PATCH'])
+def set_default_address(addr_id):
+    user_email = request.headers.get('User-Email')
+    if not user_email:
+        return jsonify({'error': 'Unauthorized'}), 401
+    conn = get_db_connection()
+    conn.execute(
+        'UPDATE addresses SET is_default = 0 WHERE user_email = ?',
+        (user_email,)
+    )
+    conn.execute(
+        'UPDATE addresses SET is_default = 1 WHERE id = ? AND user_email = ?',
+        (addr_id, user_email)
+    )
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'success'})
+# ══════════════════════════════════════════════════════════════════════════════
 # RAZORPAY
 # ══════════════════════════════════════════════════════════════════════════════
 

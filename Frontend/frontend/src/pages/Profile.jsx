@@ -161,6 +161,7 @@ const Profile = () => {
     // ── Addresses state ────────────────────────────────────────────────────────
     const [addresses,      setAddresses]      = useState([]);
     const [addrLoading,    setAddrLoading]    = useState(false);
+    const [addrError,      setAddrError]      = useState('');   // ← added
     const [showAddrModal,  setShowAddrModal]  = useState(false);
     const [editingAddr,    setEditingAddr]    = useState(null);
     const [addrForm,       setAddrForm]       = useState({ label: '', name: '', street: '', city: '', state: '', zip: '', country: 'India', is_default: false });
@@ -175,14 +176,39 @@ const Profile = () => {
         if (user?.email) { fetchOrders(user.email); fetchAddresses(user.email); }
     }, [user]);
 
+    // ── Fixed fetchAddresses with proper error handling ────────────────────────
     const fetchAddresses = async (email) => {
         setAddrLoading(true);
+        setAddrError('');
         try {
-            const res  = await fetch('http://localhost:8000/api/addresses', { headers: { 'User-Email': email } });
+            const res  = await fetch('http://localhost:8000/api/addresses', {
+                headers: { 'User-Email': email },
+            });
+
+            if (!res.ok) {
+                setAddrError(`Server error: ${res.status}`);
+                setAddresses([]);
+                return;
+            }
+
             const data = await res.json();
-            setAddresses(data);
-        } catch {}
-        finally { setAddrLoading(false); }
+
+            // Handle both array response and { addresses: [...] } response
+            if (Array.isArray(data)) {
+                setAddresses(data);
+            } else if (Array.isArray(data.addresses)) {
+                setAddresses(data.addresses);
+            } else {
+                setAddresses([]);
+            }
+
+        } catch (err) {
+            console.error('Address fetch error:', err);
+            setAddrError('Could not connect to server.');
+            setAddresses([]);
+        } finally {
+            setAddrLoading(false);
+        }
     };
 
     const openAddAddr = () => {
@@ -198,21 +224,43 @@ const Profile = () => {
     };
 
     const saveAddr = async () => {
-        const url    = editingAddr ? `http://localhost:8000/api/addresses/${editingAddr.id}` : 'http://localhost:8000/api/addresses';
-        const method = editingAddr ? 'PUT' : 'POST';
-        await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'User-Email': user.email }, body: JSON.stringify(addrForm) });
-        setShowAddrModal(false);
-        fetchAddresses(user.email);
+        try {
+            const url    = editingAddr ? `http://localhost:8000/api/addresses/${editingAddr.id}` : 'http://localhost:8000/api/addresses';
+            const method = editingAddr ? 'PUT' : 'POST';
+            await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json', 'User-Email': user.email },
+                body: JSON.stringify(addrForm),
+            });
+            setShowAddrModal(false);
+            fetchAddresses(user.email);
+        } catch (err) {
+            console.error('Save address error:', err);
+        }
     };
 
     const deleteAddr = async (id) => {
-        await fetch(`http://localhost:8000/api/addresses/${id}`, { method: 'DELETE', headers: { 'User-Email': user.email } });
-        fetchAddresses(user.email);
+        try {
+            await fetch(`http://localhost:8000/api/addresses/${id}`, {
+                method: 'DELETE',
+                headers: { 'User-Email': user.email },
+            });
+            fetchAddresses(user.email);
+        } catch (err) {
+            console.error('Delete address error:', err);
+        }
     };
 
     const setDefaultAddr = async (id) => {
-        await fetch(`http://localhost:8000/api/addresses/${id}/default`, { method: 'PATCH', headers: { 'User-Email': user.email } });
-        fetchAddresses(user.email);
+        try {
+            await fetch(`http://localhost:8000/api/addresses/${id}/default`, {
+                method: 'PATCH',
+                headers: { 'User-Email': user.email },
+            });
+            fetchAddresses(user.email);
+        } catch (err) {
+            console.error('Set default address error:', err);
+        }
     };
 
     const fetchOrders = async (email) => {
@@ -449,16 +497,38 @@ const Profile = () => {
                                     </button>
                                 </div>
 
-                                {addrLoading ? (
-                                    <div className="empty-state"><RefreshCw size={28} style={{ animation: 'spin 1s linear infinite', color: 'hsl(240,20%,42%)' }} /></div>
-                                ) : addresses.length === 0 ? (
+                                {/* ── Error state ── */}
+                                {addrError && (
+                                    <div className="empty-state">
+                                        <MapPin size={40} />
+                                        <h3>Could not load addresses</h3>
+                                        <p>{addrError}</p>
+                                        <button className="btn-solid" style={{ marginTop: 16 }} onClick={() => fetchAddresses(user.email)}>
+                                            Retry
+                                        </button>
+                                    </div>
+                                )}
+
+                                {/* ── Loading state ── */}
+                                {!addrError && addrLoading && (
+                                    <div className="empty-state">
+                                        <RefreshCw size={28} style={{ animation: 'spin 1s linear infinite', color: 'hsl(240,20%,42%)' }} />
+                                        <p style={{ marginTop: 14 }}>Loading addresses…</p>
+                                    </div>
+                                )}
+
+                                {/* ── Empty state ── */}
+                                {!addrError && !addrLoading && addresses.length === 0 && (
                                     <div className="empty-state">
                                         <MapPin size={48} />
                                         <h3>No saved addresses</h3>
                                         <p>Add an address to use it quickly at checkout.</p>
                                         <button className="btn-solid" style={{ marginTop: 16 }} onClick={openAddAddr}>Add Address</button>
                                     </div>
-                                ) : (
+                                )}
+
+                                {/* ── Address list ── */}
+                                {!addrError && !addrLoading && addresses.length > 0 && (
                                     <div className="address-grid">
                                         {addresses.map(addr => (
                                             <div className="address-card" key={addr.id}>
@@ -489,13 +559,13 @@ const Profile = () => {
 
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                                                 {[
-                                                    { key: 'label',  label: 'Label (Home / Work)', full: false },
-                                                    { key: 'name',   label: 'Full Name',           full: false },
-                                                    { key: 'street', label: 'Street Address',      full: true  },
-                                                    { key: 'city',   label: 'City',                full: false },
-                                                    { key: 'state',  label: 'State',               full: false },
-                                                    { key: 'zip',    label: 'ZIP / Postal Code',   full: false },
-                                                    { key: 'country',label: 'Country',             full: false },
+                                                    { key: 'label',   label: 'Label (Home / Work)',  full: false },
+                                                    { key: 'name',    label: 'Full Name',            full: false },
+                                                    { key: 'street',  label: 'Street Address',       full: true  },
+                                                    { key: 'city',    label: 'City',                 full: false },
+                                                    { key: 'state',   label: 'State',                full: false },
+                                                    { key: 'zip',     label: 'ZIP / Postal Code',    full: false },
+                                                    { key: 'country', label: 'Country',              full: false },
                                                 ].map(({ key, label, full }) => (
                                                     <div key={key} style={{ gridColumn: full ? '1 / -1' : 'auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
                                                         <label style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748b' }}>{label}</label>
