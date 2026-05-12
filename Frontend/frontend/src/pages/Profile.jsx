@@ -168,7 +168,7 @@ const Profile = () => {
     useEffect(() => {
         const stored = localStorage.getItem('neuroUser');
         if (stored) setUser(JSON.parse(stored));
-        else navigate('/login');
+        else setUser(null);
     }, [navigate]);
 
     useEffect(() => {
@@ -178,7 +178,7 @@ const Profile = () => {
     const fetchAddresses = async (email) => {
         setAddrLoading(true);
         try {
-            const res  = await fetch('http://localhost:5000/api/addresses', { headers: { 'User-Email': email } });
+            const res  = await fetch('http://localhost:8000/api/addresses', { headers: { 'User-Email': email } });
             const data = await res.json();
             setAddresses(data);
         } catch {}
@@ -198,7 +198,7 @@ const Profile = () => {
     };
 
     const saveAddr = async () => {
-        const url    = editingAddr ? `http://localhost:5000/api/addresses/${editingAddr.id}` : 'http://localhost:5000/api/addresses';
+        const url    = editingAddr ? `http://localhost:8000/api/addresses/${editingAddr.id}` : 'http://localhost:8000/api/addresses';
         const method = editingAddr ? 'PUT' : 'POST';
         await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'User-Email': user.email }, body: JSON.stringify(addrForm) });
         setShowAddrModal(false);
@@ -206,12 +206,12 @@ const Profile = () => {
     };
 
     const deleteAddr = async (id) => {
-        await fetch(`http://localhost:5000/api/addresses/${id}`, { method: 'DELETE', headers: { 'User-Email': user.email } });
+        await fetch(`http://localhost:8000/api/addresses/${id}`, { method: 'DELETE', headers: { 'User-Email': user.email } });
         fetchAddresses(user.email);
     };
 
     const setDefaultAddr = async (id) => {
-        await fetch(`http://localhost:5000/api/addresses/${id}/default`, { method: 'PATCH', headers: { 'User-Email': user.email } });
+        await fetch(`http://localhost:8000/api/addresses/${id}/default`, { method: 'PATCH', headers: { 'User-Email': user.email } });
         fetchAddresses(user.email);
     };
 
@@ -219,7 +219,7 @@ const Profile = () => {
         setOrdersLoading(true);
         setOrdersError('');
         try {
-            const res  = await fetch('http://localhost:5000/api/orders/user', {
+            const res  = await fetch('http://localhost:8000/api/orders/user', {
                 headers: { 'User-Email': email },
             });
             const data = await res.json();
@@ -239,7 +239,15 @@ const Profile = () => {
         window.location.reload();
     };
 
-    if (!user) return null;
+    if (!user) {
+        return (
+            <div className="profile-not-logged-in">
+                <h2>Please Log In</h2>
+                <p>You need to be logged in to view your profile.</p>
+                <button onClick={() => navigate('/login')} className="profile-login-btn">Go to Login</button>
+            </div>
+        );
+    }
 
     const activeOrders    = orders.filter(o => o.status !== 'Delivered');
     const deliveredOrders = orders.filter(o => o.status === 'Delivered');

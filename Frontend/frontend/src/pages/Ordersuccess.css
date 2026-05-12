@@ -316,3 +316,69 @@
 }
 .os-delivery-row svg   { flex-shrink: 0; margin-top: 1px; color: #6366f1; }
 .os-delivery-row strong { color: var(--text-main); }
+/* ── Login Prompt Modal ── */
+.os-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.os-modal {
+    background: #1e1b2e;
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 1.25rem;
+    padding: 2.5rem 2rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+.os-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.os-modal-close:hover { color: #fff; }
+
+.os-modal-icon {
+    background: rgba(124, 58, 237, 0.12);
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+}
+
+.os-modal-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.75rem;
+}
+
+.os-modal-text {
+    color: #9ca3af;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+}
+
+.os-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}

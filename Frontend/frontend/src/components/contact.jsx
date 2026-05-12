@@ -245,7 +245,7 @@ const Contact = () => {
 
       try {
         // Connected to Python unified backend /api/inquiry
-        const response = await fetch("http://localhost:5000/api/inquiry", {
+        const response = await fetch("http://localhost:8000/api/inquiry", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

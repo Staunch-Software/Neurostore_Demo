@@ -80,6 +80,13 @@
 .pill-arrow { opacity: 0.3; }
 .pill-btn.active .pill-arrow { opacity: 1; }
 
+.price-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .price-tag {
     color: #6a4c93;
     font-weight: 700;
@@ -157,28 +164,30 @@
     object-fit: contain;
 }
 
-/* Wishlist Button */
-.wishlist-heart-btn {
+/* ── Cart count badge (top-right of image) ── */
+.cart-count-badge {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 54px;
-    height: 54px;
+    top: 12px;
+    right: 12px;
+    min-width: 26px;
+    height: 26px;
     border-radius: 50%;
-    background: white;
-    border: 2px solid rgba(0,0,0,0.1);
+    background: #2563eb;
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-    transition: all 0.2s;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
     z-index: 10;
+    animation: badge-pop 0.2s ease;
 }
 
-.wishlist-heart-btn:hover {
-    transform: scale(1.1);
-    background: #fff;
+@keyframes badge-pop {
+    from { transform: scale(0.6); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
 }
 
 .p-badge {
@@ -214,14 +223,22 @@
     font-size: 1.05rem;
     font-weight: 700;
     color: #1a1a1a;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     height: 2.8rem;
     overflow: hidden;
 }
 
+/* ── Full-width Add to Cart button (sits above 3 buttons) ── */
+.btn-cart--full {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 11px 10px;
+    font-size: 0.82rem;
+    border-radius: 10px;
+}
+
 /* 3-BUTTON LAYOUT */
 .p-action-buttons {
-    margin-top: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -242,9 +259,11 @@
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    border: none;
+    font-family: inherit;
 }
 
-/* --- Blue Default, White & Blue on Hover --- */
+/* Blue: Call for Price */
 .btn-call {
     background-color: #2563eb;
     color: white;
@@ -258,6 +277,7 @@
     box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
 
+/* Blue: VIEW */
 .btn-view {
     background-color: #2563eb;
     color: white;
@@ -271,18 +291,49 @@
     box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
 
-/* --- Green Default, White & Green on Hover --- */
-.btn-wa {
-    background-color: #25D366;
+/* ── WhatsApp button ── */
+.btn-whatsapp {
+    background-color: #25d366;
     color: white;
-    border: 1px solid #25D366;
+    border: 1px solid #25d366;
     flex: 1.5;
 }
-.btn-wa:hover {
+.btn-whatsapp:hover {
     background-color: white;
-    color: #25D366;
+    color: #25d366;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+}
+
+/* ── Add to Cart button ── */
+.btn-cart {
+    background-color: #16a34a;
+    color: white;
+    border: 1px solid #16a34a;
+    position: relative;
+    overflow: hidden;
+}
+.btn-cart:hover {
+    background-color: white;
+    color: #16a34a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
+}
+
+/* "Added!" flash state */
+.btn-cart--added {
+    background-color: #15803d !important;
+    color: white !important;
+    border-color: #15803d !important;
+    transform: none !important;
+    box-shadow: none !important;
+    animation: cart-added-flash 0.25s ease;
+}
+
+@keyframes cart-added-flash {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.07); }
+    100% { transform: scale(1); }
 }
 
 /* PAGINATION STYLES */
@@ -340,6 +391,7 @@
 @media (max-width: 1200px) {
     .p-action-buttons { flex-wrap: wrap; }
     .action-btn { flex: 1 1 auto; width: 100%; }
+    .btn-cart--full { font-size: 0.8rem; }
 }
 
 @media (max-width: 1100px) {
@@ -352,103 +404,4 @@
     .neuro-sidebar { width: 100%; position: static; margin-bottom: 30px; }
     .neuro-products-grid { grid-template-columns: 1fr; }
     .p-action-buttons { flex-wrap: wrap; }
-}
-
-/* ── Wishlist login popup ────────────────────────────────────────────────── */
-.wl-popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(10, 8, 30, 0.65);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-    animation: wl-fade-in 0.18s ease;
-}
-
-@keyframes wl-fade-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-.wl-popup-card {
-    background: linear-gradient(145deg, #1e1b3a, #2a2350);
-    border: 1px solid rgba(129, 140, 248, 0.25);
-    border-radius: 20px;
-    padding: 36px 32px 28px;
-    width: 320px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
-    animation: wl-slide-up 0.2s ease;
-}
-
-@keyframes wl-slide-up {
-    from { transform: translateY(16px); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-}
-
-.wl-popup-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(255,255,255,0.08);
-    border: none;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: rgba(255,255,255,0.5);
-    padding: 0;
-    transition: background 0.2s, color 0.2s;
-}
-.wl-popup-close:hover { background: rgba(255,255,255,0.15); color: white; }
-
-.wl-popup-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 18px;
-    background: rgba(129, 140, 248, 0.12);
-    border: 1px solid rgba(129, 140, 248, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 18px;
-}
-
-.wl-popup-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #e2e8ff;
-    margin: 0 0 8px;
-}
-
-.wl-popup-sub {
-    font-size: 0.8rem;
-    color: rgba(200, 205, 255, 0.6);
-    margin: 0 0 22px;
-    line-height: 1.5;
-}
-
-.wl-popup-btn {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.02em;
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
-    transition: transform 0.15s, box-shadow 0.15s;
-}
-.wl-popup-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.55);
 }

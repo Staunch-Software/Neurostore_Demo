@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
     CheckCircle, Package, ArrowRight, Home,
     Receipt, MapPinned, Clock, BadgeCheck,
-    CreditCard, Smartphone, Building2, Wallet, ShieldCheck
+    CreditCard, Smartphone, Building2, Wallet, ShieldCheck, LogIn, X
 } from 'lucide-react';
 import './Ordersuccess.css';
 
@@ -27,6 +27,8 @@ const OrderSuccess = () => {
     const location  = useLocation();
     const state     = location.state || {};
 
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
     const {
         orderId,
         paymentId,
@@ -37,14 +39,56 @@ const OrderSuccess = () => {
         date       = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
     } = state;
 
-    const fmt      = (v) => Number(v).toLocaleString('en-IN', { maximumFractionDigits: 0 });
+    const fmt        = (v) => Number(v).toLocaleString('en-IN', { maximumFractionDigits: 0 });
     const MethodIcon = METHOD_ICON[method] || CreditCard;
-    const hasData  = orderItems.length > 0;
+    const hasData    = orderItems.length > 0;
+
+    const handleTrackOrder = () => {
+        const user = JSON.parse(localStorage.getItem('neuroUser') || 'null'); // ← fixed key
+        if (user) {
+            navigate('/profile');
+        } else {
+            setShowLoginPrompt(true);
+        }
+    };
 
     return (
         <div className="os-wrapper">
             <div className="os-blob os-blob--green" />
             <div className="os-blob os-blob--purple" />
+
+            {/* ── Login Prompt Modal ── */}
+            {showLoginPrompt && (
+                <div className="os-modal-overlay" onClick={() => setShowLoginPrompt(false)}>
+                    <div className="os-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="os-modal-close" onClick={() => setShowLoginPrompt(false)}>
+                            <X size={18} />
+                        </button>
+                        <div className="os-modal-icon">
+                            <LogIn size={36} color="#7c3aed" strokeWidth={1.8} />
+                        </div>
+                        <h2 className="os-modal-title">Login Required</h2>
+                        <p className="os-modal-text">
+                            You need to be logged in to track your order.<br />
+                            Please sign in to view your order history.
+                        </p>
+                        <div className="os-modal-actions">
+                            <button
+                                className="os-btn os-btn--primary"
+                                onClick={() => navigate('/login', { state: { redirect: '/profile' } })}
+                            >
+                                <LogIn size={15} /> Go to Login
+                            </button>
+                            <button
+                                className="os-btn os-btn--ghost"
+                                onClick={() => setShowLoginPrompt(false)}
+                            >
+                                Maybe Later
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <div className={`os-card ${hasData ? 'os-card--wide' : ''}`}>
 
@@ -129,7 +173,7 @@ const OrderSuccess = () => {
 
                 {/* ── Actions ── */}
                 <div className="os-actions">
-                    <button className="os-btn os-btn--primary" onClick={() => navigate('/profile')}>
+                    <button className="os-btn os-btn--primary" onClick={handleTrackOrder}>
                         <Package size={16} /> Track My Order <ArrowRight size={15} />
                     </button>
                     <button className="os-btn os-btn--ghost" onClick={() => navigate('/')}>

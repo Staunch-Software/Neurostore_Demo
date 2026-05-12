@@ -35,6 +35,7 @@ const Payment = () => {
         items,
         phone,
         activeMethod,
+        userEmail,
     } = location.state || {};
 
     const [sdkReady, setSdkReady] = useState(false);
@@ -44,14 +45,19 @@ const Payment = () => {
     useEffect(() => { if (!amount) navigate('/'); }, [amount, navigate]);
     useEffect(() => { loadRazorpay().then(setSdkReady); }, []);
 
+    const resolvedEmail = user?.email || userEmail || '';
+    const resolvedName  = user?.name  || 'Customer';
+
     const verifyPayment = async (resp) => {
         try {
-            const res = await fetch('http://localhost:5000/api/razorpay/verify', {
+            const headers = { 'Content-Type': 'application/json' };
+            if (resolvedEmail) {
+                headers['User-Email'] = resolvedEmail;
+            }
+
+            const res = await fetch('http://localhost:8000/api/razorpay/verify', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'User-Email': user.email,
-                },
+                headers,
                 body: JSON.stringify({
                     ...resp,
                     items,
@@ -60,7 +66,9 @@ const Payment = () => {
                     method: activeMethod,
                 }),
             });
+
             const data = await res.json();
+
             if (data.success) {
                 clearCart();
                 const orderedItems = products
@@ -74,73 +82,94 @@ const Payment = () => {
                         orderItems: orderedItems,
                         total:      amount,
                         address,
-                        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+                        date: new Date().toLocaleDateString('en-IN', {
+                            day: 'numeric', month: 'long', year: 'numeric'
+                        }),
                     },
                 });
             } else {
-                setPayError('Payment verification failed');
+                setPayError(data.error || 'Payment verification failed');
                 setLoading(false);
             }
-        } catch {
-            setPayError('Server error during verification');
+        } catch (err) {
+            console.error('Verify error:', err);
+            setPayError('Server error during verification. Please contact support.');
             setLoading(false);
         }
     };
 
     const handlePayment = async () => {
-        if (!sdkReady) return alert('Razorpay not loaded');
+        if (!sdkReady) return alert('Razorpay not loaded. Please refresh the page.');
+
+        // Razorpay limit: ₹5,00,000 in test mode, ₹10,00,000 in live mode
+        const MAX_AMOUNT = 500000;
+        if (amount > MAX_AMOUNT) {
+            setPayError(
+                `Amount ₹${fmt(amount)} exceeds the maximum allowed limit of ₹${fmt(MAX_AMOUNT)}. ` +
+                `Please contact us at info@neurostore.ai to complete this order manually.`
+            );
+            return;
+        }
 
         setLoading(true);
         setPayError('');
 
         try {
-            const res = await fetch('http://localhost:5000/api/razorpay/create-order', {
+            const res = await fetch('http://localhost:8000/api/razorpay/create-order', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify({ amount }),
             });
 
+            if (!res.ok) {
+                const errData = await res.json();
+                setPayError(errData.error || `Server error: ${res.status}`);
+                setLoading(false);
+                return;
+            }
+
             const data = await res.json();
 
             if (!data.id) {
-                setPayError(data.error || JSON.stringify(data));
+                setPayError(data.error || 'Could not create payment order. Check Razorpay keys.');
                 setLoading(false);
                 return;
             }
 
             const options = {
                 key:         'rzp_test_Se6aZrTcr0K9vV',
-                amount:      amount * 100,
-                currency:    'INR',
+                amount:      data.amount,
+                currency:    data.currency,
                 name:        'NeuroStore',
                 description: 'Purchase',
                 order_id:    data.id,
                 prefill: {
-                    name:    user?.name  || '',
-                    email:   user?.email || '',
-                    contact: phone       || '',
+                    name:    resolvedName,
+                    email:   resolvedEmail,
+                    contact: phone || '',
                 },
                 handler: (resp) => verifyPayment(resp),
-                theme:   { color: '#6366f1', backdrop_color: 'rgba(15, 10, 45, 0.88)' },
+                theme:   { color: '#7c3aed', backdrop_color: 'rgba(30, 10, 60, 0.90)' }, // ← updated
                 modal:   { ondismiss: () => setLoading(false) },
             };
 
             const rzp = new window.Razorpay(options);
             rzp.on('payment.failed', (resp) => {
-                setPayError(resp.error?.description || 'Payment failed');
+                setPayError(resp.error?.description || 'Payment failed. Please try again.');
                 setLoading(false);
             });
             rzp.open();
 
         } catch (err) {
-            setPayError('Something went wrong: ' + err.message);
+            console.error('Payment error:', err);
+            setPayError('Could not connect to payment server. Is backend running?');
             setLoading(false);
         }
     };
 
-    const meta   = METHOD_META[activeMethod] || METHOD_META.card;
+    const meta     = METHOD_META[activeMethod] || METHOD_META.card;
     const { Icon } = meta;
-    const fmt    = (v) => v?.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+    const fmt      = (v) => v?.toLocaleString('en-IN', { maximumFractionDigits: 0 });
 
     return (
         <div className="payment-page-wrapper">
@@ -165,8 +194,16 @@ const Payment = () => {
                 <div className="payment-summary">
                     <div className="payment-row">
                         <span>Customer</span>
-                        <span>{user?.name}</span>
+                        <span>{resolvedName}</span>
                     </div>
+                    {resolvedEmail && (
+                        <div className="payment-row">
+                            <span>Email</span>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 400 }}>
+                                {resolvedEmail}
+                            </span>
+                        </div>
+                    )}
                     <div className="payment-row">
                         <span>Address</span>
                         <span style={{ fontSize: '0.85rem', fontWeight: 400, lineHeight: 1.5 }}>

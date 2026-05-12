@@ -169,6 +169,66 @@ def send_otp_email(to_email, name, otp_code):
         return False
 
 
+def send_order_confirmation_email(to_email, customer_name, order_id, items_dict, total, address, payment_method):
+    try:
+        item_rows = ''
+        for pid, qty in items_dict.items():
+            product_name = next((p['name'] for p in products if str(p['id']) == str(pid)), f'Product #{pid}')
+            price        = next((p['price'] for p in products if str(p['id']) == str(pid)), 0)
+            item_rows += f'<tr><td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;">{product_name}</td><td style="padding:10px 12px;text-align:center;">×{qty}</td><td style="padding:10px 12px;text-align:right;font-weight:600;">₹{int(price * qty):,}</td></tr>'
+
+        payment_label = 'Cash on Delivery' if payment_method == 'COD' else 'Paid Online'
+        html_body = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f8fafc;padding:40px 20px;">
+          <div style="background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;">
+            <div style="background:#0f172a;padding:28px 36px;">
+              <h2 style="margin:0;color:#fff;font-size:22px;">NeuroStore</h2>
+              <p style="margin:4px 0 0;color:#94a3b8;font-size:13px;">Order Confirmation</p>
+            </div>
+            <div style="padding:36px;">
+              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+                <p style="margin:0;font-size:15px;font-weight:700;color:#15803d;">✅ Order Confirmed — #{order_id}</p>
+              </div>
+              <p style="font-size:15px;color:#334155;">Hi <strong>{customer_name}</strong>, thank you for your order!</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin-bottom:20px;">
+                <thead><tr style="background:#f8fafc;">
+                  <th style="padding:10px 12px;text-align:left;font-size:12px;color:#64748b;">Product</th>
+                  <th style="padding:10px 12px;text-align:center;font-size:12px;color:#64748b;">Qty</th>
+                  <th style="padding:10px 12px;text-align:right;font-size:12px;color:#64748b;">Amount</th>
+                </tr></thead>
+                <tbody>{item_rows}</tbody>
+              </table>
+              <div style="text-align:right;margin-bottom:20px;">
+                <span style="font-size:16px;font-weight:800;color:#6366f1;">Total: ₹{int(total):,}</span>
+                <span style="display:block;font-size:12px;color:#94a3b8;">Incl. 18% GST · {payment_label}</span>
+              </div>
+              <div style="background:#f8fafc;border-radius:10px;padding:14px 18px;margin-bottom:20px;border:1px solid #e2e8f0;">
+                <p style="margin:0;font-size:12px;color:#94a3b8;">Shipping To</p>
+                <p style="margin:4px 0 0;font-size:13px;color:#334155;">{address}</p>
+              </div>
+              <p style="font-size:13px;color:#64748b;">📦 Estimated delivery: <strong>3–7 business days</strong><br/>Questions? Email us at <strong>info@neurostore.ai</strong></p>
+            </div>
+            <div style="background:#f1f5f9;padding:16px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#94a3b8;">© {datetime.now().year} NeuroStore</p>
+            </div>
+          </div>
+        </div>"""
+
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = f'Order Confirmed ✅ — NeuroStore #{order_id}'
+        msg['From']    = f'NeuroStore <{EMAIL_USER}>'
+        msg['To']      = to_email
+        msg.attach(MIMEText(html_body, 'html'))
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(EMAIL_USER, EMAIL_PASS)
+        server.sendmail(EMAIL_USER, to_email, msg.as_string())
+        server.quit()
+        return True
+    except Exception as e:
+        print(f"ORDER CONFIRMATION EMAIL ERROR: {e}")
+        return False
+
 # ══════════════════════════════════════════════════════════════════════════════
 # PRODUCTS DATA
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1304,27 +1364,44 @@ def get_user_orders():
 
 @app.route('/api/orders', methods=['POST'])
 def place_order():
-    data       = request.json
-    user_email = request.headers.get('User-Email')
-    items      = data.get('items', {})
-    total      = data.get('total', 0)
-    address    = data.get('address', '')
-    payment    = data.get('payment', 'COD')
+    data        = request.json
+    user_email  = request.headers.get('User-Email')
+    guest_email = data.get('guest_email')
+    guest_name  = data.get('guest_name')
+    items       = data.get('items', {})
+    total       = data.get('total', 0)
+    address     = data.get('address', '')
+    payment     = data.get('payment', 'COD')
+
+    # Use user_email if logged in, else fall back to guest_email
+    stored_email = user_email or guest_email or 'guest'
 
     try:
         conn = get_db_connection()
-        conn.execute(
+
+        customer_name = guest_name or 'Customer'
+        if user_email:
+            row = conn.execute('SELECT name FROM users WHERE email = ?', (user_email,)).fetchone()
+            if row:
+                customer_name = row['name']
+
+        cursor = conn.execute(
             'INSERT INTO orders (user_email, items, total, address, payment, payment_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            (user_email, json.dumps(items), total, address, payment, 'COD', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            (stored_email, json.dumps(items), total, address, payment, 'COD', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         )
+        order_id = cursor.lastrowid
         conn.commit()
         conn.close()
-        return jsonify({"status": "success", "message": "Order placed!"})
+
+        confirm_email = user_email or data.get('confirm_email') or guest_email
+        if confirm_email:
+            send_order_confirmation_email(confirm_email, customer_name, order_id, items, total, address, payment)
+
+        return jsonify({"status": "success", "message": "Order placed!", "order_id": order_id})
+
     except Exception as e:
         print(f"Order Error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
-
-
 # ══════════════════════════════════════════════════════════════════════════════
 # RAZORPAY
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1360,7 +1437,7 @@ def create_razorpay_order():
 @app.route('/api/razorpay/verify', methods=['POST'])
 def verify_razorpay_payment():
     data                = request.json
-    user_email          = request.headers.get('User-Email')
+    user_email          = request.headers.get('User-Email')  # None for guests — that's fine
     razorpay_order_id   = data.get('razorpay_order_id')
     razorpay_payment_id = data.get('razorpay_payment_id')
     razorpay_signature  = data.get('razorpay_signature')
@@ -1371,29 +1448,55 @@ def verify_razorpay_payment():
 
     key_secret = os.getenv("RAZORPAY_KEY_SECRET")
     if not key_secret:
-        return jsonify({"success": False, "error": "Payment gateway not configured"}), 500
+        return jsonify({"success": False, "error": "Payment gateway not configured. Set RAZORPAY_KEY_SECRET in .env"}), 500
+
+    # ── Validate required fields ──
+    if not razorpay_order_id or not razorpay_payment_id or not razorpay_signature:
+        return jsonify({"success": False, "error": "Missing payment verification fields"}), 400
 
     try:
-        message             = f"{razorpay_order_id}|{razorpay_payment_id}".encode()
-        generated_signature = hmac.new(key_secret.encode(), message, hashlib.sha256).hexdigest()
+        # ── FIXED: use hmac.new correctly ──
+        message             = f"{razorpay_order_id}|{razorpay_payment_id}".encode('utf-8')
+        generated_signature = hmac.new(
+            key_secret.encode('utf-8'),
+            message,
+            hashlib.sha256
+        ).hexdigest()
 
         if generated_signature != razorpay_signature:
-            return jsonify({"success": False, "error": "Signature mismatch"}), 400
+            print(f"Signature mismatch.\nExpected: {generated_signature}\nGot: {razorpay_signature}")
+            return jsonify({"success": False, "error": "Signature mismatch — payment not verified"}), 400
 
         conn     = get_db_connection()
         existing = conn.execute('SELECT id FROM orders WHERE payment_id = ?', (razorpay_payment_id,)).fetchone()
         if existing:
             conn.close()
-            return jsonify({"success": True})
+            return jsonify({"success": True, "order_id": existing['id']})
 
-        conn.execute(
+        cursor = conn.execute(
             'INSERT INTO orders (user_email, items, total, address, payment, payment_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            (user_email, json.dumps(items), total, address, payment_method,
-             razorpay_payment_id, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            (
+                user_email or 'guest',
+                json.dumps(items),
+                total,
+                address,
+                payment_method,
+                razorpay_payment_id,
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            )
         )
+        order_id = cursor.lastrowid
         conn.commit()
         conn.close()
-        return jsonify({"success": True})
+
+        if user_email:
+            conn2 = get_db_connection()
+            row = conn2.execute('SELECT name FROM users WHERE email = ?', (user_email,)).fetchone()
+            conn2.close()
+            customer_name = row['name'] if row else 'Customer'
+            send_order_confirmation_email(user_email, customer_name, order_id, items, total, address, payment_method)
+
+        return jsonify({"success": True, "order_id": order_id})
 
     except Exception as e:
         print(f"Verification Error: {e}")

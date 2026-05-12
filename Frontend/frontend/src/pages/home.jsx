@@ -95,7 +95,7 @@ const Home = () => {
 
         try {
             // Python Backend handles this natively now
-            const response = await fetch(`${backendUrl || 'http://localhost:5000'}/api/inquiry`, {
+            const response = await fetch(`${backendUrl || 'http://localhost:8000'}/api/inquiry`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(inquiryData)

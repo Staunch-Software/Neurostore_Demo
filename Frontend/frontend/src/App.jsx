@@ -26,7 +26,7 @@ import FloatingReachUs from './components/floatingreachus';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 
-// ── Protected Route ────────────────────────────────────────────────
+// ── Protected Route — only for pages that truly require login (e.g. Profile) ──
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(ShopContext);
   const location = useLocation();
@@ -37,7 +37,6 @@ const ProtectedRoute = ({ children }) => {
 
   return children;
 };
-// ──────────────────────────────────────────────────────────────────
 
 // Admin routes render without Navbar/Footer
 const AdminRoute = ({ children }) => (
@@ -75,15 +74,13 @@ function App() {
               <Route path="/shipping-policy" element={<ShippingPolicy />} />
               <Route path="/login" element={<CustomerAuth />} />
 
-              <Route path="/profile" element={
-                <ProtectedRoute><Profile /></ProtectedRoute>
-              } />
-              <Route path="/checkout" element={
-                <ProtectedRoute><Checkout /></ProtectedRoute>
-              } />
-              <Route path="/payment" element={
-                <ProtectedRoute><Payment /></ProtectedRoute>
-              } />
+              {/* Profile - open access */}
+              <Route path="/profile" element={<Profile />} />
+
+              {/* Checkout & Payment — open to guests, no login required */}
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/payment" element={<Payment />} />
+
               <Route path="/order-success" element={<OrderSuccess />} />
             </Routes>
             <Footer />
@@ -92,6 +89,9 @@ function App() {
         } />
       </Routes>
     </div>
+
+
+
   );
 }
 

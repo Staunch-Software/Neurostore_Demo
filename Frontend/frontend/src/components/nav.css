@@ -1,5 +1,3 @@
-/* src/components/nav.css */
-
 /* ============================================
    NEUROSTORE NAVBAR
    ============================================ */
@@ -421,4 +419,86 @@
 .wishlist-popup-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.55);
+}
+
+/* ============================================
+   USER PROFILE DROPDOWN
+   ============================================ */
+.neuro-user-dropdown {
+  position: absolute;
+  top: 130%;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  width: 220px;
+  padding: 16px;
+  z-index: 10000;
+}
+
+.neuro-user-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 18px;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-left: 1px solid #e2e8f0;
+  border-top: 1px solid #e2e8f0;
+  transform: rotate(45deg);
+}
+
+.neuro-user-dropdown-name {
+  margin: 0 0 2px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.neuro-user-dropdown-email {
+  margin: 0 0 14px 0;
+  font-size: 12px;
+  color: #64748b;
+  word-break: break-all;
+}
+
+.neuro-user-dropdown-divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 0 0 12px 0;
+}
+
+.neuro-user-dropdown-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  color: #334155;
+  margin-bottom: 4px;
+  text-align: left;
+}
+
+.neuro-user-dropdown-btn:hover {
+  background: #f1f5f9;
+  color: #6a4c93;
+}
+
+.neuro-user-dropdown-btn.signout {
+  color: #ef4444;
+  margin-bottom: 0;
+}
+
+.neuro-user-dropdown-btn.signout:hover {
+  background: #fef2f2;
+  color: #dc2626;
 }

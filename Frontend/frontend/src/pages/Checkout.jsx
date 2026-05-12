@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ShopContext } from '../components/context/ShopContext';
 import {
     ArrowLeft, CreditCard, Truck, ShieldCheck,
-    CheckCircle, Package, Smartphone, Building2,
-    Wallet, Lock, ChevronDown, ChevronUp, MapPin, BookMarked,
-    BadgeCheck, Clock, MapPinned, Receipt
+    Package, Smartphone, Building2,
+    Wallet, Lock, ChevronDown, ChevronUp, MapPin,
+    BadgeCheck, Clock, MapPinned, Receipt,
+    CheckCircle2, Mail, LogIn
 } from 'lucide-react';
 import './Checkout.css';
 
@@ -17,7 +18,6 @@ const PAYMENT_OPTIONS = [
         Icon:    CreditCard,
         type:    'secure',
         MsgIcon: Lock,
-        title:   'Secure Card Payment',
         message: 'Your card number, CVV and expiry are entered directly inside the Razorpay secure popup. We never see or store any card details — this is required by PCI DSS compliance.',
     },
     {
@@ -27,7 +27,6 @@ const PAYMENT_OPTIONS = [
         Icon:    Building2,
         type:    'info',
         MsgIcon: Building2,
-        title:   'Pay via Net Banking',
         message: 'Click "Proceed to Pay" — the Razorpay popup will open where you can choose from all major banks including SBI, HDFC, ICICI, Axis, Kotak and more.',
     },
     {
@@ -37,7 +36,6 @@ const PAYMENT_OPTIONS = [
         Icon:    Smartphone,
         type:    'info',
         MsgIcon: Smartphone,
-        title:   'Pay via UPI',
         message: 'Click "Proceed to Pay" — the Razorpay popup will open where you can select Google Pay, PhonePe, BHIM, Paytm, or enter any UPI ID directly.',
     },
     {
@@ -47,7 +45,6 @@ const PAYMENT_OPTIONS = [
         Icon:    Wallet,
         type:    'info',
         MsgIcon: Wallet,
-        title:   'Pay via Wallet',
         message: 'Click "Proceed to Pay" — the Razorpay popup will open where you can choose from Paytm, Mobikwik, Amazon Pay, Freecharge, Ola Money and more.',
     },
 ];
@@ -59,7 +56,6 @@ const COD_OPTION = {
     Icon:    Truck,
     type:    'warning',
     MsgIcon: Truck,
-    title:   'Cash on Delivery',
     message: 'Your order will be placed immediately. Please keep exact change ready when the delivery arrives.',
 };
 
@@ -74,70 +70,69 @@ const Checkout = () => {
     const [activeTab,    setActiveTab]    = useState('card');
     const [sameAddress,  setSameAddress]  = useState(false);
 
+    // ── EMAIL ──
+    const [email, setEmail] = useState(user?.email || '');
+
+    // ── GUEST NAME ──
+    const [guestName, setGuestName] = useState('');
+
+    // ── CURRENT ADDRESS (includes phone) ──
     const [currentAddr, setCurrentAddr] = useState({
-        address: '',
-        city:    '',
-        state:   '',
-        zip:     '',
+        address: '', city: '', state: '', zip: '', phone: user?.phone || ''
     });
 
+    // ── SHIPPING ADDRESS (no phone) ──
     const [formData, setFormData] = useState({
-        address: '',
-        city:    '',
-        state:   '',
-        zip:     '',
-        phone:   user?.phone || '',
+        address: '', city: '', state: '', zip: ''
     });
 
-    // Load saved addresses → auto-fill current address from default
+    // ── Load saved address if logged in ──
     React.useEffect(() => {
         if (!user?.email) return;
-        fetch('http://localhost:5000/api/addresses', { headers: { 'User-Email': user.email } })
+        setEmail(user.email);
+        fetch('http://localhost:8000/api/addresses', { headers: { 'User-Email': user.email } })
             .then(r => r.json())
             .then(data => {
                 const def = data.find(a => a.is_default) || data[0];
                 if (def) {
                     const filled = { address: def.street, city: def.city, state: def.state, zip: def.zip };
-                    setCurrentAddr(filled);
-                    // also pre-fill shipping with the same
-                    setFormData(prev => ({ ...prev, ...filled }));
+                    setCurrentAddr(prev => ({ ...prev, ...filled }));
+                    setFormData(filled);
                     setSameAddress(true);
                 }
             })
             .catch(() => {});
     }, [user]);
 
+    // ── CURRENT ADDRESS CHANGE ──
     const handleCurrentAddrChange = (e) => {
         const updated = { ...currentAddr, [e.target.name]: e.target.value };
         setCurrentAddr(updated);
-        if (sameAddress) {
+        if (sameAddress && e.target.name !== 'phone') {
             setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
         }
     };
 
+    // ── SAME ADDRESS TOGGLE ──
     const handleSameAddressToggle = (e) => {
         const checked = e.target.checked;
         setSameAddress(checked);
         if (checked) {
-            setFormData(prev => ({
-                ...prev,
+            setFormData({
                 address: currentAddr.address,
                 city:    currentAddr.city,
                 state:   currentAddr.state,
                 zip:     currentAddr.zip,
-            }));
+            });
         } else {
-            // Clear shipping fields when unchecked
-            setFormData(prev => ({
-                ...prev,
-                address: '',
-                city:    '',
-                state:   '',
-                zip:     '',
-            }));
+            setFormData({ address: '', city: '', state: '', zip: '' });
         }
     };
 
+    const handleFormDataChange = (e) =>
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+    // ── Empty cart ──
     if (totalAmount <= 0 && !orderSuccess) {
         return (
             <div className="checkout-empty">
@@ -147,39 +142,29 @@ const Checkout = () => {
             </div>
         );
     }
-    if (!user) {
-        return (
-            <div className="checkout-empty">
-                <Package size={64} color="#ccc" />
-                <h2>Please log in to continue</h2>
-                <Link to="/login" className="back-btn">Login</Link>
-            </div>
-        );
-    }
 
-    const handleInputChange = (e) =>
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    const finalAmount = totalAmount * 1.18;
-    const fullAddress = `${formData.address}, ${formData.city}, ${formData.state} - ${formData.zip}`;
-    const orderItems  = {};
+    const finalAmount  = totalAmount * 1.18;
+    const fullAddress  = `${formData.address}, ${formData.city}, ${formData.state} - ${formData.zip}`;
+    const orderItems   = {};
     products.forEach(p => { if (cartItems[p.id] > 0) orderItems[p.id] = cartItems[p.id]; });
+    const orderEmail   = user?.email || email;
+    const customerName = user?.name  || guestName || 'Customer';
+
+    // ── Build cart items list for display ──
+    const cartProductsList = products.filter(p => cartItems[p.id] > 0);
 
     const autoSaveAddress = async () => {
+        if (!user?.email) return;
         if (!currentAddr.address || !currentAddr.city || !currentAddr.state || !currentAddr.zip) return;
         try {
-            await fetch('http://localhost:5000/api/addresses', {
+            await fetch('http://localhost:8000/api/addresses', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json', 'User-Email': user.email },
                 body: JSON.stringify({
-                    label:      'Home',
-                    name:       user.name || '',
-                    street:     currentAddr.address,
-                    city:       currentAddr.city,
-                    state:      currentAddr.state,
-                    zip:        currentAddr.zip,
-                    country:    'India',
-                    is_default: true,
+                    label: 'Home', name: user.name || '',
+                    street: currentAddr.address, city: currentAddr.city,
+                    state:  currentAddr.state,   zip:  currentAddr.zip,
+                    country: 'India', is_default: true,
                 }),
             });
         } catch {}
@@ -192,24 +177,36 @@ const Checkout = () => {
 
         if (activeTab === 'cod') {
             try {
-                const res  = await fetch('http://localhost:5000/api/orders', {
+                const res  = await fetch('http://localhost:8000/api/orders', {
                     method:  'POST',
-                    headers: { 'Content-Type': 'application/json', 'User-Email': user.email },
-                    body:    JSON.stringify({
-                        items: orderItems, total: finalAmount, address: fullAddress, payment: 'COD',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(user?.email ? { 'User-Email': user.email } : {}),
+                    },
+                    body: JSON.stringify({
+                        items:         orderItems,
+                        total:         finalAmount,
+                        address:       fullAddress,
+                        payment:       'COD',
+                        confirm_email: orderEmail,          // ← FIXED: always send email
+                        guest_email:   !user ? orderEmail : undefined,
+                        guest_name:    !user ? guestName  : undefined,
                     }),
                 });
                 const data = await res.json();
                 if (res.ok && data.status === 'success') {
-                    const orderedItems = products
-                        .filter(p => cartItems[p.id] > 0)
+                    const orderedItems = cartProductsList
                         .map(p => ({ name: p.name, qty: cartItems[p.id], price: p.price }));
                     setOrderData({
-                        id:      data.order_id,
+                        id:      data.order_id || `ORD-${Date.now()}`,
                         items:   orderedItems,
                         total:   finalAmount,
                         address: fullAddress,
-                        date:    new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+                        email:   orderEmail,
+                        name:    customerName,
+                        date:    new Date().toLocaleDateString('en-IN', {
+                            day: 'numeric', month: 'long', year: 'numeric'
+                        }),
                     });
                     clearCart();
                     setOrderSuccess(true);
@@ -229,13 +226,15 @@ const Checkout = () => {
                 amount:       finalAmount,
                 address:      fullAddress,
                 items:        orderItems,
-                phone:        formData.phone,
+                phone:        currentAddr.phone,
                 activeMethod: activeTab,
+                userEmail:    orderEmail,
             },
         });
         setLoading(false);
     };
 
+    // ── ORDER SUCCESS ──
     if (orderSuccess && orderData) {
         const fmt = (v) => Number(v).toLocaleString('en-IN', { maximumFractionDigits: 0 });
         return (
@@ -246,16 +245,27 @@ const Checkout = () => {
                             <BadgeCheck size={40} color="#10b981" />
                         </div>
                         <h1>Order Confirmed!</h1>
-                        <p>Thank you, <strong>{user.name}</strong>. Your order has been placed successfully.</p>
+                        <p>
+                            Thank you, <strong>{orderData.name}</strong>.
+                            Your order has been placed successfully.
+                        </p>
+                        {orderData.email && (
+                            <p className="cod-confirm-email">
+                                Confirmation sent to <strong>{orderData.email}</strong>
+                            </p>
+                        )}
                         <div className="cod-order-id">Order ID &nbsp;#<strong>{orderData.id}</strong></div>
                     </div>
+
                     <div className="cod-success-grid">
                         <div className="cod-success-card">
                             <div className="cod-card-title"><Receipt size={15} /> Order Summary</div>
                             <div className="cod-items-list">
                                 {orderData.items.map((item, i) => (
                                     <div key={i} className="cod-item-row">
-                                        <span className="cod-item-name">{item.name} <span className="cod-item-qty">×{item.qty}</span></span>
+                                        <span className="cod-item-name">
+                                            {item.name} <span className="cod-item-qty">×{item.qty}</span>
+                                        </span>
                                         <span className="cod-item-price">₹{fmt(item.price * item.qty)}</span>
                                     </div>
                                 ))}
@@ -268,6 +278,7 @@ const Checkout = () => {
                                 <Truck size={13} /> Cash on Delivery &nbsp;·&nbsp; Pay when delivered
                             </div>
                         </div>
+
                         <div className="cod-success-card">
                             <div className="cod-card-title"><MapPinned size={15} /> Delivery Details</div>
                             <p className="cod-address-text">{orderData.address}</p>
@@ -287,10 +298,13 @@ const Checkout = () => {
                             </div>
                         </div>
                     </div>
+
                     <div className="cod-success-actions">
-                        <button className="cod-btn-primary" onClick={() => navigate('/profile')}>
-                            <Package size={16} /> Track My Order
-                        </button>
+                        {user && (
+                            <button className="cod-btn-primary" onClick={() => navigate('/profile')}>
+                                <Package size={16} /> Track My Order
+                            </button>
+                        )}
                         <button className="cod-btn-secondary" onClick={() => navigate('/products')}>
                             Continue Shopping
                         </button>
@@ -301,8 +315,7 @@ const Checkout = () => {
     }
 
     const allOptions = [...PAYMENT_OPTIONS, COD_OPTION];
-
-    const btnLabel = loading
+    const btnLabel   = loading
         ? 'Processing...'
         : activeTab === 'cod'
             ? 'Place Order (Cash on Delivery)'
@@ -326,10 +339,9 @@ const Checkout = () => {
                         </div>
                     </div>
                     {isActive
-                        ? <ChevronUp size={16} className="pay-option-chevron" />
+                        ? <ChevronUp   size={16} className="pay-option-chevron" />
                         : <ChevronDown size={16} className="pay-option-chevron" />}
                 </button>
-
                 {isActive && (
                     <div className={`pm-message pm-message--${opt.type}`}>
                         <opt.MsgIcon size={13} className="pm-message-icon" />
@@ -343,6 +355,7 @@ const Checkout = () => {
     return (
         <div className="checkout-page-wrapper">
             <div className="checkout-container">
+
                 <button onClick={() => navigate(-1)} className="back-link">
                     <ArrowLeft size={16} /> Back to Cart
                 </button>
@@ -352,91 +365,203 @@ const Checkout = () => {
                     <div className="checkout-form-side">
                         <form onSubmit={handlePlaceOrder}>
 
-                            {/* ── Current Address ── */}
+                            {/* ══════════════════════════════════════════
+                                SECTION 1 — CONTACT INFO
+                            ══════════════════════════════════════════ */}
+                            <section className="form-section">
+                                <div className="section-header">
+                                    <Mail size={20} />
+                                    <h2>Contact Information</h2>
+                                </div>
+
+                                {user ? (
+                                    <div className="email-loggedin-row">
+                                        <div className="input-group" style={{ flex: 1, marginBottom: 0 }}>
+                                            <label>Email Address</label>
+                                            <input
+                                                type="email"
+                                                value={user.email}
+                                                readOnly
+                                                className="input-readonly"
+                                            />
+                                        </div>
+                                        <div className="email-verified-badge">
+                                            <CheckCircle2 size={16} color="#10b981" />
+                                            <span>Signed in</span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {/* Guest: Full Name */}
+                                        <div className="input-group">
+                                            <label>Full Name *</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                placeholder="John Doe"
+                                                value={guestName}
+                                                onChange={e => setGuestName(e.target.value)}
+                                            />
+                                        </div>
+
+                                        {/* Guest: Email */}
+                                        <div className="input-group" style={{ marginBottom: 0 }}>
+                                            <div className="email-label-row">
+                                                <label>Email Address *</label>
+                                                <Link to="/login" className="email-signin-link">
+                                                    <LogIn size={13} />
+                                                    Sign in / Register
+                                                </Link>
+                                            </div>
+                                            <input
+                                                type="email"
+                                                required
+                                                placeholder="Enter your email for order confirmation"
+                                                value={email}
+                                                onChange={e => setEmail(e.target.value)}
+                                            />
+                                            <p className="email-guest-note">
+                                                Already have an account?&nbsp;
+                                                <Link to="/login" className="email-guest-signin">Sign in</Link>
+                                                &nbsp;to auto-fill your details.
+                                            </p>
+                                        </div>
+                                    </>
+                                )}
+                            </section>
+
+                            {/* ══════════════════════════════════════════
+                                SECTION 2 — CURRENT ADDRESS + PHONE
+                            ══════════════════════════════════════════ */}
                             <section className="form-section">
                                 <div className="section-header">
                                     <MapPin size={20} />
                                     <h2>Current Address</h2>
                                 </div>
+
                                 <div className="input-group">
                                     <label>Street Address</label>
-                                    <input name="address" value={currentAddr.address}
-                                        onChange={handleCurrentAddrChange} placeholder="Door No, Street name" />
-                                </div>
-                                <div className="input-row">
-                                    <div className="input-group">
-                                        <label>City</label>
-                                        <input name="city" value={currentAddr.city}
-                                            onChange={handleCurrentAddrChange} placeholder="e.g. Chennai" />
-                                    </div>
-                                    <div className="input-group">
-                                        <label>State</label>
-                                        <input name="state" value={currentAddr.state}
-                                            onChange={handleCurrentAddrChange} placeholder="Tamil Nadu" />
-                                    </div>
-                                </div>
-                                <div className="input-group">
-                                    <label>ZIP / Postal Code</label>
-                                    <input name="zip" value={currentAddr.zip}
-                                        onChange={handleCurrentAddrChange} placeholder="600001" />
-                                </div>
-                            </section>
-
-                            {/* ── Same as current address checkbox ── */}
-                            <div className="same-address-row">
-                                <label className="same-address-label">
                                     <input
-                                        type="checkbox"
-                                        className="same-address-checkbox"
-                                        checked={sameAddress}
-                                        onChange={handleSameAddressToggle}
+                                        name="address"
+                                        value={currentAddr.address}
+                                        onChange={handleCurrentAddrChange}
+                                        placeholder="Door No, Street name"
                                     />
-                                    <span className="same-address-text">Shipping address is same as current address</span>
-                                </label>
-                            </div>
-
-                            {/* ── Shipping ── */}
-                            <section className="form-section">
-                                <div className="section-header">
-                                    <Truck size={20} />
-                                    <h2>Shipping Address</h2>
-                                </div>
-                                <div className="input-group">
-                                    <label>Street Address</label>
-                                    <input name="address" required value={formData.address}
-                                        onChange={handleInputChange} placeholder="Door No, Street name"
-                                        readOnly={sameAddress} className={sameAddress ? 'input-readonly' : ''} />
                                 </div>
                                 <div className="input-row">
                                     <div className="input-group">
                                         <label>City</label>
-                                        <input name="city" required value={formData.city}
-                                            onChange={handleInputChange} placeholder="e.g. Chennai"
-                                            readOnly={sameAddress} className={sameAddress ? 'input-readonly' : ''} />
+                                        <input
+                                            name="city"
+                                            value={currentAddr.city}
+                                            onChange={handleCurrentAddrChange}
+                                            placeholder="e.g. Chennai"
+                                        />
                                     </div>
                                     <div className="input-group">
                                         <label>State</label>
-                                        <input name="state" required value={formData.state}
-                                            onChange={handleInputChange} placeholder="Tamil Nadu"
-                                            readOnly={sameAddress} className={sameAddress ? 'input-readonly' : ''} />
+                                        <input
+                                            name="state"
+                                            value={currentAddr.state}
+                                            onChange={handleCurrentAddrChange}
+                                            placeholder="Tamil Nadu"
+                                        />
                                     </div>
                                 </div>
                                 <div className="input-row">
                                     <div className="input-group">
                                         <label>ZIP / Postal Code</label>
-                                        <input name="zip" required value={formData.zip}
-                                            onChange={handleInputChange} placeholder="600001"
-                                            readOnly={sameAddress} className={sameAddress ? 'input-readonly' : ''} />
+                                        <input
+                                            name="zip"
+                                            value={currentAddr.zip}
+                                            onChange={handleCurrentAddrChange}
+                                            placeholder="600001"
+                                        />
                                     </div>
                                     <div className="input-group">
-                                        <label>Phone Number</label>
-                                        <input name="phone" required value={formData.phone}
-                                            onChange={handleInputChange} placeholder="+91 00000 00000" />
+                                        <label>Phone Number *</label>
+                                        <input
+                                            name="phone"
+                                            required
+                                            value={currentAddr.phone}
+                                            onChange={handleCurrentAddrChange}
+                                            placeholder="+91 00000 00000"
+                                        />
                                     </div>
+                                </div>
+
+                                <div className="same-address-row">
+                                    <label className="same-address-label">
+                                        <input
+                                            type="checkbox"
+                                            className="same-address-checkbox"
+                                            checked={sameAddress}
+                                            onChange={handleSameAddressToggle}
+                                        />
+                                        <span className="same-address-text">
+                                            Shipping address same as current address
+                                        </span>
+                                    </label>
                                 </div>
                             </section>
 
-                            {/* ── Payment accordion ── */}
+                            {/* ══════════════════════════════════════════
+                                SECTION 3 — SHIPPING ADDRESS
+                            ══════════════════════════════════════════ */}
+                            {!sameAddress && (
+                                <section className="form-section">
+                                    <div className="section-header">
+                                        <Truck size={20} />
+                                        <h2>Shipping Address</h2>
+                                    </div>
+                                    <div className="input-group">
+                                        <label>Street Address *</label>
+                                        <input
+                                            name="address"
+                                            required
+                                            value={formData.address}
+                                            onChange={handleFormDataChange}
+                                            placeholder="Door No, Street name"
+                                        />
+                                    </div>
+                                    <div className="input-row">
+                                        <div className="input-group">
+                                            <label>City *</label>
+                                            <input
+                                                name="city"
+                                                required
+                                                value={formData.city}
+                                                onChange={handleFormDataChange}
+                                                placeholder="e.g. Chennai"
+                                            />
+                                        </div>
+                                        <div className="input-group">
+                                            <label>State *</label>
+                                            <input
+                                                name="state"
+                                                required
+                                                value={formData.state}
+                                                onChange={handleFormDataChange}
+                                                placeholder="Tamil Nadu"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="input-group">
+                                        <label>ZIP / Postal Code *</label>
+                                        <input
+                                            name="zip"
+                                            required
+                                            value={formData.zip}
+                                            onChange={handleFormDataChange}
+                                            placeholder="600001"
+                                        />
+                                    </div>
+                                </section>
+                            )}
+
+                            {/* ══════════════════════════════════════════
+                                SECTION 4 — PAYMENT METHOD
+                            ══════════════════════════════════════════ */}
                             <section className="form-section">
                                 <div className="section-header">
                                     <CreditCard size={20} />
@@ -449,13 +574,23 @@ const Checkout = () => {
                                 </div>
                             </section>
 
-                            <button type="submit" className="place-order-btn" disabled={loading}>
-                                {btnLabel}
-                            </button>
+                            {/* ══════════════════════════════════════════
+                                ACTION BUTTON
+                            ══════════════════════════════════════════ */}
+                            <div className="checkout-action-btns">
+                                <button
+                                    type="submit"
+                                    className="place-order-btn"
+                                    disabled={loading}
+                                >
+                                    {btnLabel}
+                                </button>
+                            </div>
+
                         </form>
                     </div>
 
-                    {/* ── Summary Side ── */}
+                    {/* ── ORDER SUMMARY SIDEBAR ── */}
                     <div className="checkout-summary-side">
                         <div className="summary-card">
                             <h3>Order Summary</h3>
@@ -473,6 +608,10 @@ const Checkout = () => {
                                 <span>₹{totalAmount.toLocaleString()}</span>
                             </div>
                             <div className="summary-sub">
+                                <span>Shipping</span>
+                                <span style={{ color: '#10b981', fontWeight: '600' }}>Free</span>
+                            </div>
+                            <div className="summary-sub">
                                 <span>Tax (18%)</span>
                                 <span>₹{(totalAmount * 0.18).toLocaleString()}</span>
                             </div>
@@ -488,6 +627,7 @@ const Checkout = () => {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

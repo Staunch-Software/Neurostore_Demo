@@ -1,32 +1,27 @@
 import React, { useContext, useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
-import { Heart, SlidersHorizontal, ChevronRight, Phone, ChevronLeft, X } from 'lucide-react';
+import { ShoppingCart, SlidersHorizontal, ChevronRight, Phone, ChevronLeft, Check, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
 import './products.css';
+import './ProductDetails.css';
 
-// Helper function to create clean SEO-friendly URLs (e.g., "Vision & Security" -> "vision-security")
 const generateSlug = (text) => {
     if (!text) return '';
     return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 };
 
 const Products = () => {
-    const { products, wishlistItems, toggleWishlistUnguarded, user } = useContext(ShopContext);
+    const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount } = useContext(ShopContext);
     const [selectedCategory, setSelectedCategory] = useState("All");
-    const [showLoginPopup, setShowLoginPopup] = useState(false);
+    const [justAdded, setJustAdded] = useState({});
+    const [showCartDrawer, setShowCartDrawer] = useState(false);
 
-    const handleHeartClick = (id) => {
-        if (!user) { setShowLoginPopup(true); return; }
-        toggleWishlistUnguarded(id);
-    };
-
-    // Sync state with URL param
     const { category } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (category) {
-            // Find a product that matches this category slug to get the exact category name
             const matched = products.find(p => generateSlug(p.category) === category);
             setSelectedCategory(matched ? matched.category : "All");
         } else {
@@ -34,12 +29,9 @@ const Products = () => {
         }
     }, [category, products]);
 
-    // Default 600k to cover your most expensive items
     const [priceRange, setPriceRange] = useState(600000);
-
-    // --- PAGINATION STATES ---
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 9; // Shows 9 items per page
+    const itemsPerPage = 9;
 
     const categories = useMemo(() => ["All", ...new Set(products.map(p => p.category))], [products]);
 
@@ -47,21 +39,132 @@ const Products = () => {
         (selectedCategory === "All" || p.category === selectedCategory) && p.price <= priceRange
     );
 
-    // Reset to page 1 whenever a filter is changed
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedCategory, priceRange]);
 
-    // --- PAGINATION MATH ---
-    const indexOfLastItem = currentPage * itemsPerPage;
+    useEffect(() => {
+        if (showCartDrawer) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [showCartDrawer]);
+
+    const indexOfLastItem  = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filtered.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    const currentItems     = filtered.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages       = Math.ceil(filtered.length / itemsPerPage);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
+    const handleAddToCart = (product) => {
+        addToCart(product.id);
+        setJustAdded(prev => ({ ...prev, [product.id]: true }));
+        setShowCartDrawer(true);
+        setTimeout(() => setJustAdded(prev => ({ ...prev, [product.id]: false })), 1500);
+    };
+
+    const cartProducts = products.filter(p => cartItems[p.id] > 0);
+    const totalAmount  = getTotalCartAmount();
+    const totalItems   = cartProducts.reduce((t, p) => t + cartItems[p.id], 0);
+
+    const cartDrawer = createPortal(
+        <>
+            <div
+                className={`cart-drawer-overlay ${showCartDrawer ? 'cart-drawer-overlay--open' : ''}`}
+                onClick={() => setShowCartDrawer(false)}
+            />
+            <div className={`cart-drawer ${showCartDrawer ? 'cart-drawer--open' : ''}`}>
+                <div className="cart-drawer__header">
+                    <div className="cart-drawer__header-left">
+                        <ShoppingCart size={20} />
+                        <span>Your Cart</span>
+                        {totalItems > 0 && <span className="cart-drawer__badge">{totalItems}</span>}
+                    </div>
+                    <button className="cart-drawer__close" onClick={() => setShowCartDrawer(false)}>
+                        <X size={20} />
+                    </button>
+                </div>
+                <div className="cart-drawer__body">
+                    {cartProducts.length === 0 ? (
+                        <div className="cart-drawer__empty">
+                            <ShoppingCart size={48} color="#ddd" />
+                            <p>Your cart is empty</p>
+                        </div>
+                    ) : (
+                        cartProducts.map(p => (
+                            <div className="cart-drawer__item" key={p.id}>
+                                <div className="cart-drawer__item-img">
+                                    <img src={p.image} alt={p.name} />
+                                </div>
+                                <div className="cart-drawer__item-info">
+                                    <p className="cart-drawer__item-name">{p.name}</p>
+                                    <p className="cart-drawer__item-cat">{p.category}</p>
+                                    <p className="cart-drawer__item-price">
+                                        ₹{(p.price * cartItems[p.id]).toLocaleString()}
+                                    </p>
+                                    <div className="cart-drawer__qty">
+                                        <button onClick={() => removeFromCart(p.id)}>
+                                            <Minus size={13} />
+                                        </button>
+                                        <span>{cartItems[p.id]}</span>
+                                        <button onClick={() => addToCart(p.id)}>
+                                            <Plus size={13} />
+                                        </button>
+                                        <button
+                                            className="cart-drawer__remove"
+                                            onClick={() => updateCartItemCount(0, p.id)}
+                                        >
+                                            <Trash2 size={14} />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+                {cartProducts.length > 0 && (
+                    <div className="cart-drawer__footer">
+                        <div className="cart-drawer__summary">
+                            <div className="cart-drawer__summary-row">
+                                <span>Subtotal</span>
+                                <span>₹{totalAmount.toLocaleString()}</span>
+                            </div>
+                            <div className="cart-drawer__summary-row">
+                                <span>Tax (18%)</span>
+                                <span>₹{(totalAmount * 0.18).toLocaleString()}</span>
+                            </div>
+                            <div className="cart-drawer__summary-row cart-drawer__summary-row--total">
+                                <span>Total</span>
+                                <span>₹{(totalAmount * 1.18).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <button
+                            className="cart-drawer__checkout-btn"
+                            onClick={() => { setShowCartDrawer(false); navigate('/checkout'); }}
+                        >
+                            Proceed to Checkout <ArrowRight size={18} />
+                        </button>
+                        <button
+                            className="cart-drawer__view-btn"
+                            onClick={() => { setShowCartDrawer(false); navigate('/cart'); }}
+                        >
+                            View Full Cart
+                        </button>
+                        <div className="cart-drawer__secure">
+                            <Shield size={13} /> 256-bit SSL Secure Checkout
+                        </div>
+                    </div>
+                )}
+            </div>
+        </>,
+        document.body
+    );
 
     return (
         <div className="products-page-wrapper">
@@ -78,7 +181,7 @@ const Products = () => {
                             <button
                                 key={cat}
                                 className={`pill-btn ${selectedCategory === cat ? 'active' : ''}`}
-                               onClick={() => navigate(cat === "All" ? "/products" : `/products/${generateSlug(cat)}`)}
+                                onClick={() => navigate(cat === "All" ? "/products" : `/products/${generateSlug(cat)}`)}
                             >
                                 {cat}
                                 <ChevronRight size={14} className="pill-arrow" />
@@ -90,7 +193,7 @@ const Products = () => {
                 <div className="filter-section">
                     <div className="price-info">
                         <h4>Price Range</h4>
-                        <span className="price-tag">₹{(priceRange/1000).toFixed(0)}k</span>
+                        <span className="price-tag">₹{(priceRange / 1000).toFixed(0)}k</span>
                     </div>
                     <div className="slider-wrapper">
                         <input
@@ -113,51 +216,59 @@ const Products = () => {
                 </div>
 
                 <div className="neuro-products-grid">
-                    {currentItems.map(p => (
-                        <div className="product-card" key={p.id}>
-                            <div className="product-image-box">
-                                <img src={p.image} alt={p.name} className="product-image" />
+                    {currentItems.map(p => {
+                        const inCart = cartItems && cartItems[p.id] > 0;
+                        const added  = justAdded[p.id];
+                        return (
+                            <div className="product-card" key={p.id}>
+                                <div className="product-image-box">
+                                    <img src={p.image} alt={p.name} className="product-image" />
+                                    {inCart && (
+                                        <span className="cart-count-badge">{cartItems[p.id]}</span>
+                                    )}
+                                    {p.badge && <span className="p-badge">{p.badge}</span>}
+                                </div>
 
-                                <button
-                                    className={`wishlist-heart-btn ${wishlistItems[p.id] ? 'is-liked' : ''}`}
-                                    onClick={() => handleHeartClick(p.id)}
-                                >
-                                    <Heart
-                                        size={28}
-                                        fill={wishlistItems[p.id] ? "#ff4757" : "transparent"}
-                                        color={wishlistItems[p.id] ? "#ff4757" : "#1a1a1a"}
-                                        strokeWidth={2.5}
-                                    />
-                                </button>
+                                <div className="product-details">
+                                    <span className="p-category">{p.category}</span>
+                                    <h3 className="p-name">{p.name}</h3>
 
-                                {p.badge && <span className="p-badge">{p.badge}</span>}
-                            </div>
-
-                            <div className="product-details">
-                                <span className="p-category">{p.category}</span>
-                                <h3 className="p-name">{p.name}</h3>
-
-                                <div className="p-action-buttons">
-                                    <a href="tel:+9104422353175" className="action-btn btn-call">
-                                        <Phone size={14} /> Call for Price
-                                    </a>
-
-                                    <Link to={`/products/${generateSlug(p.category)}/${generateSlug(p.name)}`} className="action-btn btn-view">
-                                        VIEW
-                                    </Link>
-
-                                    <a
-                                        href={`https://wa.me/919384813815?text=Hi! I'm interested in the ${encodeURIComponent(p.name)}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="action-btn btn-wa"
+                                    <button
+                                        className={`action-btn btn-cart btn-cart--full ${added ? 'btn-cart--added' : ''}`}
+                                        onClick={() => handleAddToCart(p)}
+                                        title={inCart ? `${cartItems[p.id]} in cart` : 'Add to Cart'}
                                     >
-                                        WhatsApp
-                                    </a>
+                                        {added
+                                            ? <><Check size={14} /> Added!</>
+                                            : <><ShoppingCart size={14} /> {inCart ? `+1 (${cartItems[p.id]} in cart)` : 'Add to Cart'}</>
+                                        }
+                                    </button>
+
+                                    <div className="p-action-buttons">
+                                        <a href="tel:+9104422353175" className="action-btn btn-call">
+                                            <Phone size={14} /> Call for Price
+                                        </a>
+
+                                        <Link to={`/products/${generateSlug(p.category)}/${generateSlug(p.name)}`} className="action-btn btn-view">
+                                            VIEW
+                                        </Link>
+
+                                        <a
+                                            href={`https://wa.me/9104422353175?text=Hi, I'm interested in ${encodeURIComponent(p.name)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="action-btn btn-whatsapp"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                            </svg>
+                                            WhatsApp
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {totalPages > 1 && (
@@ -191,27 +302,7 @@ const Products = () => {
                 )}
             </main>
 
-            {/* ── Wishlist login popup ── */}
-            {showLoginPopup && (
-                <div className="wl-popup-overlay" onClick={() => setShowLoginPopup(false)}>
-                    <div className="wl-popup-card" onClick={e => e.stopPropagation()}>
-                        <button className="wl-popup-close" onClick={() => setShowLoginPopup(false)}>
-                            <X size={16} />
-                        </button>
-                        <div className="wl-popup-icon">
-                            <Heart size={32} fill="#818cf8" color="#818cf8" />
-                        </div>
-                        <h3 className="wl-popup-title">Sign in to save to Wishlist</h3>
-                        <p className="wl-popup-sub">Login or create an account to save your favourite AI products.</p>
-                        <button
-                            className="wl-popup-btn"
-                            onClick={() => { setShowLoginPopup(false); navigate('/login'); }}
-                        >
-                            Login / Register
-                        </button>
-                    </div>
-                </div>
-            )}
+            {cartDrawer}
         </div>
     );
 };
