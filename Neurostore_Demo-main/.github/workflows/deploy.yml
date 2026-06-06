@@ -36,8 +36,9 @@ jobs:
 
             echo "🔄 Restarting backend..."
             pm2 restart demo-app --update-env
+            pm2 save
 
             echo "🔄 Reloading Nginx..."
-            sudo systemctl reload nginx
+            sudo systemctl restart nginx
 
             echo "✅ Deployment complete!"
