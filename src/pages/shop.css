@@ -1,0 +1,170 @@
+/* src/pages/shop.css */
+
+/* === GENERAL PAGE LAYOUT === */
+.shop-page-container {
+  padding: 40px 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 80vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* CENTERED TITLE (What you asked for) */
+.section-title-center {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+  width: 100%;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* === CART LAYOUT === */
+.cart-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Left Side: Product List */
+.cart-items-container {
+  flex: 2; /* Takes up 2/3 of space */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Right Side: Summary */
+.cart-summary {
+  flex: 1; /* Takes up 1/3 of space */
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 12px;
+  position: sticky;
+  top: 100px; /* Sticks when scrolling */
+  border: 1px solid #e9ecef;
+}
+
+/* Cart Item Card */
+.cart-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+.cart-item-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1B2430;
+  margin-bottom: 5px;
+}
+
+.cart-item-price {
+  color: #666;
+  font-weight: 500;
+}
+
+.cart-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.btn-remove {
+  color: #ef4444;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
+
+/* Cart Summary Text */
+.summary-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #ddd;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1B2430;
+}
+
+.btn-checkout {
+  width: 100%;
+  background-color: #1B2430;
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-checkout:hover {
+  background-color: #d69e2e; /* Gold Hover */
+  color: #1B2430;
+}
+
+/* === WISHLIST GRID === */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  justify-content: flex-start; /* Aligns items to the left */
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  color: #888;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .cart-layout {
+    flex-direction: column;
+  }
+  .cart-summary {
+    width: 100%;
+    position: static;
+  }
+}
