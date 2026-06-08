@@ -1,0 +1,35 @@
+name: Deploy NeuroStore
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy to Azure VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            cd /home/AdminDeveloper/Neurostore_Demo
+            git reset --hard HEAD
+            git pull origin main
+            echo "Building frontend..."
+            sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Frontend/frontend/dist
+            cd Frontend/frontend
+            npm run build
+            echo "Copying to static..."
+            sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Backend/static/*
+            sudo cp -r dist/* /home/AdminDeveloper/Neurostore_Demo/Backend/static/
+            sudo chmod -R 755 /home/AdminDeveloper/Neurostore_Demo/Backend/static
+            echo "Restarting backend..."
+            pm2 restart demo-app --update-env
+            pm2 save
+            echo "Restarting Nginx..."
+            sudo systemctl restart nginx
+            echo "Deployment complete!"
