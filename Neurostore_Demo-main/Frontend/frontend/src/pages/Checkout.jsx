@@ -90,7 +90,7 @@ const Checkout = () => {
     React.useEffect(() => {
         if (!user?.email) return;
         setEmail(user.email);
-        fetch('http://localhost:8000/api/addresses', { headers: { 'User-Email': user.email } })
+        fetch('https://www.neurostore.in/api/addresses', { headers: { 'User-Email': user.email } })
             .then(r => r.json())
             .then(data => {
                 const def = data.find(a => a.is_default) || data[0];
@@ -157,7 +157,7 @@ const Checkout = () => {
         if (!user?.email) return;
         if (!currentAddr.address || !currentAddr.city || !currentAddr.state || !currentAddr.zip) return;
         try {
-            await fetch('http://localhost:8000/api/addresses', {
+            await fetch('https://www.neurostore.in/api/addresses', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json', 'User-Email': user.email },
                 body: JSON.stringify({
@@ -177,7 +177,7 @@ const Checkout = () => {
 
         if (activeTab === 'cod') {
             try {
-                const res  = await fetch('http://localhost:8000/api/orders', {
+                const res  = await fetch('https://www.neurostore.in/api/orders', {
                     method:  'POST',
                     headers: {
                         'Content-Type': 'application/json',

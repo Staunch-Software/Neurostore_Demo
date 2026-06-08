@@ -35,7 +35,7 @@ const BookService = ({ open, onClose, serviceName, services }) => {
 
     try {
       // Pointing to the unified Python Backend
-      const response = await fetch("http://localhost:8000/api/book-service", {
+      const response = await fetch("https://www.neurostore.in/api/book-service", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
