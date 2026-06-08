@@ -20,13 +20,13 @@ jobs:
             git fetch origin
             git reset --hard origin/main
             echo "Building frontend..."
-            sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Frontend/frontend/dist
-            cd Frontend/frontend
+            sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Neurostore_Demo-main/Frontend/frontend/dist
+            cd Neurostore_Demo-main/Frontend/frontend
             npm run build
             echo "Copying to static..."
-            sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Backend/static/*
-            sudo cp -r dist/* /home/AdminDeveloper/Neurostore_Demo/Backend/static/
-            sudo chmod -R 755 /home/AdminDeveloper/Neurostore_Demo/Backend/static
+            sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Neurostore_Demo-main/Backend/static/*
+            sudo cp -r dist/* /home/AdminDeveloper/Neurostore_Demo/Neurostore_Demo-main/Backend/static/
+            sudo chmod -R 755 /home/AdminDeveloper/Neurostore_Demo/Neurostore_Demo-main/Backend/static
             echo "Restarting backend..."
             pm2 restart demo-app --update-env
             pm2 save
