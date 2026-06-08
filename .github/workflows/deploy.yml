@@ -24,9 +24,9 @@ jobs:
             cd Neurostore_Demo-main/Frontend/frontend
             npm run build
             echo "Copying to static..."
-            sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Neurostore_Demo-main/Backend/static/*
-            sudo cp -r dist/* /home/AdminDeveloper/Neurostore_Demo/Neurostore_Demo-main/Backend/static/
-            sudo chmod -R 755 /home/AdminDeveloper/Neurostore_Demo/Neurostore_Demo-main/Backend/static
+            sudo rm -rf /var/www/html/*
+            sudo cp -r dist/* /var/www/html/
+            sudo chmod -R 755 /var/www/html
             echo "Restarting backend..."
             pm2 restart demo-app --update-env
             pm2 save
