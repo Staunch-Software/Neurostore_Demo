@@ -17,7 +17,7 @@ jobs:
           key: ${{ secrets.VM_SSH_KEY }}
           script: |
             cd /home/AdminDeveloper/Neurostore_Demo
-            git reset --hard HEAD
+            git fetch origin git reset --hard origin/main
             git pull origin main --rebase
             echo "Building frontend..."
             sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Frontend/frontend/dist
