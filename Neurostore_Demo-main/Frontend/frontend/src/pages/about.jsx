@@ -53,7 +53,7 @@ const About = () => {
                             {/* Left - Content */}
                             <div className="about-text animate-on-scroll">
                                 <span className="about-badge">About NeuroStore</span>
-                                <span className="about-badge">About NeuroStore</span>
+                                
                                 
                              
                                 <h2 className="about-title">
