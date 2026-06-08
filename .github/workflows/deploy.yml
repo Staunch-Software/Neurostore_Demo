@@ -18,7 +18,7 @@ jobs:
           script: |
             cd /home/AdminDeveloper/Neurostore_Demo
             git reset --hard HEAD
-            git pull origin main
+            git pull origin main --rebase
             echo "Building frontend..."
             sudo rm -rf /home/AdminDeveloper/Neurostore_Demo/Frontend/frontend/dist
             cd Frontend/frontend
