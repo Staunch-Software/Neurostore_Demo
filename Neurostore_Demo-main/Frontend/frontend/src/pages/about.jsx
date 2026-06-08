@@ -59,10 +59,7 @@ const About = () => {
                                     Empowering Businesses with
                                     <span className="text-gradient"> AI Innovation</span>
                                 </h2>
-                                                                <h2 className="about-title">
-                                    Empowering Businesses with
-                                    <span className="text-gradient"> AI Innovation</span>
-                                </h2>
+                                <h2>HMM</h2>
                                 <p className="about-description">
                                     Since 2018, NeuroStore has been at the forefront of AI hardware
                                     and solutions. We bridge the gap between cutting-edge technology
