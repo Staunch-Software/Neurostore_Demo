@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+ 
+# Block utility/user-specific pages from indexing
+Disallow: /cart
+Disallow: /wishlist
+Disallow: /login
+ 
+Sitemap: https://www.neurostore.in/sitemap.xml
