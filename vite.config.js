@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:8000'   // only for local dev, not deployment
+      '/api': 'https://www.neurostore.in'   // only for local dev, not deployment
     }
   },
   build: {

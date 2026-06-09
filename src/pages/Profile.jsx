@@ -181,7 +181,7 @@ const Profile = () => {
         setAddrLoading(true);
         setAddrError('');
         try {
-            const res  = await fetch('http://localhost:8000/api/addresses', {
+            const res  = await fetch('https://www.neurostore.in/api/addresses', {
                 headers: { 'User-Email': email },
             });
 
@@ -225,7 +225,7 @@ const Profile = () => {
 
     const saveAddr = async () => {
         try {
-            const url    = editingAddr ? `http://localhost:8000/api/addresses/${editingAddr.id}` : 'http://localhost:8000/api/addresses';
+            const url    = editingAddr ? `https://www.neurostore.in/api/addresses/${editingAddr.id}` : 'https://www.neurostore.in/api/addresses';
             const method = editingAddr ? 'PUT' : 'POST';
             await fetch(url, {
                 method,
@@ -241,7 +241,7 @@ const Profile = () => {
 
     const deleteAddr = async (id) => {
         try {
-            await fetch(`http://localhost:8000/api/addresses/${id}`, {
+            await fetch(`https://www.neurostore.in/api/addresses/${id}`, {
                 method: 'DELETE',
                 headers: { 'User-Email': user.email },
             });
@@ -253,7 +253,7 @@ const Profile = () => {
 
     const setDefaultAddr = async (id) => {
         try {
-            await fetch(`http://localhost:8000/api/addresses/${id}/default`, {
+            await fetch(`https://www.neurostore.in/api/addresses/${id}/default`, {
                 method: 'PATCH',
                 headers: { 'User-Email': user.email },
             });
@@ -267,7 +267,7 @@ const Profile = () => {
         setOrdersLoading(true);
         setOrdersError('');
         try {
-            const res  = await fetch('http://localhost:8000/api/orders/user', {
+            const res  = await fetch('https://www.neurostore.in/api/orders/user', {
                 headers: { 'User-Email': email },
             });
             const data = await res.json();

@@ -55,7 +55,7 @@ const Payment = () => {
                 headers['User-Email'] = resolvedEmail;
             }
 
-            const res = await fetch('http://localhost:8000/api/razorpay/verify', {
+            const res = await fetch('https://www.neurostore.in/api/razorpay/verify', {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({
@@ -115,7 +115,7 @@ const Payment = () => {
         setPayError('');
 
         try {
-            const res = await fetch('http://localhost:8000/api/razorpay/create-order', {
+            const res = await fetch('https://www.neurostore.in/api/razorpay/create-order', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify({ amount }),

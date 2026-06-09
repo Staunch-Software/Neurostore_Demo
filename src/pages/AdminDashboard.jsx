@@ -21,7 +21,7 @@ const AdminDashboard = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await fetch('http://localhost:8000/api/products');
+            const res = await fetch('https://www.neurostore.in/api/products');
             const data = await res.json();
             setProducts(data);
             setIsLoading(false);
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
 
         try {
             const token = localStorage.getItem('adminToken');
-            const res = await fetch(`http://localhost:8000/api/admin/product/${id}`, {
+            const res = await fetch(`https://www.neurostore.in/api/admin/product/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Basic ${token}` }
             });
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 
         try {
             const token = localStorage.getItem('adminToken');
-            const res = await fetch('http://localhost:8000/api/admin/product', {
+            const res = await fetch('https://www.neurostore.in/api/admin/product', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Basic ${token}` },
                 body: JSON.stringify(newProduct)
