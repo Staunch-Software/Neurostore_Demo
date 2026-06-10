@@ -1,5 +1,5 @@
 import React, { useContext, useState, useMemo, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
 import { ShoppingCart, SlidersHorizontal, ChevronRight, Phone, ChevronLeft, Check, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
@@ -19,6 +19,7 @@ const Products = () => {
 
     const { category } = useParams();
     const navigate = useNavigate();
+    const { pathname } = useLocation(); 
 
     useEffect(() => {
         if (category) {
@@ -167,6 +168,10 @@ const Products = () => {
     );
 
     return (
+        <>
+                    <Helmet>
+                    <link rel="canonical" href={`https://www.neurostore.in${pathname}`} />
+                    </Helmet>
         <div className="products-page-wrapper">
             <aside className="neuro-sidebar">
                 <div className="sidebar-header">
@@ -304,6 +309,7 @@ const Products = () => {
 
             {cartDrawer}
         </div>
+        </>
     );
 };
 
