@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import '../pages/home.css';
 import BookService from '../components/bookservice';
@@ -115,6 +116,9 @@ const Home = () => {
 
     return (
         <>
+                <Helmet>                                                          
+                <link rel="canonical" href="https://www.neurostore.in/" />   
+                </Helmet> 
             {/* HERO BANNER SECTION */}
             <section className="hero-banner-wrapper">
                 <div className="hero-carousel">
