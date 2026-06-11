@@ -16,7 +16,6 @@ const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [justAdded, setJustAdded] = useState({});
     const [showCartDrawer, setShowCartDrawer] = useState(false);
-
     const { category } = useParams();
     const navigate = useNavigate();
     const { pathname } = useLocation(); 

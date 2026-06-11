@@ -60,6 +60,10 @@ export default function BrandSuppliers() {
       : brands.filter((brand) => brand.initial === selectedLetter);
 
   return (
+    <>
+          <Helmet>
+          <link rel="canonical" href="https://www.neurostore.in/brands"/>
+          </Helmet>
     <div className="brand-container">
       <header className="brand-header">
         <h1>Our Brand Suppliers</h1>
@@ -99,5 +103,6 @@ export default function BrandSuppliers() {
         ))}
       </div>
     </div>
+    </>
   );
 }
