@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';     
+import { useLocation } from 'react-router-dom';    
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
 import { Phone, CheckCircle2, Truck, Package, ShieldCheck, Mail, ChevronLeft, ShoppingCart, Check, Heart, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
@@ -14,6 +16,7 @@ const ProductDetails = () => {
     const { category, productName } = useParams();
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount, wishlistItems, toggleWishlist } = useContext(ShopContext);
     const navigate = useNavigate();
+    const { pathname } = useLocation(); 
     const [activeTab, setActiveTab]       = useState('description');
     const [showModal, setShowModal]       = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -191,6 +194,10 @@ const ProductDetails = () => {
     );
 
     return (
+        <>
+                <Helmet>
+                <link rel="canonical" href={`https://www.neurostore.in${pathname}`} />
+                </Helmet>
         <div className="product-details-wrapper">
             <div className="container">
 
@@ -379,6 +386,7 @@ const ProductDetails = () => {
             )}
 
         </div>
+        </>
     );
 };
 

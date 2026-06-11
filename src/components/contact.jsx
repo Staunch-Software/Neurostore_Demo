@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import './contact.css';
 
 // ===== CAPTCHA COMPONENT =====
@@ -274,6 +275,10 @@ const Contact = () => {
     };
 
     return (
+        <>
+            <Helmet>
+                <link rel="canonical" href="https://www.neurostore.in/contact" />
+            </Helmet>
         <section id="contact" className="contact-page-contact-section">
             <div className="contact-page-container contact-page-contact-container">
                 <div className="contact-page-contact-header contact-page-animate-on-scroll">
@@ -446,6 +451,7 @@ const Contact = () => {
                 </div>
             </div>
         </section>
+        </>
     );
 };
 

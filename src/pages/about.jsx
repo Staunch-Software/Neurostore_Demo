@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import './about.css'; // Fixed import path to point to current directory
 
 const About = () => {
@@ -44,6 +45,9 @@ const About = () => {
 
     return (
         <>
+                        <Helmet>                                                          
+                        <link rel="canonical" href="https://www.neurostore.in/about" />   
+                        </Helmet> 
             {/* ABOUT SECTION */}
             <section id="about" className="about-section">
                 <div className="container about-container">

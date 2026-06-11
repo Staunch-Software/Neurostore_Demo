@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useLocation } from 'react-router-dom';
 import '../components/policy-pages.css';
 
@@ -6,6 +7,10 @@ const ShippingPolicy = () => {
   const location = useLocation();
 
   return (
+    <>
+          <Helmet>
+          <link rel="canonical" href="https://www.neurostore.in/shipping-policy" />
+          </Helmet>
     <div className="policy-page">
       {/* Sidebar */}
       <aside className="sidebar">
@@ -164,6 +169,7 @@ const ShippingPolicy = () => {
         </div>
       </main>
     </div>
+    </>
   );
 };
 
