@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';     
-import { useLocation } from 'react-router-dom';    
+import { Helmet } from 'react-helmet-async';        
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
