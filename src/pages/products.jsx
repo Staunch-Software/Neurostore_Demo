@@ -1,6 +1,7 @@
 import React, { useContext, useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { createPortal } from 'react-dom';
+import SEO from '../components/SEO';
 import { ShopContext } from '../components/context/ShopContext';
 import { ShoppingCart, SlidersHorizontal, ChevronRight, Phone, ChevronLeft, Check, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
 import './products.css';
@@ -166,11 +167,62 @@ const Products = () => {
         document.body
     );
 
+
+    const categorySEO = {
+  "All": {
+    title: "Buy AI Hardware & Technology Products Online India | Neurostore",
+    description: "Shop AI cameras, GPU servers, AI workstations, developer kits, graphics cards and cybersecurity software at Neurostore India. Best prices with fast delivery.",
+    keywords: "buy AI hardware India, AI products online India, GPU server buy India, AI camera price India, AI workstation buy, NVIDIA GPU India, developer kit buy India, AI tech store India"
+  },
+  "AI Vision Security": {
+    title: "Buy AI Security Cameras & Vision Systems India | Neurostore",
+    description: "Buy AI-powered security cameras, UniFi cameras and intelligent vision systems at Neurostore India. Best prices on AI surveillance cameras with fast delivery.",
+    keywords: "buy AI security camera India, UniFi camera price India, AI surveillance camera India, intelligent vision system India, IP camera buy India, AI CCTV India"
+  },
+  "AI Networking Storage": {
+    title: "Buy AI Networking & Storage Solutions India | Neurostore",
+    description: "Buy AI networking equipment and enterprise storage solutions at Neurostore India. High performance NAS, switches and AI-ready network infrastructure.",
+    keywords: "buy AI storage India, AI networking India, enterprise NAS India, AI network switch India, storage server India, AI infrastructure India"
+  },
+  "AI Workstations And Servers": {
+    title: "Buy AI Workstations & GPU Servers India | Neurostore",
+    description: "Buy high-performance AI workstations and GPU servers for deep learning and machine learning at Neurostore India. NVIDIA powered, India delivery.",
+    keywords: "buy AI workstation India, GPU server price India, deep learning workstation India, ML server buy India, AI compute server India, NVIDIA workstation India"
+  },
+  "AI Dev Boards": {
+    title: "Buy AI Developer Kits & Dev Boards India | Neurostore",
+    description: "Buy Raspberry Pi 5, Jetson Nano, AI dev boards and embedded AI kits at Neurostore India. Best prices on AI developer hardware with fast shipping.",
+    keywords: "buy Raspberry Pi 5 India, Jetson Nano price India, AI dev board India, embedded AI kit India, developer board buy India, AI hardware kit India"
+  },
+  "AI Graphics Cards": {
+    title: "Buy NVIDIA & AMD AI Graphics Cards India | Neurostore",
+    description: "Buy NVIDIA RTX 5090, RTX 4070 Ti and latest AI graphics cards at Neurostore India. Best GPU prices for gaming, AI training and deep learning workloads.",
+    keywords: "buy NVIDIA RTX 5090 India, GPU price India, buy RTX 4070 Ti India, AI graphics card India, NVIDIA GPU buy India, AMD GPU India, best GPU price India"
+  },
+  "AI Software": {
+    title: "Buy AI Software & Machine Learning Tools India | Neurostore",
+    description: "Buy AI software, machine learning tools and deep learning frameworks at Neurostore India. Licensed AI software at best prices for enterprise and developers.",
+    keywords: "buy AI software India, machine learning tools India, deep learning software India, AI framework license India, enterprise AI software India"
+  },
+  "AI Accessories": {
+    title: "Buy AI Accessories & Peripheral Devices India | Neurostore",
+    description: "Buy AI accessories, cables, cooling solutions and peripheral devices for your AI setup at Neurostore India. Fast delivery across India.",
+    keywords: "buy AI accessories India, AI peripheral devices India, GPU cooling India, AI setup accessories India, tech accessories India"
+  }
+};
+
+const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
+
+
     return (
         <>
-                    <Helmet>
-                    <link rel="canonical" href={`https://www.neurostore.in${pathname}`} />
-                    </Helmet>
+            <SEO
+                title={currentSEO.title}
+                description={currentSEO.description}
+                keywords={currentSEO.keywords}
+                ogImage="https://staunchtec.com/img/logo-img.webp"
+                ogType="website"
+            />
         <div className="products-page-wrapper">
             <aside className="neuro-sidebar">
                 <div className="sidebar-header">

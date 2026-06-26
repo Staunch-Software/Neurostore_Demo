@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import { Link, useNavigate } from 'react-router-dom';
 import '../pages/home.css';
 import BookService from '../components/bookservice';
-
 import aiCameras from '../assets/AI Cameras.jpg.jpeg';
 import aiServers from '../assets/AI Server.webp';
 import aiWorkstation from '../assets/AI Workstation.webp';
@@ -116,9 +115,13 @@ const Home = () => {
 
     return (
         <>
-                <Helmet>                                                          
-                <link rel="canonical" href="https://www.neurostore.in/" />   
-                </Helmet> 
+    <SEO
+        title="Buy AI Cameras, GPU Servers & AI Hardware in India | Neurostore"
+        description="Neurostore is India's trusted AI hardware store. Buy AI cameras, GPU workstations, NVIDIA graphics cards, Raspberry Pi, developer kits and cybersecurity solutions. Fast delivery across India."
+        keywords="buy AI camera India, AI hardware store India, GPU server price India, NVIDIA RTX 5090 buy India, Raspberry Pi 5 buy India, AI workstation India, buy AI security camera, UniFi camera India, AI developer kit India, cybersecurity services India, buy GPU India, AI products online India, neurostore"
+        ogImage="https://staunchtec.com/img/logo-img.webp"
+        ogType="website"
+    />
             {/* HERO BANNER SECTION */}
             <section className="hero-banner-wrapper">
                 <div className="hero-carousel">
