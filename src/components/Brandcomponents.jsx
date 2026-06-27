@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import '../pages/Brandcomponents.css';
 
 // ✅ IMPORT IMAGES FROM src/assets
@@ -61,9 +61,13 @@ export default function BrandSuppliers() {
 
   return (
     <>
-          <Helmet>
-          <link rel="canonical" href="https://www.neurostore.in/brands"/>
-          </Helmet>
+      <SEO
+        title="AI Hardware Brand Suppliers | Neurostore India"
+        description="Explore Neurostore's brand suppliers including AMD, NVIDIA, Intel, Dell, HP, Samsung, Seagate, Western Digital and more. India's trusted AI hardware distributor."
+        keywords="AI hardware brands India, AMD distributor India, Intel reseller India, Dell supplier India, HP hardware India, Samsung storage India, Seagate India, neurostore brands"
+        ogImage="https://www.neurostore.in/og-image.webp"
+        ogType="website"
+      />
     <div className="brand-container">
       <header className="brand-header">
         <h1>Our Brand Suppliers</h1>

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ShopContext } from '../components/context/ShopContext';
-import { auth, googleProvider, facebookProvider, twitterProvider, appleProvider } from '../firebase';
+import { auth, googleProvider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth';
 import './CustomerAuth.css';
 
@@ -437,9 +437,6 @@ const CustomerAuth = () => {
         setError('');
         let provider;
         if (providerName === 'Google')   provider = googleProvider;
-        if (providerName === 'Facebook') provider = facebookProvider;
-        if (providerName === 'Twitter')  provider = twitterProvider;
-        if (providerName === 'Apple')    provider = appleProvider;
         try {
             const result = await signInWithPopup(auth, provider);
             const user   = result.user;
@@ -503,15 +500,6 @@ const CustomerAuth = () => {
         <div className="auth-social-container">
             <button type="button" className="auth-social google"   onClick={() => handleRealSocialLogin('Google')}   aria-label="Login with Google">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" />
-            </button>
-            <button type="button" className="auth-social facebook" onClick={() => handleRealSocialLogin('Facebook')} aria-label="Login with Facebook">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook" />
-            </button>
-            <button type="button" className="auth-social apple"    onClick={() => handleRealSocialLogin('Apple')}    aria-label="Login with Apple">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" />
-            </button>
-            <button type="button" className="auth-social twitter"  onClick={() => handleRealSocialLogin('Twitter')}  aria-label="Login with X">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg" alt="X" />
             </button>
         </div>
     );

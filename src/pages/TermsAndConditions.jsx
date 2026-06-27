@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async'; 
+import SEO from '../components/SEO';
 import { Link, useLocation } from 'react-router-dom';
 import '../components/policy-pages.css';
 
@@ -8,9 +8,13 @@ const TermsAndConditions = () => {
 
   return (
     <>
-          <Helmet>
-          <link rel="canonical" href="https://www.neurostore.in/terms-and-conditions" />
-          </Helmet>
+        <SEO
+          title="Terms and Conditions | Neurostore"
+          description="Read Neurostore's terms and conditions governing the use of our website, products and services. Effective from 1st January 2006, updated August 2025."
+          keywords="neurostore terms and conditions, AI hardware store terms, neurostore legal, neurostore user agreement"
+          ogImage="https://www.neurostore.in/og-image.webp"
+          ogType="website"
+        />
     <div className="policy-page">
       {/* Sidebar */}
       <aside className="sidebar">

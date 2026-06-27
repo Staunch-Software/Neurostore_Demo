@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import { Link, useLocation } from 'react-router-dom';
 import '../components/policy-pages.css';
 
@@ -8,9 +8,13 @@ const PrivacyPolicy = () => {
 
   return (
     <>
-        <Helmet>
-        <link rel="canonical" href="https://www.neurostore.in/privacy-policy" />
-        </Helmet>
+        <SEO
+          title="Privacy Policy | Neurostore"
+          description="Read Neurostore's privacy policy. Learn how we collect, use and protect your personal data in compliance with the Information Technology Act 2000. Updated August 2025."
+          keywords="neurostore privacy policy, AI hardware store privacy, neurostore data protection, neurostore personal data policy"
+          ogImage="https://www.neurostore.in/og-image.webp"
+          ogType="website"
+        />
     <div className="policy-page">
       {/* Sidebar */}
       <aside className="sidebar">

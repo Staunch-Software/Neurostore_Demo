@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import { Link, useLocation } from 'react-router-dom';
 import '../components/policy-pages.css';
 
@@ -8,9 +8,13 @@ const ShippingPolicy = () => {
 
   return (
     <>
-          <Helmet>
-          <link rel="canonical" href="https://www.neurostore.in/shipping-policy" />
-          </Helmet>
+      <SEO
+        title="Shipping Policy | Neurostore"
+        description="Read Neurostore's shipping policy, refund and cancellation terms. Orders cancelled within 7 days. Refunds processed within 15 days. Fast delivery across India via DHL, FedEx and UPS."
+        keywords="neurostore shipping policy, AI hardware delivery India, neurostore refund policy, neurostore cancellation policy, AI hardware shipping India"
+        ogImage="https://www.neurostore.in/og-image.webp"
+        ogType="website"
+      />
     <div className="policy-page">
       {/* Sidebar */}
       <aside className="sidebar">

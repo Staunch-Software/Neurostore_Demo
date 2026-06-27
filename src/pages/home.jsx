@@ -115,13 +115,13 @@ const Home = () => {
 
     return (
         <>
-    <SEO
-        title="Buy AI Cameras, GPU Servers & AI Hardware in India | Neurostore"
-        description="Neurostore is India's trusted AI hardware store. Buy AI cameras, GPU workstations, NVIDIA graphics cards, Raspberry Pi, developer kits and cybersecurity solutions. Fast delivery across India."
-        keywords="buy AI camera India, AI hardware store India, GPU server price India, NVIDIA RTX 5090 buy India, Raspberry Pi 5 buy India, AI workstation India, buy AI security camera, UniFi camera India, AI developer kit India, cybersecurity services India, buy GPU India, AI products online India, neurostore"
-        ogImage="https://staunchtec.com/img/logo-img.webp"
-        ogType="website"
-    />
+            <SEO
+                title="Buy AI Cameras, GPU Servers & AI Hardware in India | Neurostore"
+                description="Neurostore is India's trusted AI hardware store. Buy AI cameras, GPU workstations, NVIDIA graphics cards, Raspberry Pi, developer kits and cybersecurity solutions. Fast delivery across India."
+                keywords="buy AI camera India, AI hardware store India, GPU server price India, NVIDIA RTX 5090 buy India, Raspberry Pi 5 buy India, AI workstation India, neurostore"
+                ogImage="https://www.neurostore.in/og-image.webp"
+                ogType="website"
+            />
             {/* HERO BANNER SECTION */}
             <section className="hero-banner-wrapper">
                 <div className="hero-carousel">

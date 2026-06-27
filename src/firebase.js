@@ -1,26 +1,23 @@
-// src/firebase.js
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, OAuthProvider } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCUpIfPrvC5k-hlZKF2acwcEsubibPJ7hk",
-  authDomain: "neurostore-a36a7.firebaseapp.com",
-  projectId: "neurostore-a36a7",
-  storageBucket: "neurostore-a36a7.firebasestorage.app",
-  messagingSenderId: "648543400748",
-  appId: "1:648543400748:web:dee2e7fb3458376874b289",
-  measurementId: "G-QWM90LQEYH"
+  apiKey: "AIzaSyAXEzsm21KbFPF4o07GqxjO1mH90Uh24W8",
+  authDomain: "neurostore-5b1f0.firebaseapp.com",
+  projectId: "neurostore-5b1f0",
+  storageBucket: "neurostore-5b1f0.firebasestorage.app",
+  messagingSenderId: "899112067022",
+  appId: "1:899112067022:web:1dad2d8b07280ebe0fd59f",
+  measurementId: "G-YGV6Z2YS6F"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-
-// Export the Social Providers
+const analytics = getAnalytics(app);
 export const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({
-  prompt: 'select_account'
-});
-export const facebookProvider = new FacebookAuthProvider();
-export const twitterProvider = new TwitterAuthProvider();
-export const appleProvider = new OAuthProvider('apple.com');
+export default app;

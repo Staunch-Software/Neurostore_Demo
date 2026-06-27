@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import './contact.css';
 
 // ===== CAPTCHA COMPONENT =====
@@ -276,9 +276,13 @@ const Contact = () => {
 
     return (
         <>
-            <Helmet>
-                <link rel="canonical" href="https://www.neurostore.in/contact" />
-            </Helmet>
+<SEO
+  title="Contact Neurostore | AI Hardware Sales & Support India"
+  description="Contact Neurostore for AI hardware sales, GPU pricing, bulk orders and technical support. Reach us at our Chennai office or via WhatsApp, email and phone."
+  keywords="contact neurostore, AI hardware support India, GPU sales inquiry India, bulk AI hardware order India, neurostore Chennai"
+  ogImage="https://www.neurostore.in/og-image.webp"
+  ogType="website"
+/>
         <section id="contact" className="contact-page-contact-section">
             <div className="contact-page-container contact-page-contact-container">
                 <div className="contact-page-contact-header contact-page-animate-on-scroll">
@@ -348,7 +352,9 @@ const Contact = () => {
                         </div>
                         <div className="contact-page-contact-details">
                             <h3 className="contact-page-contact-label">Website</h3>
-                            <a href="https://yoursite.com" className="contact-page-contact-link">neurostore.in</a>
+                            <a href="https://www.neurostore.in" className="contact-page-contact-link" target="_blank" rel="noopener noreferrer">
+                                neurostore.in
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import { Link, useLocation } from 'react-router-dom';
 import '../components/policy-pages.css';
 
@@ -8,9 +8,13 @@ const Disclaimer = () => {
 
   return (
     <>
-          <Helmet>
-          <link rel="canonical" href="https://www.neurostore.in/disclaimer" />
-          </Helmet>
+        <SEO
+          title="Disclaimer | Neurostore"
+          description="Read Neurostore's disclaimer regarding product information, technical accuracy, liability limitations and user responsibilities. Effective from 1st January 2006."
+          keywords="neurostore disclaimer, AI hardware store disclaimer, neurostore liability, neurostore terms disclaimer"
+          ogImage="https://www.neurostore.in/og-image.webp"
+          ogType="website"
+        />
     <div className="policy-page">
       {/* Sidebar */}
       <aside className="sidebar">

@@ -198,7 +198,7 @@ const ProductDetails = () => {
                 title={`Buy ${product.name} in India | Neurostore`}
                 description={`Buy ${product.name} at Neurostore India. ${product.shortDescription || ''} Call for best price, fast delivery across India. Genuine product with warranty.`}
                 keywords={`buy ${product.name} India, ${product.name} price India, ${product.name} online India, ${product.brand || ''} ${product.name}, ${product.category || ''} India, neurostore`}
-                ogImage={product.image || "https://staunchtec.com/img/logo-img.webp"}
+                ogImage={product.image || "https://www.neurostore.in/og-image.webp"}
                 ogType="product"
             />
         <div className="product-details-wrapper">

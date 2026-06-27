@@ -48,7 +48,7 @@ const About = () => {
             title="About Neurostore | AI Hardware & Cybersecurity Company India"
             description="Neurostore is India's leading AI hardware and cybersecurity company since 2018. We serve 500+ enterprise clients across 50+ countries with AI cameras, GPU servers, workstations and cybersecurity solutions."
             keywords="about neurostore, AI hardware company India, cybersecurity company India, AI solutions provider India, enterprise AI company, GPU server company India, AI technology company Madurai, best AI hardware supplier India, neurostore about us"
-            ogImage="https://staunchtec.com/img/logo-img.webp"
+            ogImage="https://www.neurostore.in/og-image.webp"
             ogType="website"
         />
             {/* ABOUT SECTION */}
