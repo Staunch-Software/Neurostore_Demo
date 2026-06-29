@@ -71,7 +71,13 @@ export const ShopContextProvider = (props) => {
 
                 const backendProducts = await productsResponse.json();
 
-                const finalProducts = backendProducts.map((dbItem) => {
+                const finalProducts = backendProducts
+                    // Keep only Software & AI Software products
+                    .filter((dbItem) =>
+                        dbItem.category === "Software" ||
+                        dbItem.category === "AI Software"
+                    )
+                    .map((dbItem) => {
 
                     const localItem = localImageMap.find(
                         (loc) => loc.id === dbItem.id

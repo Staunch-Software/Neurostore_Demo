@@ -250,7 +250,7 @@ export const Navbar = () => {
                       All Products
                     </Link>
 
-                    {/* Hardware */}
+                    {/* Hardware - commented out
                     <div
                       className="neuro-dropdown-item"
                       onMouseEnter={() => setHardwareOpen(true)}
@@ -272,6 +272,7 @@ export const Navbar = () => {
                         </div>
                       )}
                     </div>
+                    */}
 
                     {/* Software */}
                     <div
@@ -593,4 +594,4 @@ export const Navbar = () => {
   );
 };
 
-export default Navbar;   
+export default Navbar;

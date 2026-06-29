@@ -246,6 +246,7 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                     </div>
                 </div>
 
+                {/* Price Range - commented out
                 <div className="filter-section">
                     <div className="price-info">
                         <h4>Price Range</h4>
@@ -261,6 +262,7 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                         />
                     </div>
                 </div>
+                */}
             </aside>
 
             <main className="neuro-products-content">

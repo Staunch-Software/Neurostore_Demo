@@ -217,128 +217,24 @@ const Home = () => {
                         <p className="featured-description">Discover our handpicked selection of cutting-edge AI hardware and software solutions.</p>
                     </div>
                     <div className="products-grid">
-                        {/* Product 1 */}
-                        <div className="product-card animate-on-scroll">
-                            <div className="product-image-wrapper">
-                                <img src={msiRTX5090} alt="MSI GeForce RTX 5090" className="product-image" onClick={() => navigate('/products/ai-graphics-cards/msi-geforce-rtx-5090-lightning-z-32gb-gddr7')} style={{ cursor: 'pointer' }} />
-                                <span className="product-badge badge-bestseller">Flagship</span>
-                                <div className="product-overlay"></div>
-                            </div>
-                            <div className="product-content">
-                                <div className="product-category">Graphics Cards</div>
-                                <h3 className="product-name" onClick={() => navigate('/products/ai-graphics-cards/msi-geforce-rtx-5090-lightning-z-32gb-gddr7')} style={{ cursor: 'pointer' }}>MSI GeForce RTX™ 5090</h3>
-                                <p className="product-description">The ultimate enthusiast GPU featuring 32GB of next-gen GDDR7 memory and unmatched thermal design.</p>
-                                <div className="p-action-buttons">
-                                    <a href="tel:+919384813815" className="action-btn btn-call"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Call for Price</a>
-                                    <Link to="/products/ai-graphics-cards/msi-geforce-rtx-5090-lightning-z-32gb-gddr7" className="action-btn btn-view">VIEW</Link>
-                                    <a href={`https://wa.me/919384813815?text=Hi! I'm interested in the MSI GeForce RTX 5090`} target="_blank" rel="noopener noreferrer" className="action-btn btn-wa">WhatsApp</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Product 2 */}
-                        <div className="product-card animate-on-scroll">
-                            <div className="product-image-wrapper">
-                                <img src={nvidiaRTXPro6000MaxQ} alt="NVIDIA RTX Pro 6000 Max-Q" className="product-image" onClick={() => navigate('/products/ai-workstation-gpus/nvidia-rtx-pro-6000-blackwell-max-q')} style={{ cursor: 'pointer' }} />
-                                <span className="product-badge badge-new">Pro</span>
-                                <div className="product-overlay"></div>
-                            </div>
-                            <div className="product-content">
-                                <div className="product-category">Workstation GPUs</div>
-                                <h3 className="product-name" onClick={() => navigate('/products/ai-workstation-gpus/nvidia-rtx-pro-6000-blackwell-max-q')} style={{ cursor: 'pointer' }}>NVIDIA RTX Pro 6000 Max-Q</h3>
-                                <p className="product-description">Mobile workstation powerhouse optimized for thin-and-light chassis without compromising AI power.</p>
-                                <div className="p-action-buttons">
-                                    <a href="tel:+919384813815" className="action-btn btn-call"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Call for Price</a>
-                                    <Link to="/products/ai-workstation-gpus/nvidia-rtx-pro-6000-blackwell-max-q" className="action-btn btn-view">VIEW</Link>
-                                    <a href={`https://wa.me/919384813815?text=Hi! I'm interested in the NVIDIA RTX Pro 6000 Max-Q`} target="_blank" rel="noopener noreferrer" className="action-btn btn-wa">WhatsApp</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Product 3 */}
-                        <div className="product-card animate-on-scroll">
-                            <div className="product-image-wrapper">
-                                <img src={raspberryPi5} alt="Raspberry Pi 5 Development Board" className="product-image" onClick={() => navigate('/products/ai-dev-boards/raspberry-pi-5-development-board')} style={{ cursor: 'pointer' }} />
-                                <span className="product-badge badge-premium">Best Seller</span>
-                                <div className="product-overlay"></div>
-                            </div>
-                            <div className="product-content">
-                                <div className="product-category">Dev Boards</div>
-                                <h3 className="product-name" onClick={() => navigate('/products/ai-dev-boards/raspberry-pi-5-development-board')} style={{ cursor: 'pointer' }}>Raspberry Pi 5</h3>
-                                <p className="product-description">The latest generation of Raspberry Pi, delivering 2-3x the processing power of its predecessor.</p>
-                                <div className="p-action-buttons">
-                                    <a href="tel:+919384813815" className="action-btn btn-call"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Call for Price</a>
-                                    <Link to="/products/ai-dev-boards/raspberry-pi-5-development-board" className="action-btn btn-view">VIEW</Link>
-                                    <a href={`https://wa.me/919384813815?text=Hi! I'm interested in the Raspberry Pi 5`} target="_blank" rel="noopener noreferrer" className="action-btn btn-wa">WhatsApp</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Product 4 */}
-                        <div className="product-card animate-on-scroll">
-                            <div className="product-image-wrapper">
-                                <img src={ubiquitiG4Bullet} alt="Ubiquiti UniFi Protect G4 Bullet" className="product-image" onClick={() => navigate('/products/ai-vision-security/ubiquiti-unifi-protect-g4-bullet')} style={{ cursor: 'pointer' }} />
-                                <div className="product-overlay"></div>
-                            </div>
-                            <div className="product-content">
-                                <div className="product-category">Vision & Security</div>
-                                <h3 className="product-name" onClick={() => navigate('/products/ai-vision-security/ubiquiti-unifi-protect-g4-bullet')} style={{ cursor: 'pointer' }}>UniFi Protect G4 Bullet</h3>
-                                <p className="product-description">Versatile 4MP (1440p) indoor/outdoor bullet camera with 24 FPS video and IR LEDs.</p>
-                                <div className="p-action-buttons">
-                                    <a href="tel:+919384813815" className="action-btn btn-call"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Call for Price</a>
-                                    <Link to="/products/ai-vision-security/ubiquiti-unifi-protect-g4-bullet" className="action-btn btn-view">VIEW</Link>
-                                    <a href={`https://wa.me/919384813815?text=Hi! I'm interested in the UniFi Protect G4 Bullet`} target="_blank" rel="noopener noreferrer" className="action-btn btn-wa">WhatsApp</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Product 5 */}
-                        <div className="product-card animate-on-scroll">
-                            <div className="product-image-wrapper">
-                                <img src={embeddedAIBundle} alt="Embedded & AI Dev Boards Bundle" className="product-image" onClick={() => navigate('/products/ai-dev-boards/embedded-ai-dev-boards-bundle')} style={{ cursor: 'pointer' }} />
-                                <span className="product-badge badge-popular">Bundle</span>
-                                <div className="product-overlay"></div>
-                            </div>
-                            <div className="product-content">
-                                <div className="product-category">Dev Boards</div>
-                                <h3 className="product-name" onClick={() => navigate('/products/ai-dev-boards/embedded-ai-dev-boards-bundle')} style={{ cursor: 'pointer' }}>Embedded & AI Dev Boards Bundle</h3>
-                                <p className="product-description">A comprehensive distributor listing bundle of essential Embedded and AI boards.</p>
-                                <div className="p-action-buttons">
-                                    <a href="tel:+919384813815" className="action-btn btn-call"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Call for Price</a>
-                                    <Link to="/products/ai-dev-boards/embedded-ai-dev-boards-bundle" className="action-btn btn-view">VIEW</Link>
-                                    <a href={`https://wa.me/919384813815?text=Hi! I'm interested in the Dev Boards Bundle`} target="_blank" rel="noopener noreferrer" className="action-btn btn-wa">WhatsApp</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Product 6 */}
-                        <div className="product-card animate-on-scroll">
-                            <div className="product-image-wrapper">
-                                <img src={msiRTX4070Ti} alt="MSI RTX 4070 Ti Gaming X Trio 12GB" className="product-image" onClick={() => navigate('/products/ai-graphics-cards/msi-rtx-4070-ti-gaming-x-trio-12gb')} style={{ cursor: 'pointer' }} />
-                                <span className="product-badge badge-limited">Popular</span>
-                                <div className="product-overlay"></div>
-                            </div>
-                            <div className="product-content">
-                                <div className="product-category">Graphics Cards</div>
-                                <h3 className="product-name" onClick={() => navigate('/products/ai-graphics-cards/msi-rtx-4070-ti-gaming-x-trio-12gb')} style={{ cursor: 'pointer' }}>MSI RTX 4070 Ti Gaming X Trio</h3>
-                                <p className="product-description">Premium 1440p and 4K capability with whisper-quiet TRI FROZR 3 cooling and 12GB VRAM.</p>
-                                <div className="p-action-buttons">
-                                    <a href="tel:+919384813815" className="action-btn btn-call"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Call for Price</a>
-                                    <Link to="/products/ai-graphics-cards/msi-rtx-4070-ti-gaming-x-trio-12gb" className="action-btn btn-view">VIEW</Link>
-                                    <a href={`https://wa.me/919384813815?text=Hi! I'm interested in the MSI RTX 4070 Ti`} target="_blank" rel="noopener noreferrer" className="action-btn btn-wa">WhatsApp</a>
-                                </div>
-                            </div>
-                        </div>
+                        {/* HARDWARE PRODUCT CARDS - commented out
+                        Product 1: MSI GeForce RTX 5090
+                        Product 2: NVIDIA RTX Pro 6000 Max-Q
+                        Product 3: Raspberry Pi 5
+                        Product 4: UniFi Protect G4 Bullet
+                        Product 5: Embedded & AI Dev Boards Bundle
+                        Product 6: MSI RTX 4070 Ti Gaming X Trio
+                        */}
                     </div>
 
                     <div className="featured-cta animate-on-scroll">
-                        <Link to="/products" className="btn-view-all">
+                        <a href="/products" className="btn-view-all">
                             View All Products
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </section>
