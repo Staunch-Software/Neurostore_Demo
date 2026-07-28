@@ -1,37 +1,30 @@
-script: |
-  cd /home/AdminDeveloper/Neurostore_Demo
-  git fetch origin
-  git reset --hard origin/main
-  echo "Fixing firebase.js..."
-  cat > src/firebase.js << 'FBEOF'
-  import { initializeApp } from "firebase/app";
-  import { getAnalytics } from "firebase/analytics";
-  import { getAuth, GoogleAuthProvider } from "firebase/auth";
-  const firebaseConfig = {
-    apiKey: "AIzaSyAXEzsm21KbFPF4o07GqxjO1mH90Uh24W8",
-    authDomain: "neurostore-5b1f0.firebaseapp.com",
-    projectId: "neurostore-5b1f0",
-    storageBucket: "neurostore-5b1f0.firebasestorage.app",
-    messagingSenderId: "899112067022",
-    appId: "1:899112067022:web:1dad2d8b07280ebe0fd59f",
-    measurementId: "G-YGV6Z2YS6F"
-  };
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  export const auth = getAuth(app);
-  export const googleProvider = new GoogleAuthProvider();
-  export default app;
-  FBEOF
-  echo "Building frontend..."
-  npm run build
-  echo "Copying to static..."
-  sudo rm -rf /var/www/html/*
-  sudo cp -r dist/* /var/www/html/
-  sudo chmod -R 755 /var/www/html
-  sudo chown -R www-data:www-data /var/www/html
-  echo "Restarting backend..."
-  pm2 restart demo-app --update-env
-  pm2 save
-  echo "Restarting Nginx..."
-  sudo systemctl restart nginx
-  echo "Deployment complete!"
+name: Deploy NeuroStore
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy to Azure VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            cd /home/AdminDeveloper/Neurostore_Demo
+            git fetch origin
+            git reset --hard origin/main
+            npm run build
+            sudo rm -rf /var/www/html/*
+            sudo cp -r dist/* /var/www/html/
+            sudo chmod -R 755 /var/www/html
+            sudo chown -R www-data:www-data /var/www/html
+            pm2 restart demo-app --update-env
+            pm2 save
+            sudo systemctl restart nginx
+            echo "Deployment complete!"
