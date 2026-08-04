@@ -142,22 +142,21 @@ const Payment = () => {
             const DEFAULT_RAZORPAY_KEY = 'rzp_live_TK6I6RF6fg23yA';
             const razorpayKey = data.key || import.meta.env.VITE_RAZORPAY_KEY_ID || DEFAULT_RAZORPAY_KEY;
 
+            const prefillData = {
+                name:  resolvedName,
+                email: resolvedEmail,
+            };
+            if (phone) prefillData.contact = phone;
+
             const options = {
                 key:               razorpayKey,
-                amount:            data.amount,
-                currency:          data.currency,
+                order_id:          data.id,
                 name:              'NeuroStore',
                 description:       'Purchase',
-                order_id:          data.id,
-                remember_customer: false,
-                prefill: {
-                    name:    resolvedName,
-                    email:   resolvedEmail,
-                    contact: '',
-                },
-                handler: (resp) => verifyPayment(resp),
-                theme:   { color: '#7c3aed', backdrop_color: 'rgba(30, 10, 60, 0.90)' },
-                modal:   { ondismiss: () => setLoading(false) },
+                prefill:           prefillData,
+                handler:           (resp) => verifyPayment(resp),
+                theme:             { color: '#7c3aed', backdrop_color: 'rgba(30, 10, 60, 0.90)' },
+                modal:             { ondismiss: () => setLoading(false) },
             };
 
             const rzp = new window.Razorpay(options);
