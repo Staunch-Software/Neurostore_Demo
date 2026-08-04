@@ -150,6 +150,8 @@ const Payment = () => {
 
             const options = {
                 key:               razorpayKey,
+                amount:            data.amount,
+                currency:          data.currency || 'INR',
                 order_id:          data.id,
                 name:              'NeuroStore',
                 description:       'Purchase',
