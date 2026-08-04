@@ -139,7 +139,7 @@ const Payment = () => {
                 return;
             }
 
-            const DEFAULT_RAZORPAY_KEY = 'rzp_live_TK6I6RF6fg23yA';
+            const DEFAULT_RAZORPAY_KEY = 'rzp_live_TLcvtQBFVR9Cbo';
             const razorpayKey = data.key || import.meta.env.VITE_RAZORPAY_KEY_ID || DEFAULT_RAZORPAY_KEY;
 
             const prefillData = {
