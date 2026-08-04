@@ -55,7 +55,7 @@ const Payment = () => {
                 headers['User-Email'] = resolvedEmail;
             }
 
-            const res = await fetch('https://www.neurostore.in/api/razorpay/verify', {
+            const res = await fetch('/api/razorpay/verify', {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({
@@ -64,6 +64,9 @@ const Payment = () => {
                     total:  amount,
                     address,
                     method: activeMethod,
+                    email: resolvedEmail,
+                    confirm_email: resolvedEmail,
+                    customer_name: resolvedName,
                 }),
             });
 
@@ -115,7 +118,7 @@ const Payment = () => {
         setPayError('');
 
         try {
-            const res = await fetch('https://www.neurostore.in/api/razorpay/create-order', {
+            const res = await fetch('/api/razorpay/create-order', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify({ amount }),
@@ -137,19 +140,20 @@ const Payment = () => {
             }
 
             const options = {
-                key:         'rzp_test_Se6aZrTcr0K9vV',
-                amount:      data.amount,
-                currency:    data.currency,
-                name:        'NeuroStore',
-                description: 'Purchase',
-                order_id:    data.id,
+                key:               import.meta.env.VITE_RAZORPAY_KEY_ID,
+                amount:            data.amount,
+                currency:          data.currency,
+                name:              'NeuroStore',
+                description:       'Purchase',
+                order_id:          data.id,
+                remember_customer: false,
                 prefill: {
                     name:    resolvedName,
                     email:   resolvedEmail,
-                    contact: phone || '',
+                    contact: '',
                 },
                 handler: (resp) => verifyPayment(resp),
-                theme:   { color: '#7c3aed', backdrop_color: 'rgba(30, 10, 60, 0.90)' }, // ← updated
+                theme:   { color: '#7c3aed', backdrop_color: 'rgba(30, 10, 60, 0.90)' },
                 modal:   { ondismiss: () => setLoading(false) },
             };
 

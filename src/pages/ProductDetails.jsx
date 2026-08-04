@@ -52,6 +52,21 @@ const ProductDetails = () => {
 
     const product = products.find((p) => generateSlug(p.name) === productName);
 
+    // Track product page view for admin analytics (fire-and-forget)
+    useEffect(() => {
+        if (!product) return;
+        try {
+            const storedUser = JSON.parse(localStorage.getItem('neuroUser') || 'null');
+            const headers = { 'Content-Type': 'application/json' };
+            if (storedUser?.email) headers['User-Email'] = storedUser.email;
+            fetch('/api/track/view', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ product_id: product.id }),
+            }).catch(() => {}); // silently ignore network errors
+        } catch (_) {}
+    }, [product?.id]);
+
     if (!product) {
         return (
             <div className="product-not-found">

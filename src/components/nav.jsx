@@ -60,6 +60,18 @@ const SearchBar = () => {
   };
 
   const handleResultClick = (product) => {
+    // Track this search click for admin analytics (fire-and-forget)
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('neuroUser') || 'null');
+      const headers = { 'Content-Type': 'application/json' };
+      if (storedUser?.email) headers['User-Email'] = storedUser.email;
+      fetch('/api/track/search', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ product_id: product.id, query }),
+      }).catch(() => {});
+    } catch (_) {}
+
     setIsOpen(false);
     setQuery("");
     setResults([]);

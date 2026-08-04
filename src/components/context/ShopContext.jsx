@@ -35,8 +35,8 @@ export const ShopContextProvider = (props) => {
             : {};
 
         const [cartRes, wishRes] = await Promise.all([
-            fetch("https://www.neurostore.in/api/cart", { headers }),
-            fetch("https://www.neurostore.in/api/wishlist", { headers }),
+            fetch("/api/cart", { headers }),
+            fetch("/api/wishlist", { headers }),
         ]);
 
         const cartData = await cartRes.json();
@@ -62,7 +62,7 @@ export const ShopContextProvider = (props) => {
             try {
 
                 const productsResponse = await fetch(
-                    "https://www.neurostore.in/api/products"
+                    "/api/products"
                 );
 
                 if (!productsResponse.ok) {
@@ -258,7 +258,7 @@ export const ShopContextProvider = (props) => {
             user
         ) {
 
-            fetch("https://www.neurostore.in/api/cart", {
+            fetch("/api/cart", {
 
                 method: "POST",
 
@@ -289,7 +289,7 @@ export const ShopContextProvider = (props) => {
             user
         ) {
 
-            fetch("https://www.neurostore.in/api/wishlist", {
+            fetch("/api/wishlist", {
 
                 method: "POST",
 

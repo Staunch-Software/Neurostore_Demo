@@ -115,6 +115,28 @@
   .oc-t-label{font-size:.65rem}
 }
 
+/* ── Inline Tracker Panel ── */
+.oc-tracker-panel{border-top:1px solid hsl(240,10%,93%);padding:16px 14px;background:hsl(240,10%,99%)}
+.oc-tracker-panel-title{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;color:hsl(240,20%,42%);margin-bottom:14px;text-transform:uppercase;letter-spacing:.6px}
+.oc-tracker-timeline{display:flex;flex-direction:column;gap:0}
+.oc-tl-item{display:flex;gap:12px;align-items:flex-start}
+.oc-tl-dot-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.oc-tl-dot{width:28px;height:28px;border-radius:50%;border:2px solid hsl(240,10%,85%);background:#fff;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
+.oc-tl-item.done .oc-tl-dot{border-color:transparent}
+.oc-tl-item.active .oc-tl-dot{box-shadow:0 0 0 4px rgba(129,140,248,.2)}
+.oc-tl-vline{width:2px;flex:1;min-height:24px;background:hsl(240,10%,88%);border-radius:2px;margin:4px 0;transition:background .25s}
+.oc-tl-vline.done{background:#10b981}
+.oc-tl-content{padding-bottom:20px;padding-top:4px}
+.oc-tl-label{font-size:.85rem;font-weight:700;color:hsl(240,10%,70%);margin-bottom:2px}
+.oc-tl-item.done .oc-tl-label{color:#0f172a}
+.oc-tl-item.active .oc-tl-label{color:hsl(240,20%,42%)}
+.oc-tl-desc{font-size:.75rem;color:hsl(240,10%,55%);line-height:1.5}
+.oc-tl-item.done .oc-tl-desc{color:hsl(240,10%,45%)}
+
+/* ── Cancel / generic modal overlay (reused from wl-popup-overlay) ── */
+.wl-popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+
+
 /* ORDER SUCCESS */
 .os-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;background:#f9fafb;position:relative;overflow:hidden;font-family:'Inter',sans-serif}
 .os-blob{position:absolute;border-radius:50%;pointer-events:none}
