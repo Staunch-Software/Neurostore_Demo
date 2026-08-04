@@ -139,8 +139,16 @@ const Payment = () => {
                 return;
             }
 
+            const razorpayKey = data.key || import.meta.env.VITE_RAZORPAY_KEY_ID;
+
+            if (!razorpayKey) {
+                setPayError('Razorpay Key ID is missing. Please ensure RAZORPAY_KEY_ID is configured.');
+                setLoading(false);
+                return;
+            }
+
             const options = {
-                key:               data.key || import.meta.env.VITE_RAZORPAY_KEY_ID,
+                key:               razorpayKey,
                 amount:            data.amount,
                 currency:          data.currency,
                 name:              'NeuroStore',
