@@ -140,7 +140,7 @@ const Payment = () => {
             }
 
             const options = {
-                key:               import.meta.env.VITE_RAZORPAY_KEY_ID,
+                key:               data.key || import.meta.env.VITE_RAZORPAY_KEY_ID,
                 amount:            data.amount,
                 currency:          data.currency,
                 name:              'NeuroStore',
