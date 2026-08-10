@@ -55,7 +55,7 @@ const Payment = () => {
                 headers['User-Email'] = resolvedEmail;
             }
 
-            const res = await fetch('https://www.neurostore.in/api/razorpay/verify', {
+            const res = await fetch('/api/razorpay/verify', {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({
@@ -64,6 +64,9 @@ const Payment = () => {
                     total:  amount,
                     address,
                     method: activeMethod,
+                    email: resolvedEmail,
+                    confirm_email: resolvedEmail,
+                    customer_name: resolvedName,
                 }),
             });
 
@@ -115,7 +118,7 @@ const Payment = () => {
         setPayError('');
 
         try {
-            const res = await fetch('https://www.neurostore.in/api/razorpay/create-order', {
+            const res = await fetch('/api/razorpay/create-order', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify({ amount }),
@@ -129,6 +132,7 @@ const Payment = () => {
             }
 
             const data = await res.json();
+            console.log('Razorpay Order Response:', data);
 
             if (!data.id) {
                 setPayError(data.error || 'Could not create payment order. Check Razorpay keys.');
@@ -136,21 +140,27 @@ const Payment = () => {
                 return;
             }
 
+            const DEFAULT_RAZORPAY_KEY = 'rzp_live_TLcvtQBFVR9Cbo';
+            const razorpayKey = data.key || import.meta.env.VITE_RAZORPAY_KEY_ID || DEFAULT_RAZORPAY_KEY;
+            console.log('Initializing Razorpay Checkout with Key:', razorpayKey, 'Order ID:', data.id);
+
+            const prefillData = {
+                name:  resolvedName,
+                email: resolvedEmail,
+            };
+            if (phone) prefillData.contact = phone;
+
             const options = {
-                key:         'rzp_test_Se6aZrTcr0K9vV',
-                amount:      data.amount,
-                currency:    data.currency,
-                name:        'NeuroStore',
-                description: 'Purchase',
-                order_id:    data.id,
-                prefill: {
-                    name:    resolvedName,
-                    email:   resolvedEmail,
-                    contact: phone || '',
-                },
-                handler: (resp) => verifyPayment(resp),
-                theme:   { color: '#7c3aed', backdrop_color: 'rgba(30, 10, 60, 0.90)' }, // ← updated
-                modal:   { ondismiss: () => setLoading(false) },
+                key:               razorpayKey,
+                amount:            data.amount,
+                currency:          data.currency || 'INR',
+                order_id:          data.id,
+                name:              'NeuroStore',
+                description:       'Purchase',
+                prefill:           prefillData,
+                handler:           (resp) => verifyPayment(resp),
+                theme:             { color: '#7c3aed', backdrop_color: 'rgba(30, 10, 60, 0.90)' },
+                modal:             { ondismiss: () => setLoading(false) },
             };
 
             const rzp = new window.Razorpay(options);

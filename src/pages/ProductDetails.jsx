@@ -52,6 +52,21 @@ const ProductDetails = () => {
 
     const product = products.find((p) => generateSlug(p.name) === productName);
 
+    // Track product page view for admin analytics (fire-and-forget)
+    useEffect(() => {
+        if (!product) return;
+        try {
+            const storedUser = JSON.parse(localStorage.getItem('neuroUser') || 'null');
+            const headers = { 'Content-Type': 'application/json' };
+            if (storedUser?.email) headers['User-Email'] = storedUser.email;
+            fetch('/api/track/view', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ product_id: product.id }),
+            }).catch(() => {}); // silently ignore network errors
+        } catch (_) {}
+    }, [product?.id]);
+
     if (!product) {
         return (
             <div className="product-not-found">
@@ -236,6 +251,28 @@ const ProductDetails = () => {
 
                         <p className="pd-short-desc">{product.shortDescription}</p>
 
+                        <div className="pd-price-row-box">
+                            <div className="pd-price-main">
+                                <span className="pd-currency">₹</span>
+                                <span className="pd-amount">{product.price?.toLocaleString() || '1,000'}</span>
+                                <span className="pd-gst">+ 18% GST</span>
+                            </div>
+                            <div className="pd-license-badge">
+                                <span>⚡ Instant Digital Activation</span>
+                            </div>
+                        </div>
+
+                        {product.features && product.features.length > 0 && (
+                            <div className="pd-highlights-box">
+                                <h4 className="pd-highlights-title">Key Highlights:</h4>
+                                <ul className="pd-highlights-list">
+                                    {product.features.map((feat, idx) => (
+                                        <li key={idx}><span className="pd-hl-dot">✦</span> {feat}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
                         <div className="pd-action-row">
                             <a href="tel:+9104422353175" className="pd-call-btn">
                                 <Phone size={16} /> Call for Price
@@ -262,10 +299,10 @@ const ProductDetails = () => {
                         </div>
 
                         <div className="pd-features">
-                            <span><CheckCircle2 size={16} color="#10b981" /> 100% Genuine</span>
-                            <span><Truck        size={16} color="#10b981" /> Fast Delivery</span>
-                            <span><Package      size={16} color="#10b981" /> Bulk Discount</span>
-                            <span><ShieldCheck  size={16} color="#10b981" /> Secure Checkout</span>
+                            <span><CheckCircle2 size={16} color="#10b981" /> 100% Genuine License</span>
+                            <span><Truck        size={16} color="#10b981" /> Instant Email Delivery</span>
+                            <span><Package      size={16} color="#10b981" /> Volume Licensing</span>
+                            <span><ShieldCheck  size={16} color="#10b981" /> Secure 256-bit Checkout</span>
                         </div>
 
                         <button
@@ -288,11 +325,11 @@ const ProductDetails = () => {
                         <div className="pd-logistics">
                             <div className="pd-logistic-item">
                                 <strong>PAYMENT:</strong>
-                                <div className="logistic-icons">💳 PayPal 💳 Visa 💳 Mastercard</div>
+                                <div className="logistic-icons">💳 UPI 💳 Cards 💳 Net Banking 💳 Razorpay</div>
                             </div>
                             <div className="pd-logistic-item">
-                                <strong>SHIPPING:</strong>
-                                <div className="logistic-icons">✈️ DHL ✈️ FedEx ✈️ UPS</div>
+                                <strong>DELIVERY:</strong>
+                                <div className="logistic-icons">⚡ Instant Email (License Key + Download Link)</div>
                             </div>
                         </div>
                     </div>

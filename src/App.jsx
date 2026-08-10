@@ -40,7 +40,7 @@ const ProtectedRoute = ({ children }) => {
 
 // Admin routes render without Navbar/Footer
 const AdminRoute = ({ children }) => (
-  <div className="App">{children}</div>
+  <div style={{ margin: 0, padding: 0, background: '#090d16', minHeight: '100vh' }}>{children}</div>
 );
 
 function App() {

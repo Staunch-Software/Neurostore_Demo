@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'https://www.neurostore.in'   // only for local dev, not deployment
+      '/api': {
+        target: 'http://localhost:8000',  // Flask backend — local dev
+        changeOrigin: true,
+      }
     }
   },
   build: {

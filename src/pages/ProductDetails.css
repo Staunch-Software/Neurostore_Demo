@@ -126,6 +126,94 @@
     border-left: 3px solid #6a4c93;
     padding-left: 14px;
 }
+
+.pd-price-row-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 22px;
+}
+
+.pd-price-main {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.pd-currency {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.pd-amount {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+.pd-gst {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-left: 6px;
+}
+
+.pd-license-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #059669;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.pd-highlights-box {
+    margin-bottom: 24px;
+    background: #faf5ff;
+    border: 1px solid #f3e8ff;
+    border-radius: 12px;
+    padding: 14px 18px;
+}
+
+.pd-highlights-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #6b21a8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.pd-highlights-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.pd-highlights-list li {
+    font-size: 0.88rem;
+    color: #3b0764;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pd-hl-dot {
+    color: #9333ea;
+    font-size: 0.8rem;
+}
+
 /* ══════════════════════════════════════════
    ACTION ROW
    ══════════════════════════════════════════ */

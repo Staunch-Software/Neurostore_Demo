@@ -277,23 +277,51 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                     {currentItems.map(p => {
                         const inCart = cartItems && cartItems[p.id] > 0;
                         const added  = justAdded[p.id];
+                        const productUrl = `/products/${generateSlug(p.category)}/${generateSlug(p.name)}`;
+
                         return (
-                            <div className="product-card" key={p.id}>
-                                <div className="product-image-box">
+                            <div
+                                className="product-card"
+                                key={p.id}
+                                onClick={() => navigate(productUrl)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => { if (e.key === 'Enter') navigate(productUrl); }}
+                            >
+                                <Link to={productUrl} className="product-image-box" onClick={(e) => e.stopPropagation()}>
                                     <img src={p.image} alt={p.name} className="product-image" />
                                     {inCart && (
                                         <span className="cart-count-badge">{cartItems[p.id]}</span>
                                     )}
                                     {p.badge && <span className="p-badge">{p.badge}</span>}
-                                </div>
+                                </Link>
 
                                 <div className="product-details">
-                                    <span className="p-category">{p.category}</span>
-                                    <h3 className="p-name">{p.name}</h3>
+                                    <div className="p-category-row">
+                                        <span className="p-category">{p.category}</span>
+                                        {p.brand && <span className="p-brand-tag">{p.brand}</span>}
+                                    </div>
+                                    <h3 className="p-name">
+                                        <Link to={productUrl} className="p-name-link" onClick={(e) => e.stopPropagation()}>
+                                            {p.name}
+                                        </Link>
+                                    </h3>
+
+                                    {p.shortDescription && (
+                                        <p className="p-card-desc">{p.shortDescription}</p>
+                                    )}
+
+                                    {p.features && p.features.length > 0 && (
+                                        <ul className="p-card-features">
+                                            {p.features.slice(0, 3).map((feat, idx) => (
+                                                <li key={idx}><span className="feature-dot">✦</span> {feat}</li>
+                                            ))}
+                                        </ul>
+                                    )}
 
                                     <button
                                         className={`action-btn btn-cart btn-cart--full ${added ? 'btn-cart--added' : ''}`}
-                                        onClick={() => handleAddToCart(p)}
+                                        onClick={(e) => { e.stopPropagation(); handleAddToCart(p); }}
                                         title={inCart ? `${cartItems[p.id]} in cart` : 'Add to Cart'}
                                     >
                                         {added
@@ -302,12 +330,12 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                                         }
                                     </button>
 
-                                    <div className="p-action-buttons">
+                                    <div className="p-action-buttons" onClick={(e) => e.stopPropagation()}>
                                         <a href="tel:+9104422353175" className="action-btn btn-call">
                                             <Phone size={14} /> Call for Price
                                         </a>
 
-                                        <Link to={`/products/${generateSlug(p.category)}/${generateSlug(p.name)}`} className="action-btn btn-view">
+                                        <Link to={productUrl} className="action-btn btn-view">
                                             VIEW
                                         </Link>
 

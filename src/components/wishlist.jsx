@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, ShoppingBag } from 'lucide-react';
 import './wishlist.css';
 
+const generateSlug = (text) => {
+    if (!text) return '';
+    return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+};
+
 const Wishlist = () => {
     const { wishlistItems, addToCart, removeFromWishlist, products } = useContext(ShopContext);
     const navigate = useNavigate();
@@ -22,8 +27,14 @@ const Wishlist = () => {
                     <div className="wishlist-grid">
                         {products.map((product) => {
                             if (wishlistItems[product.id] > 0) {
+                                const productUrl = `/products/${generateSlug(product.category)}/${generateSlug(product.name)}`;
                                 return (
-                                    <div className="wishlist-card" key={product.id}>
+                                    <div
+                                        className="wishlist-card"
+                                        key={product.id}
+                                        onClick={() => navigate(productUrl)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
                                         <div className="wishlist-image-box">
                                             <img src={product.image} alt={product.name} />
 
@@ -32,7 +43,7 @@ const Wishlist = () => {
                                                 className="btn-remove-wishlist"
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    // This calls the function from ShopContext
+                                                    e.stopPropagation();
                                                     removeFromWishlist(product.id);
                                                 }}
                                             >
@@ -53,7 +64,10 @@ const Wishlist = () => {
 
                                             <button
                                                 className="btn-move-cart"
-                                                onClick={() => addToCart(product.id)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    addToCart(product.id);
+                                                }}
                                             >
                                                 <ShoppingCart size={16} /> Add to Cart
                                             </button>

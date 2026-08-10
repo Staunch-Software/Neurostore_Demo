@@ -7,7 +7,8 @@ import {
     LayoutDashboard, Package, MapPin, Heart,
     Settings, LogOut, Search, Plus, CreditCard,
     RefreshCw, ShoppingBag, CheckCircle2, Truck,
-    Clock, CircleDot, ChevronDown, ChevronUp
+    Clock, CircleDot, ChevronDown, ChevronUp, X,
+    AlertTriangle, XCircle
 } from 'lucide-react';
 import './Profile.css';
 
@@ -22,15 +23,93 @@ const STATUS_CONFIG = {
     Processing: { label: 'Processing', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',  Icon: Clock,        step: 2 },
     Shipped:    { label: 'Shipped',    color: '#3b82f6', bg: 'rgba(59,130,246,0.1)',   Icon: Truck,        step: 3 },
     Delivered:  { label: 'Delivered',  color: '#10b981', bg: 'rgba(16,185,129,0.1)',   Icon: CheckCircle2, step: 4 },
+    Cancelled:  { label: 'Cancelled',  color: '#ef4444', bg: 'rgba(239,68,68,0.1)',    Icon: XCircle,      step: 0 },
 };
 
 const STEPS = ['Confirmed', 'Processing', 'Shipped', 'Delivered'];
 
+// ── Cancel Confirmation Modal ──────────────────────────────────────────────────
+const CancelModal = ({ order, onConfirm, onClose, loading }) => (
+    <div className="wl-popup-overlay" onClick={onClose}>
+        <div
+            onClick={e => e.stopPropagation()}
+            style={{
+                background: '#fff', borderRadius: 20, padding: '36px 32px',
+                width: '100%', maxWidth: 440,
+                boxShadow: '0 24px 60px rgba(0,0,0,0.18)',
+                position: 'relative', textAlign: 'center',
+            }}
+        >
+            <button
+                onClick={onClose}
+                style={{
+                    position: 'absolute', top: 14, right: 14,
+                    background: '#f1f5f9', border: 'none', borderRadius: '50%',
+                    width: 30, height: 30, cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
+                }}
+            >✕</button>
+
+            <div style={{
+                width: 64, height: 64, borderRadius: '50%',
+                background: 'rgba(239,68,68,0.08)', border: '2px solid rgba(239,68,68,0.2)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 20px',
+            }}>
+                <AlertTriangle size={28} color="#ef4444" />
+            </div>
+
+            <h3 style={{ fontFamily: 'Space Grotesk', fontSize: '1.3rem', color: '#0f172a', marginBottom: 8 }}>
+                Cancel Order #{order.id}?
+            </h3>
+            <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: 8 }}>
+                This action <strong>cannot be undone</strong>. Your order will be permanently cancelled.
+            </p>
+            <p style={{ color: '#94a3b8', fontSize: '0.82rem', marginBottom: 28 }}>
+                If you already paid online, a refund will be initiated within 5–7 business days.
+            </p>
+
+            <div style={{ display: 'flex', gap: 12 }}>
+                <button
+                    onClick={onClose}
+                    style={{
+                        flex: 1, padding: '12px', borderRadius: 10,
+                        border: '1px solid #e2e8f0', background: '#f8fafc',
+                        color: '#64748b', fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem',
+                    }}
+                >
+                    Keep Order
+                </button>
+                <button
+                    onClick={onConfirm}
+                    disabled={loading}
+                    style={{
+                        flex: 1, padding: '12px', borderRadius: 10,
+                        border: 'none', background: loading ? '#fca5a5' : '#ef4444',
+                        color: '#fff', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer',
+                        fontSize: '0.9rem', transition: 'background .2s',
+                    }}
+                >
+                    {loading ? 'Cancelling…' : 'Yes, Cancel'}
+                </button>
+            </div>
+        </div>
+    </div>
+);
+
 // ── Order Card ─────────────────────────────────────────────────────────────────
-const OrderCard = ({ order, products, onNavigate }) => {
-    const [expanded, setExpanded] = useState(false);
-    const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG.Confirmed;
+const OrderCard = ({ order: initialOrder, products, onNavigate, userEmail, onOrderUpdated }) => {
+    const [order,        setOrder]        = useState(initialOrder);
+    const [expanded,     setExpanded]     = useState(false);
+    const [showCancel,   setShowCancel]   = useState(false);
+    const [cancelling,   setCancelling]   = useState(false);
+    const [cancelError,  setCancelError]  = useState('');
+    const [showTracker,  setShowTracker]  = useState(false);
+
+    const cfg         = STATUS_CONFIG[order.status] || STATUS_CONFIG.Confirmed;
     const currentStep = cfg.step;
+    const isCancelled = order.status === 'Cancelled';
+    const canCancel   = !isCancelled && !['Shipped', 'Delivered'].includes(order.status);
 
     let orderLines = [];
     try {
@@ -52,98 +131,220 @@ const OrderCard = ({ order, products, onNavigate }) => {
     const fmt     = (v) => Number(v).toLocaleString('en-IN', { maximumFractionDigits: 0 });
     const visible = expanded ? orderLines : orderLines.slice(0, 2);
 
+    const handleCancelConfirm = async () => {
+        setCancelling(true);
+        setCancelError('');
+        try {
+            const headers = { 'Content-Type': 'application/json' };
+            if (userEmail) headers['User-Email'] = userEmail;
+
+            const res  = await fetch(`/api/orders/${order.id}/cancel`, { method: 'PATCH', headers });
+            const data = await res.json();
+
+            if (res.ok && data.status === 'success') {
+                const updated = { ...order, status: 'Cancelled' };
+                setOrder(updated);
+                setShowCancel(false);
+                if (onOrderUpdated) onOrderUpdated(updated);
+            } else {
+                setCancelError(data.error || 'Could not cancel order.');
+            }
+        } catch {
+            setCancelError('Network error. Please try again.');
+        } finally {
+            setCancelling(false);
+        }
+    };
+
     return (
-        <div className="oc">
+        <>
+            {showCancel && (
+                <CancelModal
+                    order={order}
+                    onConfirm={handleCancelConfirm}
+                    onClose={() => { setShowCancel(false); setCancelError(''); }}
+                    loading={cancelling}
+                />
+            )}
 
-            {/* ── Header row ── */}
-            <div className="oc-head">
-                <div className="oc-head-left">
-                    <span className="oc-id">#{order.id}</span>
-                    <span className="oc-chip">{order.created_at?.split(' ')[0] || '—'}</span>
-                    <span className="oc-chip">{payLabel(order.payment)}</span>
-                </div>
-                <div className="oc-head-right">
-                    <span className="oc-status" style={{ background: cfg.bg, color: cfg.color }}>
-                        <cfg.Icon size={11} /> {cfg.label}
-                    </span>
-                    <span className="oc-total">₹{fmt(order.total)}</span>
-                </div>
-            </div>
+            <div className="oc">
 
-            {/* ── Body: images + items ── */}
-            <div className="oc-body">
-
-                {/* Images column – primary product image fills left half */}
-                <div className="oc-images">
-                    {orderLines[0]?.image
-                        ? <img src={orderLines[0].image} alt={orderLines[0].name}
-                            className="oc-img-primary"
-                            onError={e => { e.target.style.display = 'none'; }} />
-                        : <div className="oc-img-placeholder"><Package size={44} color="hsl(240,20%,60%)" /></div>
-                    }
-                    {orderLines.length > 1 && (
-                        <span className="oc-img-count">
-                            +{orderLines.length - 1} item{orderLines.length > 2 ? 's' : ''}
+                {/* ── Header row ── */}
+                <div className="oc-head">
+                    <div className="oc-head-left">
+                        <span className="oc-id">#{order.id}</span>
+                        <span className="oc-chip">{order.created_at?.split(' ')[0] || '—'}</span>
+                        <span className="oc-chip">{payLabel(order.payment)}</span>
+                    </div>
+                    <div className="oc-head-right">
+                        <span className="oc-status" style={{ background: cfg.bg, color: cfg.color }}>
+                            <cfg.Icon size={11} /> {cfg.label}
                         </span>
-                    )}
+                        <span className="oc-total">₹{fmt(order.total)}</span>
+                    </div>
                 </div>
 
-                {/* Items + tracker column */}
-                <div className="oc-details">
+                {/* ── Body: images + items ── */}
+                <div className="oc-body">
 
-                    {/* Item rows */}
-                    <div className="oc-items">
-                        {visible.map(({ id, name, qty, price }) => (
-                            <div key={id} className="oc-item">
-                                <span className="oc-item-name">{name}</span>
-                                <span className="oc-item-meta">×{qty} &nbsp;·&nbsp; ₹{fmt(price * qty)}</span>
-                            </div>
-                        ))}
-                        {orderLines.length > 2 && (
-                            <button className="oc-expand" onClick={() => setExpanded(e => !e)}>
-                                {expanded
-                                    ? <><ChevronUp size={12} /> less</>
-                                    : <><ChevronDown size={12} /> +{orderLines.length - 2} more</>}
-                            </button>
+                    {/* Images column */}
+                    <div className="oc-images">
+                        {orderLines[0]?.image
+                            ? <img src={orderLines[0].image} alt={orderLines[0].name}
+                                className="oc-img-primary"
+                                onError={e => { e.target.style.display = 'none'; }} />
+                            : <div className="oc-img-placeholder"><Package size={44} color="hsl(240,20%,60%)" /></div>
+                        }
+                        {orderLines.length > 1 && (
+                            <span className="oc-img-count">
+                                +{orderLines.length - 1} item{orderLines.length > 2 ? 's' : ''}
+                            </span>
                         )}
                     </div>
 
-                    {/* Compact tracker */}
-                    <div className="oc-tracker">
-                        {STEPS.map((step, i) => {
-                            const done   = i + 1 <= currentStep;
-                            const active = i + 1 === currentStep;
-                            const c      = STATUS_CONFIG[step];
-                            return (
-                                <React.Fragment key={step}>
-                                    <div className={`oc-t-step ${done ? 'done' : ''} ${active ? 'active' : ''}`}>
-                                        <div className="oc-t-dot"
-                                            style={done ? { background: c.color, borderColor: c.color } : {}}>
-                                            {done && <c.Icon size={14} color="#fff" />}
-                                        </div>
-                                        <span className="oc-t-label">{step}</span>
-                                    </div>
-                                    {i < STEPS.length - 1 && (
-                                        <div className={`oc-t-line ${i + 1 < currentStep ? 'done' : ''}`} />
-                                    )}
-                                </React.Fragment>
-                            );
-                        })}
+                    {/* Items + tracker column */}
+                    <div className="oc-details">
+
+                        {/* Item rows */}
+                        <div className="oc-items">
+                            {visible.map(({ id, name, qty, price }) => (
+                                <div key={id} className="oc-item">
+                                    <span className="oc-item-name">{name}</span>
+                                    <span className="oc-item-meta">×{qty} &nbsp;·&nbsp; ₹{fmt(price * qty)}</span>
+                                </div>
+                            ))}
+                            {orderLines.length > 2 && (
+                                <button className="oc-expand" onClick={() => setExpanded(e => !e)}>
+                                    {expanded
+                                        ? <><ChevronUp size={12} /> less</>
+                                        : <><ChevronDown size={12} /> +{orderLines.length - 2} more</>}
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Compact tracker — only for non-cancelled orders */}
+                        {!isCancelled && (
+                            <div className="oc-tracker">
+                                {STEPS.map((step, i) => {
+                                    const done   = i + 1 <= currentStep;
+                                    const active = i + 1 === currentStep;
+                                    const c      = STATUS_CONFIG[step];
+                                    return (
+                                        <React.Fragment key={step}>
+                                            <div className={`oc-t-step ${done ? 'done' : ''} ${active ? 'active' : ''}`}>
+                                                <div className="oc-t-dot"
+                                                    style={done ? { background: c.color, borderColor: c.color } : {}}>
+                                                    {done && <c.Icon size={14} color="#fff" />}
+                                                </div>
+                                                <span className="oc-t-label">{step}</span>
+                                            </div>
+                                            {i < STEPS.length - 1 && (
+                                                <div className={`oc-t-line ${i + 1 < currentStep ? 'done' : ''}`} />
+                                            )}
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </div>
+                        )}
+
+                        {/* Cancelled banner */}
+                        {isCancelled && (
+                            <div style={{
+                                display: 'flex', alignItems: 'center', gap: 8,
+                                padding: '8px 12px', borderRadius: 8,
+                                background: 'rgba(239,68,68,0.08)',
+                                border: '1px solid rgba(239,68,68,0.2)',
+                                color: '#ef4444', fontSize: '0.8rem', fontWeight: 600,
+                            }}>
+                                <XCircle size={14} /> Order Cancelled
+                            </div>
+                        )}
+
+                        {/* Cancel error */}
+                        {cancelError && (
+                            <div style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: 4 }}>
+                                ⚠ {cancelError}
+                            </div>
+                        )}
+
                     </div>
-
                 </div>
-            </div>
 
-            {/* ── Footer ── */}
-            <div className="oc-foot">
-                <span className="oc-address">📍 {order.address || '—'}</span>
-                {order.status === 'Delivered'
-                    ? <button className="oc-btn" onClick={() => onNavigate('/products')}>Buy Again</button>
-                    : <button className="oc-btn">Track Order</button>
-                }
-            </div>
+                {/* ── Inline tracker panel ── */}
+                {showTracker && !isCancelled && (
+                    <div className="oc-tracker-panel">
+                        <div className="oc-tracker-panel-title">
+                            <Truck size={14} /> Order Tracking — #{order.id}
+                        </div>
+                        <div className="oc-tracker-timeline">
+                            {STEPS.map((step, i) => {
+                                const done   = i + 1 <= currentStep;
+                                const active = i + 1 === currentStep;
+                                const c      = STATUS_CONFIG[step];
+                                const descriptions = {
+                                    Confirmed:  'Your order has been received and confirmed.',
+                                    Processing: 'We are preparing your order for shipment.',
+                                    Shipped:    'Your order is on its way to you!',
+                                    Delivered:  'Your order has been delivered. Enjoy!',
+                                };
+                                return (
+                                    <div key={step} className={`oc-tl-item ${done ? 'done' : ''} ${active ? 'active' : ''}`}>
+                                        <div className="oc-tl-dot-col">
+                                            <div className="oc-tl-dot" style={done ? { background: c.color, borderColor: c.color } : {}}>
+                                                {done && <c.Icon size={12} color="#fff" />}
+                                            </div>
+                                            {i < STEPS.length - 1 && (
+                                                <div className={`oc-tl-vline ${done ? 'done' : ''}`} />
+                                            )}
+                                        </div>
+                                        <div className="oc-tl-content">
+                                            <div className="oc-tl-label" style={done ? { color: c.color } : {}}>{step}</div>
+                                            <div className="oc-tl-desc">{descriptions[step]}</div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
 
-        </div>
+                {/* ── Footer ── */}
+                <div className="oc-foot">
+                    <span className="oc-address">📍 {order.address || '—'}</span>
+                    <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                        {/* Track Order button */}
+                        {!isCancelled && order.status !== 'Delivered' && (
+                            <button
+                                className="oc-btn"
+                                onClick={() => setShowTracker(t => !t)}
+                                style={showTracker ? { background: 'hsl(240,20%,42%)', color: '#fff' } : {}}
+                            >
+                                {showTracker ? 'Hide Tracker' : 'Track Order'}
+                            </button>
+                        )}
+
+                        {/* Buy Again for delivered */}
+                        {order.status === 'Delivered' && (
+                            <button className="oc-btn" onClick={() => onNavigate('/products')}>
+                                Buy Again
+                            </button>
+                        )}
+
+                        {/* Cancel button */}
+                        {canCancel && (
+                            <button
+                                className="oc-btn"
+                                style={{ color: '#ef4444', borderColor: '#ef4444' }}
+                                onClick={() => { setShowCancel(true); setCancelError(''); }}
+                            >
+                                Cancel Order
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+            </div>
+        </>
     );
 };
 
@@ -161,7 +362,7 @@ const Profile = () => {
     // ── Addresses state ────────────────────────────────────────────────────────
     const [addresses,      setAddresses]      = useState([]);
     const [addrLoading,    setAddrLoading]    = useState(false);
-    const [addrError,      setAddrError]      = useState('');   // ← added
+    const [addrError,      setAddrError]      = useState('');
     const [showAddrModal,  setShowAddrModal]  = useState(false);
     const [editingAddr,    setEditingAddr]    = useState(null);
     const [addrForm,       setAddrForm]       = useState({ label: '', name: '', street: '', city: '', state: '', zip: '', country: 'India', is_default: false });
@@ -176,34 +377,17 @@ const Profile = () => {
         if (user?.email) { fetchOrders(user.email); fetchAddresses(user.email); }
     }, [user]);
 
-    // ── Fixed fetchAddresses with proper error handling ────────────────────────
     const fetchAddresses = async (email) => {
         setAddrLoading(true);
         setAddrError('');
         try {
-            const res  = await fetch('https://www.neurostore.in/api/addresses', {
-                headers: { 'User-Email': email },
-            });
-
-            if (!res.ok) {
-                setAddrError(`Server error: ${res.status}`);
-                setAddresses([]);
-                return;
-            }
-
+            const res  = await fetch('/api/addresses', { headers: { 'User-Email': email } });
+            if (!res.ok) { setAddrError(`Server error: ${res.status}`); setAddresses([]); return; }
             const data = await res.json();
-
-            // Handle both array response and { addresses: [...] } response
-            if (Array.isArray(data)) {
-                setAddresses(data);
-            } else if (Array.isArray(data.addresses)) {
-                setAddresses(data.addresses);
-            } else {
-                setAddresses([]);
-            }
-
+            if (Array.isArray(data))               setAddresses(data);
+            else if (Array.isArray(data.addresses)) setAddresses(data.addresses);
+            else                                    setAddresses([]);
         } catch (err) {
-            console.error('Address fetch error:', err);
             setAddrError('Could not connect to server.');
             setAddresses([]);
         } finally {
@@ -225,7 +409,7 @@ const Profile = () => {
 
     const saveAddr = async () => {
         try {
-            const url    = editingAddr ? `https://www.neurostore.in/api/addresses/${editingAddr.id}` : 'https://www.neurostore.in/api/addresses';
+            const url    = editingAddr ? `/api/addresses/${editingAddr.id}` : '/api/addresses';
             const method = editingAddr ? 'PUT' : 'POST';
             await fetch(url, {
                 method,
@@ -241,10 +425,7 @@ const Profile = () => {
 
     const deleteAddr = async (id) => {
         try {
-            await fetch(`https://www.neurostore.in/api/addresses/${id}`, {
-                method: 'DELETE',
-                headers: { 'User-Email': user.email },
-            });
+            await fetch(`/api/addresses/${id}`, { method: 'DELETE', headers: { 'User-Email': user.email } });
             fetchAddresses(user.email);
         } catch (err) {
             console.error('Delete address error:', err);
@@ -253,10 +434,7 @@ const Profile = () => {
 
     const setDefaultAddr = async (id) => {
         try {
-            await fetch(`https://www.neurostore.in/api/addresses/${id}/default`, {
-                method: 'PATCH',
-                headers: { 'User-Email': user.email },
-            });
+            await fetch(`/api/addresses/${id}/default`, { method: 'PATCH', headers: { 'User-Email': user.email } });
             fetchAddresses(user.email);
         } catch (err) {
             console.error('Set default address error:', err);
@@ -267,9 +445,7 @@ const Profile = () => {
         setOrdersLoading(true);
         setOrdersError('');
         try {
-            const res  = await fetch('https://www.neurostore.in/api/orders/user', {
-                headers: { 'User-Email': email },
-            });
+            const res  = await fetch('/api/orders/user', { headers: { 'User-Email': email } });
             const data = await res.json();
             if (data.orders) setOrders(data.orders);
             else setOrdersError('Could not load orders.');
@@ -278,6 +454,11 @@ const Profile = () => {
         } finally {
             setOrdersLoading(false);
         }
+    };
+
+    // When an order is updated (e.g. cancelled), sync local state
+    const handleOrderUpdated = (updatedOrder) => {
+        setOrders(prev => prev.map(o => o.id === updatedOrder.id ? updatedOrder : o));
     };
 
     const handleSignOut = async () => {
@@ -297,11 +478,10 @@ const Profile = () => {
         );
     }
 
-    const activeOrders    = orders.filter(o => o.status !== 'Delivered');
+    const activeOrders    = orders.filter(o => !['Delivered', 'Cancelled'].includes(o.status));
     const deliveredOrders = orders.filter(o => o.status === 'Delivered');
-    const totalSpent      = orders.reduce((s, o) => s + Number(o.total || 0), 0);
+    const totalSpent      = orders.filter(o => o.status !== 'Cancelled').reduce((s, o) => s + Number(o.total || 0), 0);
     const fmt             = (v) => Number(v).toLocaleString('en-IN', { maximumFractionDigits: 0 });
-
 
     // ── Orders content ─────────────────────────────────────────────────────────
     const OrdersContent = ({ limit }) => {
@@ -328,7 +508,16 @@ const Profile = () => {
                 <button className="btn-solid" style={{ marginTop: 20 }} onClick={() => navigate('/products')}>Start Shopping</button>
             </div>
         );
-        return list.map(o => <OrderCard key={o.id} order={o} products={products} onNavigate={navigate} />);
+        return list.map(o => (
+            <OrderCard
+                key={o.id}
+                order={o}
+                products={products}
+                onNavigate={navigate}
+                userEmail={user?.email}
+                onOrderUpdated={handleOrderUpdated}
+            />
+        ));
     };
 
     return (
@@ -497,19 +686,15 @@ const Profile = () => {
                                     </button>
                                 </div>
 
-                                {/* ── Error state ── */}
                                 {addrError && (
                                     <div className="empty-state">
                                         <MapPin size={40} />
                                         <h3>Could not load addresses</h3>
                                         <p>{addrError}</p>
-                                        <button className="btn-solid" style={{ marginTop: 16 }} onClick={() => fetchAddresses(user.email)}>
-                                            Retry
-                                        </button>
+                                        <button className="btn-solid" style={{ marginTop: 16 }} onClick={() => fetchAddresses(user.email)}>Retry</button>
                                     </div>
                                 )}
 
-                                {/* ── Loading state ── */}
                                 {!addrError && addrLoading && (
                                     <div className="empty-state">
                                         <RefreshCw size={28} style={{ animation: 'spin 1s linear infinite', color: 'hsl(240,20%,42%)' }} />
@@ -517,7 +702,6 @@ const Profile = () => {
                                     </div>
                                 )}
 
-                                {/* ── Empty state ── */}
                                 {!addrError && !addrLoading && addresses.length === 0 && (
                                     <div className="empty-state">
                                         <MapPin size={48} />
@@ -527,7 +711,6 @@ const Profile = () => {
                                     </div>
                                 )}
 
-                                {/* ── Address list ── */}
                                 {!addrError && !addrLoading && addresses.length > 0 && (
                                     <div className="address-grid">
                                         {addresses.map(addr => (
@@ -550,7 +733,7 @@ const Profile = () => {
                                     </div>
                                 )}
 
-                                {/* ── Add / Edit Modal ── */}
+                                {/* Add / Edit Modal */}
                                 {showAddrModal && (
                                     <div className="wl-popup-overlay" onClick={() => setShowAddrModal(false)}>
                                         <div onClick={e => e.stopPropagation()} style={{ background: '#fff', borderRadius: 20, padding: '32px 28px', width: '100%', maxWidth: 460, boxShadow: '0 24px 60px rgba(0,0,0,0.15)', position: 'relative' }}>

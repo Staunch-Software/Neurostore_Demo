@@ -60,6 +60,18 @@ const SearchBar = () => {
   };
 
   const handleResultClick = (product) => {
+    // Track this search click for admin analytics (fire-and-forget)
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('neuroUser') || 'null');
+      const headers = { 'Content-Type': 'application/json' };
+      if (storedUser?.email) headers['User-Email'] = storedUser.email;
+      fetch('/api/track/search', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ product_id: product.id, query }),
+      }).catch(() => { });
+    } catch (_) { }
+
     setIsOpen(false);
     setQuery("");
     setResults([]);
@@ -176,7 +188,7 @@ export const Navbar = () => {
 
             <a href="mailto:info@neurostore.ai" className="neuro-contact-link">
               <Mail size={14} />
-              info@neurostore.ai
+              info@staunchtec.com
             </a>
           </div>
 
@@ -274,7 +286,7 @@ export const Navbar = () => {
                     </div>
                     */}
 
-                    {/* Software */}
+                    {/* Software - commented out
                     <div
                       className="neuro-dropdown-item"
                       onMouseEnter={() => setSoftwareOpen(true)}
@@ -296,15 +308,18 @@ export const Navbar = () => {
                         </div>
                       )}
                     </div>
+                    */}
 
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
+            {/* Brands - commented out
             <Link to="/brands" className="neuro-nav-link">
               Brands
             </Link>
+            */}
 
             {/* Actions */}
             <div className="neuro-nav-actions">
