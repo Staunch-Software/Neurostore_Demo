@@ -179,7 +179,7 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* CATEGORIES SECTION */}
+            {/* CATEGORIES SECTION - Commented out & Hidden
             <section className="categories-section">
                 <div className="container categories-container">
                     <div className="categories-header animate-on-scroll">
@@ -193,12 +193,13 @@ const Home = () => {
                         <a href="/products/ai-workstations-and-servers" className="category-card animate-on-scroll"><img src={aiWorkstation} alt="Workstations" className="category-image" /><div className="category-overlay" /><div className="category-content"><h3 className="category-name">AI Workstations & Servers</h3></div></a>
                         <a href="/products/ai-dev-boards" className="category-card animate-on-scroll"><img src={developerKit} alt="Developer Kits" className="category-image" /><div className="category-overlay" /><div className="category-content"><h3 className="category-name">AI Developer Kits</h3></div></a>
                         <a href="/products/ai-vision-security" className="category-card animate-on-scroll"><img src={robotics} alt="Robotics" className="category-image" /><div className="category-overlay" /><div className="category-content"><h3 className="category-name">AI Vision Modules</h3></div></a>
-                        {/* <a href="/products/ai-software" className="category-card animate-on-scroll"><img src={software} alt="Software" className="category-image" /><div className="category-overlay" /><div className="category-content"><h3 className="category-name">AI Software</h3></div></a> */}
+                        <a href="/products/ai-software" className="category-card animate-on-scroll"><img src={software} alt="Software" className="category-image" /><div className="category-overlay" /><div className="category-content"><h3 className="category-name">AI Software</h3></div></a>
                         <a href="/products/ai-graphics-cards" className="category-card animate-on-scroll"><img src={components} alt="Components" className="category-image" /><div className="category-overlay" /><div className="category-content"><h3 className="category-name">AI Graphics Card</h3></div></a>
                         <a href="/products/ai-accessories" className="category-card animate-on-scroll"><img src={quantum} alt="Quantum Computing" className="category-image" /><div className="category-overlay" /><div className="category-content"><h3 className="category-name">AI Accessories</h3></div></a>
                     </div>
                 </div>
             </section>
+            */}
 
             {/* CYBERSECURITY SERVICES SECTION */}
             <section id="services" className="services-section">

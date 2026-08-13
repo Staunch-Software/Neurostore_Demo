@@ -259,7 +259,7 @@ export const Navbar = () => {
                       to="/products"
                       className="neuro-dropdown-item"
                     >
-                      All Products
+                      Foxit PDF Editor
                     </Link>
 
                     {/* Hardware - commented out

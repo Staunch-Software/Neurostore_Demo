@@ -224,6 +224,7 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                 ogType="website"
             />
         <div className="products-page-wrapper">
+            {/* Filter Sidebar - Commented out & Hidden
             <aside className="neuro-sidebar">
                 <div className="sidebar-header">
                     <SlidersHorizontal size={18} />
@@ -246,7 +247,6 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                     </div>
                 </div>
 
-                {/* Price Range - commented out
                 <div className="filter-section">
                     <div className="price-info">
                         <h4>Price Range</h4>
@@ -262,8 +262,8 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                         />
                     </div>
                 </div>
-                */}
             </aside>
+            */}
 
             <main className="neuro-products-content">
                 <div className="neuro-products-header">
