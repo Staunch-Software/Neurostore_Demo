@@ -610,5 +610,10 @@
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://neurostore.in/products/ai-software/foxit-pdf-editor-pro</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
  
 </urlset>
