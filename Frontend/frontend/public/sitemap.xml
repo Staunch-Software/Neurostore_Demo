@@ -3,12 +3,12 @@
  
   <!-- Core Pages -->
   <url>
-    <loc>https://www.neurostore.in/</loc>
+    <loc>https://neurostore.in/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://www.neurostore.in/about</loc>
+    <loc>https://neurostore.in/about</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -18,29 +18,29 @@
     <changefreq>monthly</changefreq>
   </url> -->
   <url>
-    <loc>https://www.neurostore.in/wishlist</loc>
+    <loc>https://neurostore.in/wishlist</loc>
     <priority>0.5</priority>
     <changefreq>never</changefreq>
   </url>
   <url>
-    <loc>https://www.neurostore.in/cart</loc>
+    <loc>https://neurostore.in/cart</loc>
     <priority>0.5</priority>
     <changefreq>never</changefreq>
   </url>
   <url>
-    <loc>https://www.neurostore.in/login</loc>
+    <loc>https://neurostore.in/login</loc>
     <priority>0.5</priority>
     <changefreq>never</changefreq>
   </url>
   <url>
-    <loc>https://www.neurostore.in/contact</loc>
+    <loc>https://neurostore.in/contact</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
  
   <!-- Products Root -->
   <url>
-    <loc>https://www.neurostore.in/products</loc>
+    <loc>https://neurostore.in/products</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
   </url>
