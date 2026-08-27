@@ -14,12 +14,15 @@ const generateSlug = (text) => {
 
 const Products = () => {
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount } = useContext(ShopContext);
-    const [selectedCategory, setSelectedCategory] = useState("All");
-    const [justAdded, setJustAdded] = useState({});
-    const [showCartDrawer, setShowCartDrawer] = useState(false);
     const { category } = useParams();
     const navigate = useNavigate();
     const { pathname } = useLocation(); 
+
+    const [selectedCategory, setSelectedCategory] = useState("All");
+    const [justAdded, setJustAdded] = useState({});
+    const [showCartDrawer, setShowCartDrawer] = useState(false);
+
+    const categories = useMemo(() => ["All", ...new Set(products.map(p => p.category))], [products]);
 
     useEffect(() => {
         if (category) {
@@ -30,19 +33,18 @@ const Products = () => {
         }
     }, [category, products]);
 
-    const [priceRange, setPriceRange] = useState(600000);
+    const filtered = useMemo(() => {
+        return products.filter(p => {
+            return selectedCategory === "All" || p.category === selectedCategory || (selectedCategory === "Software" && p.category !== "AI Software");
+        });
+    }, [products, selectedCategory]);
+
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9;
 
-    const categories = useMemo(() => ["All", ...new Set(products.map(p => p.category))], [products]);
-
-    const filtered = products.filter(p =>
-        (selectedCategory === "All" || p.category === selectedCategory) && p.price <= priceRange
-    );
-
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedCategory, priceRange]);
+    }, [selectedCategory]);
 
     useEffect(() => {
         if (showCartDrawer) {
@@ -59,8 +61,67 @@ const Products = () => {
     const totalPages       = Math.ceil(filtered.length / itemsPerPage);
 
     const paginate = (pageNumber) => {
+        if (pageNumber < 1 || pageNumber > totalPages) return;
         setCurrentPage(pageNumber);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const getPaginationItems = () => {
+        if (totalPages <= 7) {
+            return Array.from({ length: totalPages }, (_, i) => ({
+                type: 'page',
+                page: i + 1,
+                key: `page-${i + 1}`
+            }));
+        }
+
+        const items = [];
+        items.push({ type: 'page', page: 1, key: 'page-1' });
+
+        const showLeftDots = currentPage > 4;
+        const showRightDots = currentPage < totalPages - 3;
+
+        if (!showLeftDots && showRightDots) {
+            for (let i = 2; i <= 5; i++) {
+                items.push({ type: 'page', page: i, key: `page-${i}` });
+            }
+            items.push({
+                type: 'dots',
+                page: Math.min(totalPages, currentPage + 4),
+                key: 'dots-right',
+                label: 'Jump 4 pages forward'
+            });
+            items.push({ type: 'page', page: totalPages, key: `page-${totalPages}` });
+        } else if (showLeftDots && !showRightDots) {
+            items.push({
+                type: 'dots',
+                page: Math.max(1, currentPage - 4),
+                key: 'dots-left',
+                label: 'Jump 4 pages backward'
+            });
+            for (let i = totalPages - 4; i <= totalPages; i++) {
+                items.push({ type: 'page', page: i, key: `page-${i}` });
+            }
+        } else {
+            items.push({
+                type: 'dots',
+                page: Math.max(1, currentPage - 3),
+                key: 'dots-left',
+                label: 'Jump 3 pages backward'
+            });
+            for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                items.push({ type: 'page', page: i, key: `page-${i}` });
+            }
+            items.push({
+                type: 'dots',
+                page: Math.min(totalPages, currentPage + 3),
+                key: 'dots-right',
+                label: 'Jump 3 pages forward'
+            });
+            items.push({ type: 'page', page: totalPages, key: `page-${totalPages}` });
+        }
+
+        return items;
     };
 
     const handleAddToCart = (product) => {
@@ -224,7 +285,6 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                 ogType="website"
             />
         <div className="products-page-wrapper">
-            {/* Filter Sidebar - Commented out & Hidden
             <aside className="neuro-sidebar">
                 <div className="sidebar-header">
                     <SlidersHorizontal size={18} />
@@ -232,38 +292,39 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                 </div>
 
                 <div className="filter-section">
-                    <h4>Collections</h4>
+                    <h4>Software Type</h4>
                     <div className="category-pills">
-                        {categories.map(cat => (
-                            <button
-                                key={cat}
-                                className={`pill-btn ${selectedCategory === cat ? 'active' : ''}`}
-                                onClick={() => navigate(cat === "All" ? "/products" : `/products/${generateSlug(cat)}`)}
-                            >
-                                {cat}
-                                <ChevronRight size={14} className="pill-arrow" />
-                            </button>
-                        ))}
+                        {categories.map(cat => {
+                            const count = cat === "All" ? products.length : products.filter(p => p.category === cat).length;
+                            return (
+                                <button
+                                    key={cat}
+                                    className={`pill-btn ${selectedCategory === cat ? 'active' : ''}`}
+                                    onClick={() => {
+                                        setSelectedCategory(cat);
+                                        navigate(cat === "All" ? "/products" : `/products/${generateSlug(cat)}`);
+                                    }}
+                                >
+                                    <span>{cat}</span>
+                                    <span className="pill-count-badge">{count}</span>
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
-                <div className="filter-section">
-                    <div className="price-info">
-                        <h4>Price Range</h4>
-                        <span className="price-tag">₹{(priceRange / 1000).toFixed(0)}k</span>
-                    </div>
-                    <div className="slider-wrapper">
-                        <input
-                            type="range"
-                            min="0" max="600000" step="10000"
-                            value={priceRange}
-                            onChange={(e) => setPriceRange(Number(e.target.value))}
-                            className="neuro-slider"
-                        />
-                    </div>
-                </div>
+                {selectedCategory !== "All" && (
+                    <button
+                        className="clear-filters-btn"
+                        onClick={() => {
+                            setSelectedCategory("All");
+                            navigate("/products");
+                        }}
+                    >
+                        Reset Filter
+                    </button>
+                )}
             </aside>
-            */}
 
             <main className="neuro-products-content">
                 <div className="neuro-products-header">
@@ -358,32 +419,56 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                 </div>
 
                 {totalPages > 1 && (
-                    <div className="pagination-container">
-                        <button
-                            className="page-btn nav-btn"
-                            onClick={() => paginate(currentPage - 1)}
-                            disabled={currentPage === 1}
-                        >
-                            <ChevronLeft size={16} /> Prev
-                        </button>
-
-                        {[...Array(totalPages)].map((_, i) => (
+                    <div className="pagination-wrapper">
+                        <div className="pagination-container">
                             <button
-                                key={i + 1}
-                                onClick={() => paginate(i + 1)}
-                                className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
+                                className="page-btn nav-btn"
+                                onClick={() => paginate(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                aria-label="Previous Page"
                             >
-                                {i + 1}
+                                <ChevronLeft size={16} /> Prev
                             </button>
-                        ))}
 
-                        <button
-                            className="page-btn nav-btn"
-                            onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                        >
-                            Next <ChevronRight size={16} />
-                        </button>
+                            <div className="pagination-track">
+                                {getPaginationItems().map((item) => {
+                                    if (item.type === 'dots') {
+                                        return (
+                                            <button
+                                                key={item.key}
+                                                className="page-btn ellipsis-btn"
+                                                onClick={() => paginate(item.page)}
+                                                title={item.label || 'Jump pages'}
+                                                aria-label={item.label || 'Jump pages'}
+                                            >
+                                                •••
+                                            </button>
+                                        );
+                                    }
+
+                                    return (
+                                        <button
+                                            key={item.key}
+                                            onClick={() => paginate(item.page)}
+                                            className={`page-btn number-btn ${currentPage === item.page ? 'active' : ''}`}
+                                            aria-label={`Page ${item.page}`}
+                                            aria-current={currentPage === item.page ? 'page' : undefined}
+                                        >
+                                            {item.page}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <button
+                                className="page-btn nav-btn"
+                                onClick={() => paginate(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                aria-label="Next Page"
+                            >
+                                Next <ChevronRight size={16} />
+                            </button>
+                        </div>
                     </div>
                 )}
             </main>

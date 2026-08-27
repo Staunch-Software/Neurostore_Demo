@@ -460,54 +460,109 @@
 }
 
 /* PAGINATION STYLES */
-.pagination-container {
+.pagination-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
     margin-top: 50px;
+    margin-bottom: 30px;
     width: 100%;
+}
+
+.pagination-container {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    padding: 6px 10px;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    border: 1px solid #e2e8f0;
+    margin: 0 auto;
+}
+
+.pagination-track {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.3s ease;
 }
 
 .page-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    width: 40px;
+    gap: 6px;
+    min-width: 40px;
     height: 40px;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
-    background: white;
-    color: #4b5563;
+    padding: 0 12px;
+    border-radius: 9px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #334155;
     font-weight: 600;
+    font-size: 0.88rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: 'Inter', sans-serif;
+    user-select: none;
 }
 
-.page-btn:hover:not(:disabled) {
-    background: #f9fafb;
+.page-btn.number-btn {
+    min-width: 40px;
+    padding: 0;
+}
+
+.page-btn:hover:not(:disabled):not(.ellipsis-btn) {
+    background: #eff6ff;
     color: #2563eb;
-    border-color: #2563eb;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-color: #3b82f6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
 }
 
 .page-btn.active {
-    background: #2563eb;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     color: white;
     border-color: #2563eb;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    font-weight: 700;
+    transform: scale(1.04);
 }
 
 .page-btn.nav-btn {
-    width: auto;
     padding: 0 16px;
+    font-size: 0.85rem;
+    background: #f8fafc;
+}
+
+.page-btn.ellipsis-btn {
+    min-width: 36px;
+    height: 40px;
+    padding: 0 4px;
+    background: transparent;
+    border: 1px dashed #cbd5e1;
+    color: #94a3b8;
+    letter-spacing: 2px;
+    font-size: 0.75rem;
+}
+
+.page-btn.ellipsis-btn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #2563eb;
+    transform: translateY(-1px);
 }
 
 .page-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
-    background: #f3f4f6;
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    box-shadow: none !important;
+    transform: none !important;
 }
 
 /* Responsive */
@@ -527,4 +582,75 @@
     .neuro-sidebar { width: 100%; position: static; margin-bottom: 30px; }
     .neuro-products-grid { grid-template-columns: 1fr; }
     .p-action-buttons { flex-wrap: wrap; }
+}
+
+/* Enhanced Filter Sidebar Styles */
+.pill-count-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.06);
+    color: #64748b;
+    transition: all 0.2s ease;
+}
+
+.pill-btn.active .pill-count-badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.term-pills {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.term-pill-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.term-pill-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.term-pill-btn.active {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+.clear-filters-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px 16px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
 }

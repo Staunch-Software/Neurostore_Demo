@@ -71,16 +71,15 @@ export const ShopContextProvider = (props) => {
 
                 const backendProducts = await productsResponse.json();
 
-                // Only include products that are active in localImageMap (src/assets/products.js)
-                const finalProducts = localImageMap.map((locItem) => {
-                    const dbItem = backendProducts.find(
-                        (db) => db.id === locItem.id
-                    );
-
-                    return dbItem
-                        ? { ...dbItem, image: locItem.image }
-                        : locItem;
-                });
+                const finalProducts = (backendProducts && backendProducts.length > 0)
+                    ? backendProducts.map((dbItem) => {
+                        const locItem = localImageMap.find((loc) => loc.id === dbItem.id);
+                        return {
+                            ...dbItem,
+                            image: locItem?.image || dbItem.image || "/products/microsoft_software.svg"
+                        };
+                    })
+                    : localImageMap;
 
                 setProducts(finalProducts);
 
@@ -145,11 +144,35 @@ export const ShopContextProvider = (props) => {
 
             } catch (error) {
 
-                console.error(
-                    "CRITICAL ERROR: Backend (app.py) is offline!"
+                console.warn(
+                    "Backend offline or unreachable, utilizing local product catalog:",
+                    error
                 );
 
-                setServerError(true);
+                setProducts(localImageMap);
+
+                let guestCart = {};
+                let guestWishlist = {};
+                try {
+                    guestCart = JSON.parse(localStorage.getItem("guestCart")) || {};
+                } catch {
+                    guestCart = {};
+                }
+                try {
+                    guestWishlist = JSON.parse(localStorage.getItem("guestWishlist")) || {};
+                } catch {
+                    guestWishlist = {};
+                }
+
+                const formattedCart = {};
+                const formattedWishlist = {};
+                localImageMap.forEach((p) => {
+                    formattedCart[p.id] = guestCart[p.id] || 0;
+                    formattedWishlist[p.id] = guestWishlist[p.id] || 0;
+                });
+
+                setCartItems(formattedCart);
+                setWishlistItems(formattedWishlist);
                 setIsLoaded(true);
             }
         };

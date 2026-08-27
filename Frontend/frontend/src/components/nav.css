@@ -173,13 +173,15 @@
 .neuro-dropdown-submenu {
   position: absolute;
   left: 100%;
-  top: 0;
+  top: -4px;
   background: white;
-  width: 200px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  padding: 8px 0;
-  margin-left: 5px;
+  width: 210px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  border: 1px solid #f0f0f5;
+  padding: 6px 0;
+  margin-left: 4px;
+  z-index: 150;
 }
 
 /* ============================================

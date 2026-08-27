@@ -26,7 +26,8 @@ const hardwareItems = [
 ];
 
 const softwareItems = [
-  { name: 'Non AI Software', href: '/products/software' },
+  { name: 'All Products', href: '/products' },
+  { name: 'Software', href: '/products/software' },
   { name: 'AI Software', href: '/products/ai-software' },
 ];
 
@@ -255,61 +256,57 @@ export const Navbar = () => {
                     className="neuro-dropdown-menu"
                   >
 
-                    <Link
-                      to="/products"
-                      className="neuro-dropdown-item"
-                    >
-                      Foxit PDF Editor
-                    </Link>
-
-                    {/* Hardware - commented out
-                    <div
-                      className="neuro-dropdown-item"
-                      onMouseEnter={() => setHardwareOpen(true)}
-                      onMouseLeave={() => setHardwareOpen(false)}
-                    >
-                      Hardware <ChevronRight size={14} />
-
-                      {hardwareOpen && (
-                        <div className="neuro-dropdown-submenu">
-                          {hardwareItems.map(item => (
-                            <Link
-                              key={item.name}
-                              to={item.href}
-                              className="neuro-dropdown-item"
-                            >
-                              {item.name}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    */}
-
-                    {/* Software - commented out
+                    {/* All Products with Sub-dropdown for Software and AI Software */}
                     <div
                       className="neuro-dropdown-item"
                       onMouseEnter={() => setSoftwareOpen(true)}
                       onMouseLeave={() => setSoftwareOpen(false)}
                     >
-                      Software <ChevronRight size={14} />
+                      <Link
+                        to="/products"
+                        style={{
+                          textDecoration: 'none',
+                          color: 'inherit',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          width: '100%'
+                        }}
+                        onClick={() => {
+                          setProductsOpen(false);
+                          setSoftwareOpen(false);
+                        }}
+                      >
+                        <span>All Products</span>
+                        <ChevronRight size={14} />
+                      </Link>
 
                       {softwareOpen && (
                         <div className="neuro-dropdown-submenu">
-                          {softwareItems.map(item => (
-                            <Link
-                              key={item.name}
-                              to={item.href}
-                              className="neuro-dropdown-item"
-                            >
-                              {item.name}
-                            </Link>
-                          ))}
+                          <Link
+                            to="/products/software"
+                            className="neuro-dropdown-item"
+                            onClick={() => {
+                              setProductsOpen(false);
+                              setSoftwareOpen(false);
+                            }}
+                          >
+                            Software
+                          </Link>
+
+                          <Link
+                            to="/products/ai-software"
+                            className="neuro-dropdown-item"
+                            onClick={() => {
+                              setProductsOpen(false);
+                              setSoftwareOpen(false);
+                            }}
+                          >
+                            AI Software
+                          </Link>
                         </div>
                       )}
                     </div>
-                    */}
-
                   </motion.div>
                 )}
               </AnimatePresence>
