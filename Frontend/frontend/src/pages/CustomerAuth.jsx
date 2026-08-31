@@ -5,7 +5,7 @@ import { auth, googleProvider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth';
 import './CustomerAuth.css';
 
-const API = 'https://www.neurostore.in';
+const API = 'https://neurostore.in';
 
 // ── OtpScreen ─────────────────────────────────────────────────────────────────
 const OtpScreen = ({

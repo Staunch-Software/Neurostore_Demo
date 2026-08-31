@@ -12,7 +12,7 @@ const TermsAndConditions = () => {
           title="Terms and Conditions | Neurostore"
           description="Read Neurostore's terms and conditions governing the use of our website, products and services. Effective from 1st January 2006, updated August 2025."
           keywords="neurostore terms and conditions, AI hardware store terms, neurostore legal, neurostore user agreement"
-          ogImage="https://www.neurostore.in/og-image.webp"
+          ogImage="https://neurostore.in/og-image.webp"
           ogType="website"
         />
     <div className="policy-page">

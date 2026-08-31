@@ -281,7 +281,7 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                 title={currentSEO.title}
                 description={currentSEO.description}
                 keywords={currentSEO.keywords}
-                ogImage="https://www.neurostore.in/og-image.webp"
+                ogImage="https://neurostore.in/og-image.webp"
                 ogType="website"
             />
         <div className="products-page-wrapper">

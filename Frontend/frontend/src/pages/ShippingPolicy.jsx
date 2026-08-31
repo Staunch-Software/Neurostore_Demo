@@ -12,7 +12,7 @@ const ShippingPolicy = () => {
         title="Shipping Policy | Neurostore"
         description="Read Neurostore's shipping policy, refund and cancellation terms. Orders cancelled within 7 days. Refunds processed within 15 days. Fast delivery across India via DHL, FedEx and UPS."
         keywords="neurostore shipping policy, AI hardware delivery India, neurostore refund policy, neurostore cancellation policy, AI hardware shipping India"
-        ogImage="https://www.neurostore.in/og-image.webp"
+        ogImage="https://neurostore.in/og-image.webp"
         ogType="website"
       />
     <div className="policy-page">

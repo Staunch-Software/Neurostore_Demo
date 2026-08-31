@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
           title="Privacy Policy | Neurostore"
           description="Read Neurostore's privacy policy. Learn how we collect, use and protect your personal data in compliance with the Information Technology Act 2000. Updated August 2025."
           keywords="neurostore privacy policy, AI hardware store privacy, neurostore data protection, neurostore personal data policy"
-          ogImage="https://www.neurostore.in/og-image.webp"
+          ogImage="https://neurostore.in/og-image.webp"
           ogType="website"
         />
     <div className="policy-page">

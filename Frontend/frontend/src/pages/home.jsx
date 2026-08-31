@@ -87,7 +87,7 @@ const Home = () => {
 
         try {
             // Python Backend handles this natively now
-            const response = await fetch(`${backendUrl || 'https://www.neurostore.in'}/api/inquiry`, {
+            const response = await fetch(`${backendUrl || 'https://neurostore.in'}/api/inquiry`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(inquiryData)
@@ -111,7 +111,7 @@ const Home = () => {
                 title="Buy AI Cameras, GPU Servers & AI Hardware in India | Neurostore"
                 description="Neurostore is India's trusted AI hardware store. Buy AI cameras, GPU workstations, NVIDIA graphics cards, Raspberry Pi, developer kits and cybersecurity solutions. Fast delivery across India."
                 keywords="buy AI camera India, AI hardware store India, GPU server price India, NVIDIA RTX 5090 buy India, Raspberry Pi 5 buy India, AI workstation India, neurostore"
-                ogImage="https://www.neurostore.in/og-image.webp"
+                ogImage="https://neurostore.in/og-image.webp"
                 ogType="website"
             />
             {/* HERO BANNER SECTION */}

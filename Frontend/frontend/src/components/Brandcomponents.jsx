@@ -65,7 +65,7 @@ export default function BrandSuppliers() {
         title="AI Hardware Brand Suppliers | Neurostore India"
         description="Explore Neurostore's brand suppliers including AMD, NVIDIA, Intel, Dell, HP, Samsung, Seagate, Western Digital and more. India's trusted AI hardware distributor."
         keywords="AI hardware brands India, AMD distributor India, Intel reseller India, Dell supplier India, HP hardware India, Samsung storage India, Seagate India, neurostore brands"
-        ogImage="https://www.neurostore.in/og-image.webp"
+        ogImage="https://neurostore.in/og-image.webp"
         ogType="website"
       />
     <div className="brand-container">

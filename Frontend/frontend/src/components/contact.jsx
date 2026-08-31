@@ -246,7 +246,7 @@ const Contact = () => {
 
       try {
         // Connected to Python unified backend /api/inquiry
-        const response = await fetch("https://www.neurostore.in/api/inquiry", {
+        const response = await fetch("https://neurostore.in/api/inquiry", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -280,7 +280,7 @@ const Contact = () => {
   title="Contact Neurostore | AI Hardware Sales & Support India"
   description="Contact Neurostore for AI hardware sales, GPU pricing, bulk orders and technical support. Reach us at our Chennai office or via WhatsApp, email and phone."
   keywords="contact neurostore, AI hardware support India, GPU sales inquiry India, bulk AI hardware order India, neurostore Chennai"
-  ogImage="https://www.neurostore.in/og-image.webp"
+  ogImage="https://neurostore.in/og-image.webp"
   ogType="website"
 />
         <section id="contact" className="contact-page-contact-section">
@@ -352,7 +352,7 @@ const Contact = () => {
                         </div>
                         <div className="contact-page-contact-details">
                             <h3 className="contact-page-contact-label">Website</h3>
-                            <a href="https://www.neurostore.in" className="contact-page-contact-link" target="_blank" rel="noopener noreferrer">
+                            <a href="https://neurostore.in" className="contact-page-contact-link" target="_blank" rel="noopener noreferrer">
                                 neurostore.in
                             </a>
                         </div>
