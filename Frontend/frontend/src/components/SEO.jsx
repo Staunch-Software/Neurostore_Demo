@@ -5,11 +5,11 @@ function SEO({
   title, 
   description, 
   keywords,
-  ogImage = 'https://www.neurostore.in/og-image.webp',
+  ogImage = 'https://neurostore.in/og-image.webp',
   ogType = 'website'
 }) {
   const location = useLocation();
-  const canonicalUrl = `https://www.neurostore.in${location.pathname}`;
+  const canonicalUrl = `https://neurostore.in${location.pathname}`;
 
   return (
     <Helmet>
