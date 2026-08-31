@@ -92,55 +92,6 @@ const About = () => {
                                     </a>
                                 </div>
                             </div>
-
-                            {/* Right - Stats Grid */}
-                            <div className="stats-grid animate-on-scroll">
-                                <div className="stat-card">
-                                    <div className="stat-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="9" cy="7" r="4"></circle>
-                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                        </svg>
-                                    </div>
-                                    <div className="stat-value">500+</div>
-                                    <div className="stat-label">Enterprise Clients</div>
-                                </div>
-
-                                <div className="stat-card">
-                                    <div className="stat-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <line x1="2" y1="12" x2="22" y2="12"></line>
-                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                        </svg>
-                                    </div>
-                                    <div className="stat-value">50+</div>
-                                    <div className="stat-label">Countries Served</div>
-                                </div>
-
-                                <div className="stat-card">
-                                    <div className="stat-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <circle cx="12" cy="8" r="6"></circle>
-                                            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
-                                        </svg>
-                                    </div>
-                                    <div className="stat-value">25+</div>
-                                    <div className="stat-label">Industry Awards</div>
-                                </div>
-
-                                <div className="stat-card">
-                                    <div className="stat-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                                        </svg>
-                                    </div>
-                                    <div className="stat-value">99.9%</div>
-                                    <div className="stat-label">Uptime Guarantee</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

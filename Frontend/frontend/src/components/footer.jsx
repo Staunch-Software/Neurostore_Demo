@@ -10,9 +10,9 @@ const Footer = () => {
           <div className="footer-content">
             {/* Company Info Section */}
             <div className="footer-column company-info">
-              <h3 className="footer-title">Staunch Tech</h3>
+              <h3 className="footer-title">Neurostore</h3>
               <p className="company-description">
-                GeM Registered IT, Cybersecurity & Digital Solutions Provider in India
+                Empowering Businesses with AI Innovation
               </p>
               <a href="/about" className="read-more">
                 read more →
