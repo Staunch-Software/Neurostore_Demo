@@ -101,7 +101,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="container footer-bottom-container">
           <div className="footer-bottom-copyright">
-            <p>&copy; Staunch Technologies Pvt Ltd. All Rights Reserved.</p>
+            <p>&copy; Neurostore. All Rights Reserved.</p>
           </div>
           <div className="footer-bottom-links">
             <Link to="/terms-and-conditions">Terms and<br />Conditions</Link>
