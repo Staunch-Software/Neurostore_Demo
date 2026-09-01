@@ -7,8 +7,7 @@ Allow: /
 User-agent: *
 Allow: /
 
-Disallow: /cart
-Disallow: /wishlist
+
 Disallow: /login
 
 Sitemap: https:/neurostore.in/sitemap.xml
