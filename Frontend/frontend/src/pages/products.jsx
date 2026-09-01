@@ -1,5 +1,5 @@
 import React, { useContext, useState, useMemo, useEffect } from 'react';
-import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useParams,  } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import SEO from '../components/SEO';
 import { ShopContext } from '../components/context/ShopContext';
@@ -16,21 +16,19 @@ const Products = () => {
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount } = useContext(ShopContext);
     const { category } = useParams();
     const navigate = useNavigate();
-    const { pathname } = useLocation(); 
-
-    const [selectedCategory, setSelectedCategory] = useState("All");
+    
     const [justAdded, setJustAdded] = useState({});
     const [showCartDrawer, setShowCartDrawer] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 9;
 
-    const categories = useMemo(() => ["All", ...new Set(products.map(p => p.category))], [products]);
 
-    useEffect(() => {
+    const selectedCategory = useMemo(() => {
         if (category) {
             const matched = products.find(p => generateSlug(p.category) === category);
-            setSelectedCategory(matched ? matched.category : "All");
-        } else {
-            setSelectedCategory("All");
+            return matched ? matched.category : "All";
         }
+        return "All";
     }, [category, products]);
 
     const filtered = useMemo(() => {
@@ -39,10 +37,10 @@ const Products = () => {
         });
     }, [products, selectedCategory]);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 9;
-
+    // Reset to first page when category changes
+     
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCurrentPage(1);
     }, [selectedCategory]);
 
@@ -285,7 +283,7 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                 ogType="website"
             />
         <div className="products-page-wrapper">
-            <aside className="neuro-sidebar">
+            {/* <aside className="neuro-sidebar">
                 <div className="sidebar-header">
                     <SlidersHorizontal size={18} />
                     <h3 className="neuro-filter-title">Filter Options</h3>
@@ -324,7 +322,7 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                         Reset Filter
                     </button>
                 )}
-            </aside>
+            </aside> */}
 
             <main className="neuro-products-content">
                 <div className="neuro-products-header">
