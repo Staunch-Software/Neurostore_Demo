@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import logo from '../assets/logo.ico';
 import {
   Phone, Mail, Facebook, Instagram, Linkedin, Twitter,
@@ -9,27 +10,8 @@ import {
 } from 'lucide-react';
 import { ShopContext } from './context/ShopContext';
 import './nav.css';
-
 // Data for Dropdowns
-const hardwareItems = [
-  { name: 'AI Graphics Cards', href: '/products/ai-graphics-cards' },
-  { name: 'AI Vision & Security', href: '/products/ai-vision-security' },
-  { name: 'AI Dev Boards', href: '/products/ai-dev-boards' },
-  { name: 'AI Workstation GPUs', href: '/products/ai-workstation-gpus' },
-  { name: 'AI Networking & Storage', href: '/products/ai-networking-storage' },
-  { name: 'AI Monitor', href: '/products/ai-monitors' },
-  { name: 'AI Smart Monitor', href: '/products/ai-smart-monitors' },
-  { name: 'AI Commercial Displays', href: '/products/ai-commercial-displays' },
-  { name: 'AI Interactive Displays', href: '/products/ai-interactive-displays' },
-  { name: 'AI AR/VR Wearables', href: '/products/ai-ar-vr-wearables' },
-  { name: 'AI Accessories', href: '/products/ai-accessories' },
-];
 
-const softwareItems = [
-  { name: 'All Products', href: '/products' },
-  { name: 'Software', href: '/products/software' },
-  { name: 'AI Software', href: '/products/ai-software' },
-];
 
 // --- SEARCH SLUG HELPER ---
 const generateSlug = (text) => {
@@ -71,7 +53,8 @@ const SearchBar = () => {
         headers,
         body: JSON.stringify({ product_id: product.id, query }),
       }).catch(() => { });
-    } catch (_) { }
+     
+    } catch (_) { /* empty */ }
 
     setIsOpen(false);
     setQuery("");
@@ -156,7 +139,6 @@ export const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
-  const [hardwareOpen, setHardwareOpen] = useState(false);
   const [softwareOpen, setSoftwareOpen] = useState(false);
 
   const cartCount = Object.values(cartItems || {}).reduce(
@@ -277,13 +259,13 @@ export const Navbar = () => {
                           setSoftwareOpen(false);
                         }}
                       >
-                        <span>All Products</span>
-                        <ChevronRight size={14} />
+                        <span>Microsoft</span>
+                        
                       </Link>
 
                       {softwareOpen && (
                         <div className="neuro-dropdown-submenu">
-                          <Link
+                          {/* <Link
                             to="/products/software"
                             className="neuro-dropdown-item"
                             onClick={() => {
@@ -291,10 +273,10 @@ export const Navbar = () => {
                               setSoftwareOpen(false);
                             }}
                           >
-                            Software
-                          </Link>
+                           
+                          </Link> */}
 
-                          <Link
+                          {/* <Link
                             to="/products/ai-software"
                             className="neuro-dropdown-item"
                             onClick={() => {
@@ -302,8 +284,8 @@ export const Navbar = () => {
                               setSoftwareOpen(false);
                             }}
                           >
-                            AI Software
-                          </Link>
+                           
+                          </Link> */}
                         </div>
                       )}
                     </div>
@@ -311,12 +293,12 @@ export const Navbar = () => {
                 )}
               </AnimatePresence>
             </div>
-
+ 
             {/* Brands - commented out
             <Link to="/brands" className="neuro-nav-link">
               Brands
             </Link>
-            */}
+           
 
             {/* Actions */}
             <div className="neuro-nav-actions">

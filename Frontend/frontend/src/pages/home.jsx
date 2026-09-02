@@ -3,14 +3,14 @@ import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import '../pages/home.css';
 import BookService from '../components/bookservice';
-import aiCameras from '../assets/AI Cameras.jpg.jpeg';
-import aiServers from '../assets/AI Server.webp';
-import aiWorkstation from '../assets/AI Workstation.webp';
-import developerKit from '../assets/AI Developer kit.jpg.jpeg';
-import robotics from '../assets/AI Vision module.jpg.jpeg';
-import software from '../assets/AI Software.webp';
-import components from '../assets/AI Chips.jpg.jpeg';
-import quantum from '../assets/AI Books.jpeg';
+// import aiCameras from '../assets/AI Cameras.jpg.jpeg';
+// import aiServers from '../assets/AI Server.webp';
+// import aiWorkstation from '../assets/AI Workstation.webp';
+// import developerKit from '../assets/AI Developer kit.jpg.jpeg';
+// import robotics from '../assets/AI Vision module.jpg.jpeg';
+// import software from '../assets/AI Software.webp';
+// import components from '../assets/AI Chips.jpg.jpeg';
+// import quantum from '../assets/AI Books.jpeg';
 import bannerAllProducts from '../assets/hero-banner-1.jpg';
 import bannerOffers from '../assets/banner-offers.jpg';
 import bannerAiTech from '../assets/banner-ai-tech.jpg';
@@ -70,7 +70,6 @@ const Home = () => {
             clearInterval(autoplayInterval);
             observer.disconnect();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // ===== SEND INQUIRY TO UNIFIED PYTHON BACKEND =====
