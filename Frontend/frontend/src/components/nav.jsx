@@ -263,9 +263,9 @@ export const Navbar = () => {
                         
                       </Link>
 
-                      {softwareOpen && (
+                      {/* {softwareOpen && (
                         <div className="neuro-dropdown-submenu">
-                          {/* <Link
+                          <Link
                             to="/products/software"
                             className="neuro-dropdown-item"
                             onClick={() => {
@@ -274,9 +274,9 @@ export const Navbar = () => {
                             }}
                           >
                            
-                          </Link> */}
+                          </Link>
 
-                          {/* <Link
+                          <Link
                             to="/products/ai-software"
                             className="neuro-dropdown-item"
                             onClick={() => {
@@ -285,9 +285,9 @@ export const Navbar = () => {
                             }}
                           >
                            
-                          </Link> */}
+                          </Link>
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </motion.div>
                 )}
