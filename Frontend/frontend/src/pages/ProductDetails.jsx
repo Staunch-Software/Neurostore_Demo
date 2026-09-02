@@ -12,7 +12,7 @@ const generateSlug = (text) => {
 };
 
 const ProductDetails = () => {
-    const { category, productName } = useParams();
+    const { productName } = useParams();
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount, wishlistItems, toggleWishlist } = useContext(ShopContext);
     const navigate = useNavigate();
     const { pathname } = useLocation(); 

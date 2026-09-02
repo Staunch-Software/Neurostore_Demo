@@ -1,5 +1,5 @@
 import React, { useContext, useState, useMemo, useEffect } from 'react';
-import { Link, useNavigate, useParams,  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import SEO from '../components/SEO';
 import { ShopContext } from '../components/context/ShopContext';
@@ -14,7 +14,6 @@ const generateSlug = (text) => {
 
 const Products = () => {
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount } = useContext(ShopContext);
-    const { category } = useParams();
     const navigate = useNavigate();
     
     const [justAdded, setJustAdded] = useState({});
@@ -22,27 +21,16 @@ const Products = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9;
 
-
-    const selectedCategory = useMemo(() => {
-        if (category) {
-            const matched = products.find(p => generateSlug(p.category) === category);
-            return matched ? matched.category : "All";
-        }
-        return "All";
-    }, [category, products]);
-
     const filtered = useMemo(() => {
-        return products.filter(p => {
-            return selectedCategory === "All" || p.category === selectedCategory || (selectedCategory === "Software" && p.category !== "AI Software");
-        });
-    }, [products, selectedCategory]);
+        return products;
+    }, [products]);
 
-    // Reset to first page when category changes
+    // Reset to first page when products change
      
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setCurrentPage(1);
-    }, [selectedCategory]);
+    }, [products]);
 
     useEffect(() => {
         if (showCartDrawer) {
@@ -270,7 +258,7 @@ const Products = () => {
   }
 };
 
-const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
+const currentSEO = categorySEO["All"];
 
 
     return (
@@ -336,7 +324,7 @@ const currentSEO = categorySEO[selectedCategory] || categorySEO["All"];
                     {currentItems.map(p => {
                         const inCart = cartItems && cartItems[p.id] > 0;
                         const added  = justAdded[p.id];
-                        const productUrl = `/products/${generateSlug(p.category)}/${generateSlug(p.name)}`;
+                        const productUrl = `/products/${generateSlug(p.name)}`;
 
                         return (
                             <div

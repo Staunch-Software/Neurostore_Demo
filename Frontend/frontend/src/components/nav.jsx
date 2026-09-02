@@ -59,7 +59,7 @@ const SearchBar = () => {
     setIsOpen(false);
     setQuery("");
     setResults([]);
-    navigate(`/products/${generateSlug(product.category)}/${generateSlug(product.name)}`);
+    navigate(`/products/${generateSlug(product.name)}`);
   };
 
   return (
