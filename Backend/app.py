@@ -6215,7 +6215,7 @@ products = [
         "family": "Extended Security Updates for Windows Server Standard Core",
         "term": "1 Year",
         "brand": "Microsoft",
-        "image": "/products/esu.svg",
+        "image": "Win Server Std Core Ext Security 2012 2 Core Y3 (October 2025-2026) - OneTime.jpg",
         "price": 9976,
         "badge": "1 Year (2-Core Pack)",
         "moq": "1 Pack (2 Cores)",
