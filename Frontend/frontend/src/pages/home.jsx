@@ -3,32 +3,26 @@ import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import '../pages/home.css';
 import BookService from '../components/bookservice';
-// import aiCameras from '../assets/AI Cameras.jpg.jpeg';
-// import aiServers from '../assets/AI Server.webp';
-// import aiWorkstation from '../assets/AI Workstation.webp';
-// import developerKit from '../assets/AI Developer kit.jpg.jpeg';
-// import robotics from '../assets/AI Vision module.jpg.jpeg';
-// import software from '../assets/AI Software.webp';
-// import components from '../assets/AI Chips.jpg.jpeg';
-// import quantum from '../assets/AI Books.jpeg';
-import bannerAllProducts from '../assets/hero-banner-1.jpg';
-import bannerOffers from '../assets/banner-offers.jpg';
-import bannerAiTech from '../assets/banner-ai-tech.jpg';
-import bannerWorkspace from '../assets/banner-workspace.jpg';
+import githubCopilot from '../assets/Github Copilot.webp';
+import productOne from '../assets/SQL Server 2022 Enterprise - 2 Core License Pack - 1 Year - Annual.jpg';
+import productTwo from '../assets/Win Server Std Core Ext Security 2012 2 Core Y1 (October 2023-2024).jpg';
+import productThree from '../assets/Windows 11 IoT Enterprise LTSC 2024.jpg';
+import productFour from '../assets/Windows Server 2025 Standard - 2 Core License Pack 1 Year - Annual.jpg';
+import productFive from '../assets/Windows Server 2025 Standard - 8 Core License Pack 1 Year - Annual.jpg';
+import productSix from '../assets/Windows Server 2025 Remote Desktop Services - 1 User CAL.jpg';
 
 const backendUrl = import.meta.env.VITE_API_URL || "";
 
-const bannerImages = [
-    { src: bannerAllProducts, alt: "NeuroStore AI Products Collection", title: "Explore All Products", subtitle: "Discover our complete AI-powered collection", link: "/products", buttonText: "Shop Now" },
-    { src: bannerOffers, alt: "Special Offers and Deals", title: "Exclusive Offers", subtitle: "Up to 40% off on selected neural devices", link: "/products", buttonText: "View Deals" },
-    { src: bannerAiTech, alt: "AI Neural Technology", title: "Next-Gen AI Tech", subtitle: "Experience the future of neural computing", link: "/products", buttonText: "Learn More" },
-    { src: bannerWorkspace, alt: "AI Developer Workspace", title: "Developer Workspace", subtitle: "Tools built for the AI-first creator", link: "/products", buttonText: "Get Started" },
+const productHighlights = [
+    { name: 'SQL Server 2022 Enterprise', image: productOne, alt: 'SQL Server 2022 Enterprise license' },
+    { name: 'Windows Server Core Security', image: productTwo, alt: 'Windows Server Standard Core Extension Security' },
+    { name: 'Windows 11 IoT Enterprise', image: productThree, alt: 'Windows 11 IoT Enterprise LTSC 2024' },
+    { name: 'Windows Server 2025 Standard', image: productFour, alt: 'Windows Server 2025 Standard 2 Core' },
+    { name: 'Windows Server 2025 8 Core', image: productFive, alt: 'Windows Server 2025 Standard 8 Core' },
+    { name: 'Windows Server 2025 Remote Desktop', image: productSix, alt: 'Windows Server 2025 Remote Desktop Services 1 User CAL' },
 ];
 
 const Home = () => {
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const [isTransitioning, setIsTransitioning] = useState(false);
-
     const [bookingOpen, setBookingOpen] = useState(false);
     const [selectedService, setSelectedService] = useState('');
 
@@ -49,12 +43,6 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const autoplayInterval = setInterval(() => {
-            setIsTransitioning(true);
-            setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
-            setTimeout(() => setIsTransitioning(false), 100);
-        }, 4000);
-
         const observerOptions = { threshold: 0.1, rootMargin: '-100px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -67,7 +55,6 @@ const Home = () => {
         document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
         return () => {
-            clearInterval(autoplayInterval);
             observer.disconnect();
         };
     }, []);
@@ -113,46 +100,38 @@ const Home = () => {
                 ogImage="https://neurostore.in/og-image.webp"
                 ogType="website"
             />
-            {/* HERO BANNER SECTION */}
-            <section className="hero-banner-wrapper">
-                <div className="hero-carousel">
-                    {bannerImages.map((image, index) => (
-                        <Link
-                            key={index}
-                            to={image.link}
-                            className={`hero-slide ${currentSlide === index ? 'active' : ''}`}
-                            style={{ display: currentSlide === index ? 'block' : 'none' }}
-                        >
-                            <img src={image.src} alt={image.alt} className={`hero-image ${currentSlide === index ? 'zooming' : ''}`} loading={index === 0 ? "eager" : "lazy"} />
-                            <div className="hero-gradient-overlay" />
-                            <div className="hero-gradient-side" />
-                            <div className="hero-content">
-                                <div className={`hero-accent-line ${currentSlide === index && !isTransitioning ? 'visible' : ''}`} />
-                                <h2 className={`hero-title ${currentSlide === index && !isTransitioning ? 'visible' : ''}`}>{image.title}</h2>
-                                <p className={`hero-subtitle ${currentSlide === index && !isTransitioning ? 'visible' : ''}`}>{image.subtitle}</p>
-                                <div className={`hero-cta ${currentSlide === index && !isTransitioning ? 'visible' : ''}`}>
-                                    <button className="hero-button">
-                                        {image.buttonText}
-                                        <svg className="hero-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                            <polyline points="12 5 19 12 12 19"></polyline>
-                                        </svg>
-                                    </button>
-                                </div>
+            {/* MICROSOFT AI SHOWCASE */}
+            <section className="microsoft-ai-showcase">
+                <div className="container microsoft-ai-container">
+                    <div className="microsoft-ai-copy animate-on-scroll">
+                        <span className="section-badge">Microsoft AI</span>
+                        <h2>Power your work with <span className="text-gradient">Microsoft AI</span> solutions.</h2>
+                        <p>
+                            From secure productivity to intelligent automation, Microsoft AI helps teams move faster,
+                            reduce repetitive work, and unlock smarter decision-making across every workflow.
+                        </p>
+                        <div className="microsoft-ai-points">
+                            <div className="microsoft-ai-point">
+                                <span className="point-bullet">✓</span>
+                                <span>AI-assisted coding, writing, and research for modern teams.</span>
                             </div>
-                        </Link>
-                    ))}
-                </div>
-                <div className="hero-indicators">
-                    {bannerImages.map((_, index) => (
-                        <button key={index} onClick={() => { setIsTransitioning(true); setCurrentSlide(index); setTimeout(() => setIsTransitioning(false), 100); }} className={`hero-indicator ${currentSlide === index ? 'active' : ''}`} aria-label={`Go to slide ${index + 1}`}>
-                            <div className="indicator-bg" />
-                            {currentSlide === index && <div className="indicator-progress" />}
-                        </button>
-                    ))}
+                            <div className="microsoft-ai-point">
+                                <span className="point-bullet">✓</span>
+                                <span>Creative tools that accelerate design, marketing, and content.</span>
+                            </div>
+                            <div className="microsoft-ai-point">
+                                <span className="point-bullet">✓</span>
+                                <span>Enterprise-ready workflows built for productivity and security.</span>
+                            </div>
+                        </div>
+                        <Link to="/products" className="microsoft-ai-button">Explore AI Products</Link>
+                    </div>
+
+                    <div className="microsoft-ai-visual animate-on-scroll">
+                        <img src={githubCopilot} alt="GitHub Copilot AI assistant" />
+                    </div>
                 </div>
             </section>
-
 
             {/* ENQUIRY MARQUEE TICKER */}
             <div className="enquiry-ticker-wrapper">
@@ -177,6 +156,36 @@ const Home = () => {
                     ))}
                 </div>
             </div>
+            <br></br>
+            <br></br>
+ 
+            {/* OUR PRODUCTS GALLERY */}
+            <section className="featured-products-section">
+                <div className="container featured-products-container">
+                    <div className="section-header animate-on-scroll">
+                        <span className="section-badge">Our Products</span>
+                        <h2>Explore our <span className="text-gradient">AI tools</span></h2>
+                        <p>Discover the software and creative solutions teams use to build faster and work smarter.</p>
+                    </div>
+
+                    <div className="product-gallery-grid">
+                        {productHighlights.map((item) => (
+                            <Link
+                                key={item.name}
+                                to="/products"
+                                className="product-gallery-card animate-on-scroll"
+                                aria-label={`View ${item.name}`}
+                            >
+                                <img src={item.image} alt={item.alt} className="product-gallery-image" loading="lazy" />
+                                <div className="product-gallery-overlay">
+                                    <span>{item.name}</span>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
 
             {/* CATEGORIES SECTION - Commented out & Hidden
             <section className="categories-section">

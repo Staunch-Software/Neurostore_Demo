@@ -168,7 +168,200 @@ h6 {
     font-size: 12px;
 }
 
+/* ===== MICROSOFT AI SHOWCASE ===== */
+.microsoft-ai-showcase {
+    padding: 60px 0 24px;
+    background: linear-gradient(135deg, #f7f8ff 0%, #eef2ff 100%);
+}
 
+.microsoft-ai-container {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.microsoft-ai-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.microsoft-ai-copy h2 {
+    font-size: clamp(2.2rem, 4vw, 4rem);
+    line-height: 1.1;
+    color: #111827;
+    margin-bottom: 20px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.microsoft-ai-copy p {
+    font-size: 1.05rem;
+    color: #49556b;
+    max-width: 620px;
+    margin-bottom: 24px;
+    line-height: 1.7;
+}
+
+.microsoft-ai-points {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 28px;
+    width: 100%;
+}
+
+.microsoft-ai-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: #1f2937;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.point-bullet {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #654C7C;
+    color: white;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+}
+
+.microsoft-ai-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 24px;
+    border-radius: 12px;
+    background: #654C7C;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 18px 30px rgba(101, 76, 124, 0.2);
+}
+
+.microsoft-ai-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 24px 40px rgba(101, 76, 124, 0.24);
+}
+
+.microsoft-ai-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.microsoft-ai-visual img {
+    width: min(100%, 520px);
+    border-radius: 28px;
+    box-shadow: 0 30px 70px rgba(12, 22, 50, 0.18);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: #fff;
+    object-fit: cover;
+}
+
+/* ===== FEATURED PRODUCTS SECTION ===== */
+.featured-products-section {
+    padding: 60px 0;
+}
+
+.featured-products-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.product-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 24px;
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.product-gallery-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 2.2;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+    text-decoration: none;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.product-gallery-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 45px rgba(15, 23, 42, 0.12);
+}
+
+.product-gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 100%);
+    padding: 12px;
+}
+
+.product-gallery-overlay {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 18px 14px 16px;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.8) 100%);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 1100px) {
+    .microsoft-ai-container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .product-gallery-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .microsoft-ai-showcase {
+        padding-top: 48px;
+        background: linear-gradient(135deg, #654C7C 0%, #7d5f94 100%);
+
+        background: linear-gradient(135deg, #654C7C 0%, #7d5f94 100%);
+        align-items: center;
+        box-shadow: 0 18px 30px rgba(101, 76, 124, 0.2);
+    }
+
+    .microsoft-ai-copy p {
+        box-shadow: 0 24px 40px rgba(101, 76, 124, 0.24);
+    }
+
+    .product-gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .product-gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* ===== CATEGORIES SECTION ===== */
 .categories-section {
@@ -2106,6 +2299,13 @@ h6 {
     font-size: 13px;
     font-weight: 500;
     margin-bottom: 10px;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 /* Services Header */
