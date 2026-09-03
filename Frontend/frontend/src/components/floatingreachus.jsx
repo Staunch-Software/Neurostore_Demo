@@ -67,7 +67,7 @@ const FloatingReachUs = () => {
       */}
       <div
         className="fru-floating-container"
-        style={{ position: 'fixed', bottom: '30px', right: '30px', zIndex: 999999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}
+        style={{ position: 'fixed', bottom: '108px', right: '30px', zIndex: 999999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}
       >
         {/* Tooltip label */}
         <div className={`fru-tooltip ${open ? 'fru-tooltip--hidden' : ''}`}>
