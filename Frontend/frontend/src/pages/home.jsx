@@ -13,13 +13,15 @@ import productSix from '../assets/Windows Server 2025 Remote Desktop Services - 
 
 const backendUrl = import.meta.env.VITE_API_URL || "";
 
+const generateSlug = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
 const productHighlights = [
-    { name: 'SQL Server 2022 Enterprise', image: productOne, alt: 'SQL Server 2022 Enterprise license' },
-    { name: 'Windows Server Core Security', image: productTwo, alt: 'Windows Server Standard Core Extension Security' },
-    { name: 'Windows 11 IoT Enterprise', image: productThree, alt: 'Windows 11 IoT Enterprise LTSC 2024' },
-    { name: 'Windows Server 2025 Standard', image: productFour, alt: 'Windows Server 2025 Standard 2 Core' },
-    { name: 'Windows Server 2025 8 Core', image: productFive, alt: 'Windows Server 2025 Standard 8 Core' },
-    { name: 'Windows Server 2025 Remote Desktop', image: productSix, alt: 'Windows Server 2025 Remote Desktop Services 1 User CAL' },
+    { name: 'SQL Server 2022 Enterprise', productName: 'SQL Server 2022 Enterprise - 2 Core License Pack - 1 Year - Annual', image: productOne, alt: 'SQL Server 2022 Enterprise license' },
+    { name: 'Windows Server Core Security', productName: 'Win Server Std Core Ext Security 2012 2 Core Y1 (October 2023-2024)', image: productTwo, alt: 'Windows Server Standard Core Extension Security' },
+    { name: 'Windows 11 IoT Enterprise', productName: 'Windows 11 IoT Enterprise LTSC 2024', image: productThree, alt: 'Windows 11 IoT Enterprise LTSC 2024' },
+    { name: 'Windows Server 2025 Standard', productName: 'Windows Server 2025 Standard - 2 Core License Pack 1 Year - Annual', image: productFour, alt: 'Windows Server 2025 Standard 2 Core' },
+    { name: 'Windows Server 2025 8 Core', productName: 'Windows Server 2025 Standard - 8 Core License Pack 1 Year - Annual', image: productFive, alt: 'Windows Server 2025 Standard 8 Core' },
+    { name: 'Windows Server 2025 Remote Desktop', productName: 'Windows Server 2025 Remote Desktop Services - 1 User CAL', image: productSix, alt: 'Windows Server 2025 Remote Desktop Services 1 User CAL' },
 ];
 
 const Home = () => {
@@ -172,7 +174,7 @@ const Home = () => {
                         {productHighlights.map((item) => (
                             <Link
                                 key={item.name}
-                                to="/products"
+                                to={`/products/${generateSlug(item.productName)}`}
                                 className="product-gallery-card animate-on-scroll"
                                 aria-label={`View ${item.name}`}
                             >
