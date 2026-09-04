@@ -46,6 +46,7 @@ const AdminRoute = ({ children }) => (
 function App() {
   return (
     <div className="App">
+      <ScrollToTop />
       <Routes>
         {/* Admin — standalone layout, no Navbar/Footer */}
         <Route path="/admin" element={<AdminRoute><AdminLogin /></AdminRoute>} />
@@ -54,7 +55,6 @@ function App() {
         {/* All customer routes wrapped in ShopContextProvider */}
         <Route path="/*" element={
           <ShopContextProvider>
-            <ScrollToTop />
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
