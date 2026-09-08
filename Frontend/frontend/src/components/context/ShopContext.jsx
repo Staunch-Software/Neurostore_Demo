@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 // We import local products ONLY to match the local Webpack images to the database data!
-import { products as localImageMap } from "../../assets/products";
+import { products as localImageMap, productImageOverrides } from "../../assets/products";
 
 export const ShopContext = createContext(null);
 
@@ -76,7 +76,7 @@ export const ShopContextProvider = (props) => {
                         const locItem = localImageMap.find((loc) => loc.id === dbItem.id);
                         return {
                             ...dbItem,
-                            image: locItem?.image || dbItem.image || "/products/microsoft_software.svg"
+                            image: locItem?.image || productImageOverrides[dbItem.id] || dbItem.image || "/products/microsoft_software.svg"
                         };
                     })
                     : localImageMap;

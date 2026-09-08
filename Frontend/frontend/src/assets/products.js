@@ -6605,5 +6605,21 @@ export const products = [
     }
 ];
 
+export const productImageOverrides = {
+    151: getImage("acronis-endpoint-security.jpg.jpeg"),
+    152: getImage("acronis-saas-security.jpg.jpeg"),
+    153: getImage("acronis-security-awareness-training.jpg.jpeg"),
+    154: getImage("acronis-remote-monitoring-management.jpg.jpeg"),
+    155: getImage("acronis-professional-service-automation.jpg.jpeg"),
+    156: getImage("m365 image.jpg.jpeg"),
+    157: getImage("acronis-direct-backup-public-cloud.jpg.jpeg"),
+    158: getImage("acronis-direct-backup-public-cloud.jpg.jpeg"),
+    159: getImage("acronis-disaster-recovery.jpg.jpeg"),
+    160: getImage("acronis-email-archieve.jpg.jpeg"),
+    161: getImage("acronis-cyber-frame.jpg.jpeg"),
+    162: getImage("acronis-cyber-files-cloud.jpg.jpeg"),
+    163: getImage("acronis-cyber-infrastructure.jpg.jpeg")
+};
+
 
 
