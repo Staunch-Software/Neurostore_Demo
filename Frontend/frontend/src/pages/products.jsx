@@ -1,9 +1,9 @@
-import React, { useContext, useState, useMemo, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import SEO from '../components/SEO';
 import { ShopContext } from '../components/context/ShopContext';
-import { ShoppingCart, SlidersHorizontal, ChevronRight, Phone, ChevronLeft, Check, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
+import { ShoppingCart, ChevronRight, Phone, ChevronLeft, Check, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
 import './products.css';
 import './ProductDetails.css';
 
@@ -15,22 +15,15 @@ const generateSlug = (text) => {
 const Products = () => {
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount } = useContext(ShopContext);
     const navigate = useNavigate();
-    
+
     const [justAdded, setJustAdded] = useState({});
     const [showCartDrawer, setShowCartDrawer] = useState(false);
+
+    // No category filtering anymore — show all products
+    const filtered = products;
+
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9;
-
-    const filtered = useMemo(() => {
-        return products;
-    }, [products]);
-
-    // Reset to first page when products change
-     
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setCurrentPage(1);
-    }, [products]);
 
     useEffect(() => {
         if (showCartDrawer) {
@@ -117,9 +110,9 @@ const Products = () => {
         setTimeout(() => setJustAdded(prev => ({ ...prev, [product.id]: false })), 1500);
     };
 
-    const cartProducts = products.filter(p => cartItems[p.id] > 0);
+    const cartProducts = products.filter(p => (cartItems?.[p.id] || 0) > 0);
     const totalAmount  = getTotalCartAmount();
-    const totalItems   = cartProducts.reduce((t, p) => t + cartItems[p.id], 0);
+    const totalItems   = cartProducts.reduce((t, p) => t + (cartItems?.[p.id] || 0), 0);
 
     const cartDrawer = createPortal(
         <>
@@ -154,13 +147,13 @@ const Products = () => {
                                     <p className="cart-drawer__item-name">{p.name}</p>
                                     <p className="cart-drawer__item-cat">{p.category}</p>
                                     <p className="cart-drawer__item-price">
-                                        ₹{(p.price * cartItems[p.id]).toLocaleString()}
+                                        ₹{(p.price * (cartItems?.[p.id] || 0)).toLocaleString()}
                                     </p>
                                     <div className="cart-drawer__qty">
                                         <button onClick={() => removeFromCart(p.id)}>
                                             <Minus size={13} />
                                         </button>
-                                        <span>{cartItems[p.id]}</span>
+                                        <span>{cartItems?.[p.id] || 0}</span>
                                         <button onClick={() => addToCart(p.id)}>
                                             <Plus size={13} />
                                         </button>
@@ -214,52 +207,12 @@ const Products = () => {
         document.body
     );
 
-
-    const categorySEO = {
-  "All": {
-    title: "Buy AI Hardware & Technology Products Online India | Neurostore",
-    description: "Shop AI cameras, GPU servers, AI workstations, developer kits, graphics cards and cybersecurity software at Neurostore India. Best prices with fast delivery.",
-    keywords: "buy AI hardware India, AI products online India, GPU server buy India, AI camera price India, AI workstation buy, NVIDIA GPU India, developer kit buy India, AI tech store India"
-  },
-  "AI Vision Security": {
-    title: "Buy AI Security Cameras & Vision Systems India | Neurostore",
-    description: "Buy AI-powered security cameras, UniFi cameras and intelligent vision systems at Neurostore India. Best prices on AI surveillance cameras with fast delivery.",
-    keywords: "buy AI security camera India, UniFi camera price India, AI surveillance camera India, intelligent vision system India, IP camera buy India, AI CCTV India"
-  },
-  "AI Networking Storage": {
-    title: "Buy AI Networking & Storage Solutions India | Neurostore",
-    description: "Buy AI networking equipment and enterprise storage solutions at Neurostore India. High performance NAS, switches and AI-ready network infrastructure.",
-    keywords: "buy AI storage India, AI networking India, enterprise NAS India, AI network switch India, storage server India, AI infrastructure India"
-  },
-  "AI Workstations And Servers": {
-    title: "Buy AI Workstations & GPU Servers India | Neurostore",
-    description: "Buy high-performance AI workstations and GPU servers for deep learning and machine learning at Neurostore India. NVIDIA powered, India delivery.",
-    keywords: "buy AI workstation India, GPU server price India, deep learning workstation India, ML server buy India, AI compute server India, NVIDIA workstation India"
-  },
-  "AI Dev Boards": {
-    title: "Buy AI Developer Kits & Dev Boards India | Neurostore",
-    description: "Buy Raspberry Pi 5, Jetson Nano, AI dev boards and embedded AI kits at Neurostore India. Best prices on AI developer hardware with fast shipping.",
-    keywords: "buy Raspberry Pi 5 India, Jetson Nano price India, AI dev board India, embedded AI kit India, developer board buy India, AI hardware kit India"
-  },
-  "AI Graphics Cards": {
-    title: "Buy NVIDIA & AMD AI Graphics Cards India | Neurostore",
-    description: "Buy NVIDIA RTX 5090, RTX 4070 Ti and latest AI graphics cards at Neurostore India. Best GPU prices for gaming, AI training and deep learning workloads.",
-    keywords: "buy NVIDIA RTX 5090 India, GPU price India, buy RTX 4070 Ti India, AI graphics card India, NVIDIA GPU buy India, AMD GPU India, best GPU price India"
-  },
-  "AI Software": {
-    title: "Buy AI Software & Machine Learning Tools India | Neurostore",
-    description: "Buy AI software, machine learning tools and deep learning frameworks at Neurostore India. Licensed AI software at best prices for enterprise and developers.",
-    keywords: "buy AI software India, machine learning tools India, deep learning software India, AI framework license India, enterprise AI software India"
-  },
-  "AI Accessories": {
-    title: "Buy AI Accessories & Peripheral Devices India | Neurostore",
-    description: "Buy AI accessories, cables, cooling solutions and peripheral devices for your AI setup at Neurostore India. Fast delivery across India.",
-    keywords: "buy AI accessories India, AI peripheral devices India, GPU cooling India, AI setup accessories India, tech accessories India"
-  }
-};
-
-const currentSEO = categorySEO["All"];
-
+    // Single static SEO block — no per-category SEO needed anymore
+    const currentSEO = {
+        title: "Buy AI Hardware & Technology Products Online India | Neurostore",
+        description: "Shop AI cameras, GPU servers, AI workstations, developer kits, graphics cards and cybersecurity software at Neurostore India. Best prices with fast delivery.",
+        keywords: "buy AI hardware India, AI products online India, GPU server buy India, AI camera price India, AI workstation buy, NVIDIA GPU India, developer kit buy India, AI tech store India"
+    };
 
     return (
         <>
@@ -271,50 +224,12 @@ const currentSEO = categorySEO["All"];
                 ogType="website"
             />
         <div className="products-page-wrapper">
-            {/* <aside className="neuro-sidebar">
-                <div className="sidebar-header">
-                    <SlidersHorizontal size={18} />
-                    <h3 className="neuro-filter-title">Filter Options</h3>
-                </div>
-
-                <div className="filter-section">
-                    <h4>Software Type</h4>
-                    <div className="category-pills">
-                        {categories.map(cat => {
-                            const count = cat === "All" ? products.length : products.filter(p => p.category === cat).length;
-                            return (
-                                <button
-                                    key={cat}
-                                    className={`pill-btn ${selectedCategory === cat ? 'active' : ''}`}
-                                    onClick={() => {
-                                        setSelectedCategory(cat);
-                                        navigate(cat === "All" ? "/products" : `/products/${generateSlug(cat)}`);
-                                    }}
-                                >
-                                    <span>{cat}</span>
-                                    <span className="pill-count-badge">{count}</span>
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {selectedCategory !== "All" && (
-                    <button
-                        className="clear-filters-btn"
-                        onClick={() => {
-                            setSelectedCategory("All");
-                            navigate("/products");
-                        }}
-                    >
-                        Reset Filter
-                    </button>
-                )}
-            </aside> */}
-
             <main className="neuro-products-content">
                 <div className="neuro-products-header">
-                    <h2>Inventory</h2>
+                    <div>
+                        <h2>Inventory</h2>
+                        <p className="inventory-subtitle">Security, IT operations, and backup solutions</p>
+                    </div>
                     <span className="result-indicator">
                         Showing <strong>{filtered.length === 0 ? 0 : indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filtered.length)}</strong> of <strong>{filtered.length}</strong> results
                     </span>
@@ -366,20 +281,22 @@ const currentSEO = categorySEO["All"];
                                         </ul>
                                     )}
 
-                                    <button
-                                        className={`action-btn btn-cart btn-cart--full ${added ? 'btn-cart--added' : ''}`}
-                                        onClick={(e) => { e.stopPropagation(); handleAddToCart(p); }}
-                                        title={inCart ? `${cartItems[p.id]} in cart` : 'Add to Cart'}
-                                    >
-                                        {added
-                                            ? <><Check size={14} /> Added!</>
-                                            : <><ShoppingCart size={14} /> {inCart ? `+1 (${cartItems[p.id]} in cart)` : 'Add to Cart'}</>
-                                        }
-                                    </button>
+                                    {!p.enquiryOnly && (
+                                        <button
+                                            className={`action-btn btn-cart btn-cart--full ${added ? 'btn-cart--added' : ''}`}
+                                            onClick={(e) => { e.stopPropagation(); handleAddToCart(p); }}
+                                            title={inCart ? `${cartItems[p.id]} in cart` : 'Add to Cart'}
+                                        >
+                                            {added
+                                                ? <><Check size={14} /> Added!</>
+                                                : <><ShoppingCart size={14} /> {inCart ? `+1 (${cartItems[p.id]} in cart)` : 'Add to Cart'}</>
+                                            }
+                                        </button>
+                                    )}
 
                                     <div className="p-action-buttons" onClick={(e) => e.stopPropagation()}>
                                         <a href="tel:+9104422353175" className="action-btn btn-call">
-                                            <Phone size={14} /> Call for Price
+                                            <Phone size={14} /> {p.enquiryOnly ? 'Call for Enquiry' : 'Call for Price'}
                                         </a>
 
                                         <Link to={productUrl} className="action-btn btn-view">

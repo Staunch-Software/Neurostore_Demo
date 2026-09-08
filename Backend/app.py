@@ -6215,7 +6215,7 @@ products = [
         "family": "Extended Security Updates for Windows Server Standard Core",
         "term": "1 Year",
         "brand": "Microsoft",
-        "image": "Win Server Std Core Ext Security 2012 2 Core Y3 (October 2025-2026) - OneTime.jpg",
+        "image": "/products/esu.svg",
         "price": 9976,
         "badge": "1 Year (2-Core Pack)",
         "moq": "1 Pack (2 Cores)",
@@ -7264,6 +7264,61 @@ products = [
         "warranty": "Official Microsoft Commercial Software License & Standard Product Assurance."
     }
 ]
+
+products.extend([
+    {
+        "id": 151, "name": "Endpoint Security", "category": "Endpoint Security", "softwareType": "Managed Security Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-endpoint-security.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Endpoint detection and response", "Managed threat prevention", "Policy and device protection"], "shortDescription": "Managed endpoint protection that helps secure devices, users, and business data."
+    },
+    {
+        "id": 152, "name": "SaaS Security", "category": "SaaS Security", "softwareType": "Managed Security Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-saas-security.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["SaaS application visibility", "Identity and access protection", "Configuration risk monitoring"], "shortDescription": "Protect cloud applications, identities, and sensitive information across your SaaS environment."
+    },
+    {
+        "id": 153, "name": "Security Awareness Training", "category": "Security Awareness Training", "softwareType": "Training Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-security-awareness-training.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Security awareness courses", "Phishing simulation support", "Progress and compliance reporting"], "shortDescription": "Build safer everyday security habits with practical awareness training for your team."
+    },
+    {
+        "id": 154, "name": "Remote Monitoring and Management (RMM)", "category": "RMM", "softwareType": "Managed IT Service", "family": "IT Operations Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-remote-monitoring-management.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["24/7 infrastructure monitoring", "Remote maintenance and patching", "Proactive issue resolution"], "shortDescription": "Keep endpoints and infrastructure healthy with proactive remote monitoring and management."
+    },
+    {
+        "id": 155, "name": "Professional Service Automation (PSA)", "category": "PSA", "softwareType": "Business Operations Service", "family": "IT Operations Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-professional-service-automation.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Ticket and workflow management", "Time, project, and resource tracking", "Service desk reporting"], "shortDescription": "Streamline service delivery, projects, resources, and reporting with professional service automation."
+    },
+    {
+        "id": 156, "name": "M365 Backup", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Neurostore", "image": "/products/m365%20image.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Microsoft 365 data protection", "Mailbox, OneDrive, and SharePoint backup", "Flexible retention planning"], "shortDescription": "Protect Microsoft 365 mailboxes, files, and collaboration data with managed backup."
+    },
+    {
+        "id": 157, "name": "Direct Backup", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-direct-backup-public-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Direct workstation and server backup", "Policy-based scheduling", "Fast file and system recovery"], "shortDescription": "Reliable direct backup for critical workstations, servers, and business systems."
+    },
+    {
+        "id": 158, "name": "Public Cloud Backup", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-direct-backup-public-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Cloud-hosted backup copies", "Scalable storage planning", "Off-site resilience"], "shortDescription": "Extend your backup strategy with scalable, resilient public cloud storage."
+    },
+    {
+        "id": 159, "name": "Disaster Recovery", "category": "Backup", "softwareType": "Business Continuity Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-disaster-recovery.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Business continuity planning", "Recovery time objective alignment", "System restoration support"], "shortDescription": "Prepare for outages with recovery planning and protection for business-critical systems."
+    },
+    {
+        "id": 160, "name": "Email Archiving", "category": "Backup", "softwareType": "Data Protection Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-email-archieve.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Long-term email retention", "Searchable archive access", "Compliance-ready preservation"], "shortDescription": "Retain, search, and protect business email with a managed archive solution."
+    },
+    {
+        "id": 161, "name": "CyberFrame", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-frame.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Managed backup platform", "Centralized policy management", "Recovery support"], "shortDescription": "CyberFrame backup protection designed around your environment and recovery requirements."
+    },
+    {
+        "id": 162, "name": "Acronis Cyber File Cloud", "category": "Backup", "softwareType": "Cloud File Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-files-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["Cloud file protection", "Secure file access and sharing", "Centralized administration"], "shortDescription": "Protect and manage business files in the cloud with Acronis Cyber File Cloud."
+    },
+    {
+        "id": 163, "name": "Acronis Cyber File Infrastructure", "category": "Backup", "softwareType": "File Infrastructure Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-infrastructure.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "features": ["File infrastructure protection", "Scalable data management", "Recovery-focused operations"], "shortDescription": "Acronis file infrastructure protection for resilient, recoverable business data."
+    }
+])
 # ══════════════════════════════════════════════════════════════════════════════
 # AUTH ROUTES
 # ══════════════════════════════════════════════════════════════════════════════
