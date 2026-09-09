@@ -103,8 +103,8 @@
 
 .scroll-to-top-btn {
   position: fixed;
-  right: 1.75rem;
-  bottom: calc(1.75rem + 3.5rem + 0.625rem);
+  right: calc(1.75rem + 3.5rem + 0.75rem);
+  bottom: 1.75rem;
   z-index: 1000000;
   width: 3rem;
   height: 3rem;
@@ -132,8 +132,8 @@
 
 @media (max-width: 600px) {
   .scroll-to-top-btn {
-    right: 1rem;
-    bottom: calc(1rem + 3.5rem + 0.625rem);
+    right: calc(1rem + 3.5rem + 0.75rem);
+    bottom: 1rem;
   }
 }
 
