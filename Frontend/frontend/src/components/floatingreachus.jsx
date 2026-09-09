@@ -7,19 +7,16 @@ const FloatingReachUs = () => {
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState('');
+  const [productInterest, setProductInterest] = useState('');
 
   useEffect(() => {
-    const handleOpenReachUs = (event) => {
-      const productName = event.detail?.productName;
-      if (productName) {
-        setSelectedProduct(productName);
-      }
+    const handleOpenFromProduct = (event) => {
+      setProductInterest(event.detail?.category || '');
       setOpen(true);
     };
 
-    window.addEventListener('open-reach-us', handleOpenReachUs);
-    return () => window.removeEventListener('open-reach-us', handleOpenReachUs);
+    window.addEventListener('open-reach-us', handleOpenFromProduct);
+    return () => window.removeEventListener('open-reach-us', handleOpenFromProduct);
   }, []);
 
   // Simple inline captcha checkbox
@@ -41,10 +38,8 @@ const FloatingReachUs = () => {
         name: e.target.name.value,
         email: e.target.email.value,
         phone: e.target.phone.value || "Not Provided",
-        product: selectedProduct || e.target.product.value || "Floating Quick Inquiry",
-        message: selectedProduct
-          ? `Product enquiry: ${selectedProduct}\n${e.target.message.value}`
-          : e.target.message.value
+        product: e.target.product.value || "Floating Quick Inquiry",
+        message: e.target.message.value
     };
 
     try {
@@ -62,7 +57,7 @@ const FloatingReachUs = () => {
             setTimeout(() => {
                 setSubmitted(false);
                 setCaptchaVerified(false);
-                setSelectedProduct('');
+                setProductInterest('');
                 setOpen(false);
                 e.target.reset();
             }, 2800);
@@ -84,7 +79,7 @@ const FloatingReachUs = () => {
       */}
       <div
         className="fru-floating-container"
-        style={{ position: 'fixed', bottom: '108px', right: '30px', zIndex: 999999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}
+        style={{ position: 'fixed', bottom: '30px', right: '30px', zIndex: 999999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}
       >
         {/* Tooltip label */}
         <div className={`fru-tooltip ${open ? 'fru-tooltip--hidden' : ''}`}>
@@ -162,14 +157,11 @@ const FloatingReachUs = () => {
 
               <div className="fru-form-group">
                 <label htmlFor="reach-product" className="fru-label">Product Interest</label>
-                <select id="reach-product" name="product" className="fru-input fru-select">
+                <select id="reach-product" name="product" value={productInterest} onChange={(e) => setProductInterest(e.target.value)} className="fru-input fru-select">
                   <option value="">Select a product category</option>
-                  <option value="ai-cameras">AI Cameras &amp; Surveillance</option>
-                  <option value="ai-servers">AI Servers &amp; Hardware</option>
-                  <option value="ai-workstations">AI Workstations</option>
-                  <option value="software">AI Software Solutions</option>
-                  <option value="consulting">Consulting Services</option>
-                  <option value="other">Other</option>
+                  <option value="Software">Software</option>
+                  <option value="Server">Server</option>
+                  <option value="Acronis">Acronis</option>
                 </select>
               </div>
 

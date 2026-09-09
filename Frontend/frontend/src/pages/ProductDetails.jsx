@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import SEO from '../components/SEO';      
-import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, Link, useNavigate,  } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
 import { Phone, CheckCircle2, Truck, Package, ShieldCheck, Mail, ChevronLeft, ShoppingCart, Check, Heart, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
@@ -11,15 +11,11 @@ const generateSlug = (text) => {
     return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 };
 
-const openReachUs = (productName) => {
-    window.dispatchEvent(new CustomEvent('open-reach-us', { detail: { productName } }));
-};
-
 const ProductDetails = () => {
     const { productName } = useParams();
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount, wishlistItems, toggleWishlist } = useContext(ShopContext);
     const navigate = useNavigate();
-    const { pathname } = useLocation(); 
+   
     const [activeTab, setActiveTab]       = useState('description');
     const [showModal, setShowModal]       = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,6 +52,8 @@ const ProductDetails = () => {
 
     const product = products.find((p) => generateSlug(p.name) === productName);
 
+    const isNewEnquiryProduct = product?.enquiryOnly;
+
     // Track product page view for admin analytics (fire-and-forget)
     useEffect(() => {
         if (!product) return;
@@ -68,8 +66,9 @@ const ProductDetails = () => {
                 headers,
                 body: JSON.stringify({ product_id: product.id }),
             }).catch(() => {}); // silently ignore network errors
+        // eslint-disable-next-line no-unused-vars, no-empty
         } catch (_) {}
-    }, [product?.id]);
+    }, );
 
     if (!product) {
         return (
@@ -255,18 +254,18 @@ const ProductDetails = () => {
 
                         <p className="pd-short-desc">{product.shortDescription}</p>
 
-                        {!product.enquiryOnly && (
-                            <div className="pd-price-row-box">
-                                <div className="pd-price-main">
-                                    <span className="pd-currency">₹</span>
-                                    <span className="pd-amount">{product.price?.toLocaleString() || '1,000'}</span>
-                                    <span className="pd-gst">+ 18% GST</span>
-                                </div>
-                                <div className="pd-license-badge">
-                                    <span>⚡ Instant Digital Activation</span>
-                                </div>
+                        <div className="pd-price-row-box">
+                            {product.enquiryOnly ? (
+                                <div className="pd-enquiry-price">Pricing available on request</div>
+                            ) : <div className="pd-price-main">
+                                <span className="pd-currency">₹</span>
+                                <span className="pd-amount">{product.price?.toLocaleString() || '1,000'}</span>
+                                <span className="pd-gst">+ 18% GST</span>
+                            </div>}
+                            <div className="pd-license-badge">
+                                <span>⚡ Instant Digital Activation</span>
                             </div>
-                        )}
+                        </div>
 
                         {product.features && product.features.length > 0 && (
                             <div className="pd-highlights-box">
@@ -281,7 +280,7 @@ const ProductDetails = () => {
 
                         <div className="pd-action-row">
                             <a href="tel:+9104422353175" className="pd-call-btn">
-                                <Phone size={16} /> {product.enquiryOnly ? 'Call for Enquiry' : 'Call for Price'}
+                                <Phone size={16} /> {product.enquiryOnly ? 'Call' : 'Call for Price'}
                             </a>
                             <a
                                 href={`https://wa.me/9104422353175?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
@@ -300,7 +299,7 @@ const ProductDetails = () => {
                         </div>
 
                         <div className="pd-meta">
-                            <p><strong>Category:</strong> {product.category}</p>
+                            {/* <p><strong>Category:</strong> {product.category}</p> */}
                             <p><strong>Brand:</strong> {product.brand}</p>
                         </div>
 
@@ -311,26 +310,18 @@ const ProductDetails = () => {
                             <span><ShieldCheck  size={16} color="#10b981" /> Secure 256-bit Checkout</span>
                         </div>
 
-                        {!product.enquiryOnly && (
-                            <button
-                                onClick={handleAddToCart}
-                                className={`pd-cart-btn ${justAdded ? 'pd-cart-btn--added' : ''} ${inCart ? 'pd-cart-btn--in-cart' : ''}`}
-                            >
-                                {justAdded ? (
-                                    <><Check size={18} /> Added to Cart!</>
-                                ) : inCart ? (
-                                    <><ShoppingCart size={18} /> Add More ({cartCount} in cart)</>
-                                ) : (
-                                    <><ShoppingCart size={18} /> ADD TO CART</>
-                                )}
-                            </button>
-                        )}
+                        {!product.enquiryOnly && <button
+                            onClick={handleAddToCart}
+                            className={`pd-cart-btn ${justAdded ? 'pd-cart-btn--added' : ''} ${inCart ? 'pd-cart-btn--in-cart' : ''}`}
+                        >
+                            {justAdded ? <><Check size={18} /> Added to Cart!</> : inCart ? <><ShoppingCart size={18} /> Add More ({cartCount} in cart)</> : <><ShoppingCart size={18} /> ADD TO CART</>}
+                        </button>}
 
-                        <button onClick={() => product.enquiryOnly ? openReachUs(product.name) : setShowModal(true)} className="pd-inquiry-btn">
-                            <Mail size={18} /> {product.enquiryOnly ? 'ENQUIRY' : 'SEND INQUIRY'}
+                        <button onClick={() => setShowModal(true)} className="pd-inquiry-btn">
+                            <Mail size={18} /> SEND INQUIRY
                         </button>
 
-                        {!product.enquiryOnly && <div className="pd-logistics">
+                        <div className="pd-logistics">
                             <div className="pd-logistic-item">
                                 <strong>PAYMENT:</strong>
                                 <div className="logistic-icons">💳 UPI 💳 Cards 💳 Net Banking 💳 Razorpay</div>
@@ -339,11 +330,11 @@ const ProductDetails = () => {
                                 <strong>DELIVERY:</strong>
                                 <div className="logistic-icons">⚡ Instant Email (License Key + Download Link)</div>
                             </div>
-                        </div>}
+                        </div>
                     </div>
                 </div>
 
-                <div className="pd-bottom-section">
+                {!isNewEnquiryProduct && <div className="pd-bottom-section">
                     <div className="pd-tabs-header">
                         <button className={`pd-tab-btn ${activeTab === 'description' ? 'active' : ''}`} onClick={() => setActiveTab('description')}>Description</button>
                         <button className={`pd-tab-btn ${activeTab === 'additional'  ? 'active' : ''}`} onClick={() => setActiveTab('additional')}>Additional Information</button>
@@ -380,7 +371,7 @@ const ProductDetails = () => {
                             </div>
                         )}
                     </div>
-                </div>
+                </div>}
             </div>
 
             {cartDrawer}

@@ -12,10 +12,6 @@ const generateSlug = (text) => {
     return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 };
 
-const openReachUs = (productName) => {
-    window.dispatchEvent(new CustomEvent('open-reach-us', { detail: { productName } }));
-};
-
 const Products = () => {
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount } = useContext(ShopContext);
     const navigate = useNavigate();
@@ -300,22 +296,12 @@ const Products = () => {
 
                                     <div className="p-action-buttons" onClick={(e) => e.stopPropagation()}>
                                         <a href="tel:+9104422353175" className="action-btn btn-call">
-                                            <Phone size={14} /> {p.enquiryOnly ? 'Call for Enquiry' : 'Call for Price'}
+                                            <Phone size={14} /> {p.enquiryOnly ? 'Call' : 'Call for Price'}
                                         </a>
 
-                                        {p.enquiryOnly ? (
-                                            <button
-                                                type="button"
-                                                className="action-btn btn-view"
-                                                onClick={() => openReachUs(p.name)}
-                                            >
-                                                Enquiry
-                                            </button>
-                                        ) : (
-                                            <Link to={productUrl} className="action-btn btn-view">
-                                                VIEW
-                                            </Link>
-                                        )}
+                                        <Link to={productUrl} className="action-btn btn-view">
+                                            VIEW
+                                        </Link>
 
                                         <a
                                             href={`https://wa.me/9104422353175?text=Hi, I'm interested in ${encodeURIComponent(p.name)}`}
@@ -397,4 +383,3 @@ const Products = () => {
 };
 
 export default Products;
-
