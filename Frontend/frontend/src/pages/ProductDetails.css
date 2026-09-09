@@ -358,6 +358,23 @@
     display: block;
     margin-bottom: 5px;
 }
+.logistic-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    color: #334155;
+    font-size: 0.78rem;
+}
+.logistic-icons span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+.logistic-icons svg {
+    color: #0ea5a8;
+    flex-shrink: 0;
+}
 
 /* ══════════════════════════════════════════
    TABS

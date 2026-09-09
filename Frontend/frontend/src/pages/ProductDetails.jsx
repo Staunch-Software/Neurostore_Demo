@@ -3,7 +3,7 @@ import SEO from '../components/SEO';
 import { useParams, Link, useNavigate,  } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
-import { Phone, CheckCircle2, Truck, Package, ShieldCheck, Mail, ChevronLeft, ShoppingCart, Check, Heart, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
+import { Phone, CheckCircle2, Truck, Package, ShieldCheck, Mail, ChevronLeft, ShoppingCart, Check, Heart, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield, Smartphone, CreditCard, Building2, WalletCards } from 'lucide-react';
 import './ProductDetails.css';
 
 const generateSlug = (text) => {
@@ -324,7 +324,12 @@ const ProductDetails = () => {
                         <div className="pd-logistics">
                             <div className="pd-logistic-item">
                                 <strong>PAYMENT:</strong>
-                                <div className="logistic-icons">💳 UPI 💳 Cards 💳 Net Banking 💳 Razorpay</div>
+                                <div className="logistic-icons">
+                                    <span><Smartphone size={14} aria-hidden="true" /> UPI</span>
+                                    <span><CreditCard size={14} aria-hidden="true" /> Cards</span>
+                                    <span><Building2 size={14} aria-hidden="true" /> Net Banking</span>
+                                    <span><WalletCards size={14} aria-hidden="true" /> Razorpay</span>
+                                </div>
                             </div>
                             <div className="pd-logistic-item">
                                 <strong>DELIVERY:</strong>
