@@ -11,6 +11,10 @@ const generateSlug = (text) => {
     return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 };
 
+const openReachUs = (productName) => {
+    window.dispatchEvent(new CustomEvent('open-reach-us', { detail: { productName } }));
+};
+
 const ProductDetails = () => {
     const { productName } = useParams();
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount, wishlistItems, toggleWishlist } = useContext(ShopContext);
@@ -251,16 +255,18 @@ const ProductDetails = () => {
 
                         <p className="pd-short-desc">{product.shortDescription}</p>
 
-                        <div className="pd-price-row-box">
-                            <div className="pd-price-main">
-                                <span className="pd-currency">₹</span>
-                                <span className="pd-amount">{product.price?.toLocaleString() || '1,000'}</span>
-                                <span className="pd-gst">+ 18% GST</span>
+                        {!product.enquiryOnly && (
+                            <div className="pd-price-row-box">
+                                <div className="pd-price-main">
+                                    <span className="pd-currency">₹</span>
+                                    <span className="pd-amount">{product.price?.toLocaleString() || '1,000'}</span>
+                                    <span className="pd-gst">+ 18% GST</span>
+                                </div>
+                                <div className="pd-license-badge">
+                                    <span>⚡ Instant Digital Activation</span>
+                                </div>
                             </div>
-                            <div className="pd-license-badge">
-                                <span>⚡ Instant Digital Activation</span>
-                            </div>
-                        </div>
+                        )}
 
                         {product.features && product.features.length > 0 && (
                             <div className="pd-highlights-box">
@@ -275,7 +281,7 @@ const ProductDetails = () => {
 
                         <div className="pd-action-row">
                             <a href="tel:+9104422353175" className="pd-call-btn">
-                                <Phone size={16} /> Call for Price
+                                <Phone size={16} /> {product.enquiryOnly ? 'Call for Enquiry' : 'Call for Price'}
                             </a>
                             <a
                                 href={`https://wa.me/9104422353175?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
@@ -305,24 +311,26 @@ const ProductDetails = () => {
                             <span><ShieldCheck  size={16} color="#10b981" /> Secure 256-bit Checkout</span>
                         </div>
 
-                        <button
-                            onClick={handleAddToCart}
-                            className={`pd-cart-btn ${justAdded ? 'pd-cart-btn--added' : ''} ${inCart ? 'pd-cart-btn--in-cart' : ''}`}
-                        >
-                            {justAdded ? (
-                                <><Check size={18} /> Added to Cart!</>
-                            ) : inCart ? (
-                                <><ShoppingCart size={18} /> Add More ({cartCount} in cart)</>
-                            ) : (
-                                <><ShoppingCart size={18} /> ADD TO CART</>
-                            )}
+                        {!product.enquiryOnly && (
+                            <button
+                                onClick={handleAddToCart}
+                                className={`pd-cart-btn ${justAdded ? 'pd-cart-btn--added' : ''} ${inCart ? 'pd-cart-btn--in-cart' : ''}`}
+                            >
+                                {justAdded ? (
+                                    <><Check size={18} /> Added to Cart!</>
+                                ) : inCart ? (
+                                    <><ShoppingCart size={18} /> Add More ({cartCount} in cart)</>
+                                ) : (
+                                    <><ShoppingCart size={18} /> ADD TO CART</>
+                                )}
+                            </button>
+                        )}
+
+                        <button onClick={() => product.enquiryOnly ? openReachUs(product.name) : setShowModal(true)} className="pd-inquiry-btn">
+                            <Mail size={18} /> {product.enquiryOnly ? 'ENQUIRY' : 'SEND INQUIRY'}
                         </button>
 
-                        <button onClick={() => setShowModal(true)} className="pd-inquiry-btn">
-                            <Mail size={18} /> SEND INQUIRY
-                        </button>
-
-                        <div className="pd-logistics">
+                        {!product.enquiryOnly && <div className="pd-logistics">
                             <div className="pd-logistic-item">
                                 <strong>PAYMENT:</strong>
                                 <div className="logistic-icons">💳 UPI 💳 Cards 💳 Net Banking 💳 Razorpay</div>
@@ -331,7 +339,7 @@ const ProductDetails = () => {
                                 <strong>DELIVERY:</strong>
                                 <div className="logistic-icons">⚡ Instant Email (License Key + Download Link)</div>
                             </div>
-                        </div>
+                        </div>}
                     </div>
                 </div>
 

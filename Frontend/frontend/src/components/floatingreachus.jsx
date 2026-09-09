@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MessageCircle, Send, RefreshCw, Sparkles } from 'lucide-react';
 import '../pages/floatingreachus.css';
 
@@ -7,6 +7,20 @@ const FloatingReachUs = () => {
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState('');
+
+  useEffect(() => {
+    const handleOpenReachUs = (event) => {
+      const productName = event.detail?.productName;
+      if (productName) {
+        setSelectedProduct(productName);
+      }
+      setOpen(true);
+    };
+
+    window.addEventListener('open-reach-us', handleOpenReachUs);
+    return () => window.removeEventListener('open-reach-us', handleOpenReachUs);
+  }, []);
 
   // Simple inline captcha checkbox
   const handleCaptchaChange = (e) => {
@@ -27,8 +41,10 @@ const FloatingReachUs = () => {
         name: e.target.name.value,
         email: e.target.email.value,
         phone: e.target.phone.value || "Not Provided",
-        product: e.target.product.value || "Floating Quick Inquiry",
-        message: e.target.message.value
+        product: selectedProduct || e.target.product.value || "Floating Quick Inquiry",
+        message: selectedProduct
+          ? `Product enquiry: ${selectedProduct}\n${e.target.message.value}`
+          : e.target.message.value
     };
 
     try {
@@ -46,6 +62,7 @@ const FloatingReachUs = () => {
             setTimeout(() => {
                 setSubmitted(false);
                 setCaptchaVerified(false);
+                setSelectedProduct('');
                 setOpen(false);
                 e.target.reset();
             }, 2800);
