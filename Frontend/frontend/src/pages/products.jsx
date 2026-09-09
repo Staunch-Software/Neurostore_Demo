@@ -281,6 +281,23 @@ const Products = () => {
                                         </ul>
                                     )}
 
+                                    <div className="p-card-price-row">
+                                        <div className="p-card-price">
+                                            {!p.enquiryOnly && p.price ? (
+                                                <>
+                                                    <span className="price-currency">₹</span>
+                                                    <span className="price-val">{p.price.toLocaleString()}</span>
+                                                    <span className="price-tax">+ 18% GST</span>
+                                                </>
+                                            ) : (
+                                                <span className="price-val" style={{ fontSize: '0.92rem', color: '#6a4c93' }}>Price on Request</span>
+                                            )}
+                                        </div>
+                                        <span className="p-delivery-tag">
+                                            {!p.enquiryOnly ? '⚡ Instant Delivery' : 'Enquiry Only'}
+                                        </span>
+                                    </div>
+
                                     {!p.enquiryOnly && (
                                         <button
                                             className={`action-btn btn-cart btn-cart--full ${added ? 'btn-cart--added' : ''}`}
