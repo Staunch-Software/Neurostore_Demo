@@ -23,6 +23,13 @@ const ProductDetails = () => {
     const [justAdded, setJustAdded]       = useState(false);
     const [wishlistAnim, setWishlistAnim] = useState(false);
     const [showCartDrawer, setShowCartDrawer] = useState(false);
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+    const productImages = Array.isArray(product?.images) && product.images.length > 0
+        ? product.images
+        : [product?.image].filter(Boolean);
+
+    const activeImage = productImages[selectedImageIndex] || productImages[0] || product?.image;
 
     const handleAddToCart = () => {
         addToCart(product.id);
@@ -49,6 +56,10 @@ const ProductDetails = () => {
         }
         return () => { document.body.style.overflow = ''; };
     }, [showCartDrawer]);
+
+    useEffect(() => {
+        setSelectedImageIndex(0);
+    }, [productName]);
 
     const product = products.find((p) => generateSlug(p.name) === productName);
 
@@ -229,7 +240,47 @@ const ProductDetails = () => {
                 <div className="pd-top-section">
 
                     <div className="pd-image-col">
-                        <img src={product.image} alt={product.name} />
+                        <div className="pd-image-slider">
+                            <div className="pd-main-image-wrap">
+                                {productImages.length > 1 && (
+                                    <button
+                                        type="button"
+                                        className="pd-slider-nav pd-slider-nav--prev"
+                                        onClick={() => setSelectedImageIndex((selectedImageIndex - 1 + productImages.length) % productImages.length)}
+                                        aria-label="Previous product image"
+                                    >
+                                        ‹
+                                    </button>
+                                )}
+                                <img src={activeImage} alt={product.name} />
+                                {productImages.length > 1 && (
+                                    <button
+                                        type="button"
+                                        className="pd-slider-nav pd-slider-nav--next"
+                                        onClick={() => setSelectedImageIndex((selectedImageIndex + 1) % productImages.length)}
+                                        aria-label="Next product image"
+                                    >
+                                        ›
+                                    </button>
+                                )}
+                            </div>
+
+                            {productImages.length > 1 && (
+                                <div className="pd-thumb-row">
+                                    {productImages.map((img, index) => (
+                                        <button
+                                            key={`${product.id}-${index}`}
+                                            type="button"
+                                            className={`pd-thumb ${index === selectedImageIndex ? 'pd-thumb--active' : ''}`}
+                                            onClick={() => setSelectedImageIndex(index)}
+                                            aria-label={`Show product image ${index + 1}`}
+                                        >
+                                            <img src={img} alt={`${product.name} preview ${index + 1}`} />
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <div className="pd-info-col">

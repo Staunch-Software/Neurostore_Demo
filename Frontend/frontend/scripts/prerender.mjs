@@ -4,6 +4,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// The live site uses a self-signed certificate in this environment.
+// Disable certificate checking only for this prerender script so build-time
+// product fetching can work during local/static generation.
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, '../dist');
 
@@ -23,74 +28,94 @@ async function main() {
   const products = await res.json();
   console.log(`Fetched ${products.length} products`);
 
-  console.log('Starting local preview server for dist/...');
-  const previewServer = await preview({ preview: { port: 4173 } });
-  const port = previewServer.config.preview.port;
-  const baseUrl = `http://localhost:${port}`;
+  let browser = null;
+  let page = null;
+  let previewServer = null;
+  let browserClosedNormally = false;
 
-  console.log('Launching Chrome...');
-  let browser = await puppeteer.launch({
-    executablePath: CHROME_PATH,
-    headless: 'new',
-  });
-  let page = await browser.newPage();
+  try {
+    console.log('Starting local preview server for dist/...');
+    previewServer = await preview({ preview: { port: 4173 } });
+    const port = previewServer.config.preview.port;
+    const baseUrl = `http://localhost:${port}`;
 
-  browser.on('disconnected', () => {
-    console.error('\n!! Chrome disconnected/crashed unexpectedly !!');
-  });
+    console.log('Launching Chrome...');
+    browser = await puppeteer.launch({
+      executablePath: CHROME_PATH,
+      headless: 'new',
+    });
+    page = await browser.newPage();
 
-  let success = 0;
-  let failed = 0;
-  let skipped = 0;
-  let processedSinceRecycle = 0;
-  const RECYCLE_EVERY = 20; // close/reopen page every N products to release memory
+    browser.on('disconnected', () => {
+      if (!browserClosedNormally) {
+        console.error('\n!! Chrome disconnected/crashed unexpectedly !!');
+      }
+    });
 
-  for (const product of products) {
-    const slug = generateSlug(product.name);
-    if (!slug) { console.warn(`Skipping product with empty slug: ${product.id}`); continue; }
+    let success = 0;
+    let failed = 0;
+    let skipped = 0;
+    let processedSinceRecycle = 0;
+    const RECYCLE_EVERY = 20; // close/reopen page every N products to release memory
 
-    const outDir = path.join(distDir, 'products', slug);
-    const outFile = path.join(outDir, 'index.html');
+    for (const product of products) {
+      const slug = generateSlug(product.name);
+      if (!slug) { console.warn(`Skipping product with empty slug: ${product.id}`); continue; }
 
-    // Resume support: skip if already rendered by a previous run
-    if (fs.existsSync(outFile)) {
-      skipped++;
-      continue;
-    }
+      const outDir = path.join(distDir, 'products', slug);
+      const outFile = path.join(outDir, 'index.html');
 
-    const url = `${baseUrl}/products/${slug}`;
-    try {
-      await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
-      await new Promise((r) => setTimeout(r, 400));
+      // Resume support: skip if already rendered by a previous run
+      if (fs.existsSync(outFile)) {
+        skipped++;
+        continue;
+      }
 
-      const html = await page.content();
-      fs.mkdirSync(outDir, { recursive: true });
-      fs.writeFileSync(outFile, html);
-
-      success++;
-      console.log(`[${success + failed + skipped}/${products.length}] OK  /products/${slug}`);
-    } catch (err) {
-      failed++;
-      console.error(`[${success + failed + skipped}/${products.length}] FAIL /products/${slug} — ${err.message}`);
-    }
-
-    processedSinceRecycle++;
-    if (processedSinceRecycle >= RECYCLE_EVERY) {
-      processedSinceRecycle = 0;
+      const url = `${baseUrl}/products/${slug}`;
       try {
-        await page.close();
-        page = await browser.newPage();
-      } catch (recycleErr) {
-        console.error('Page recycle failed, browser may have crashed:', recycleErr.message);
-        throw recycleErr;
+        await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+        await new Promise((r) => setTimeout(r, 400));
+
+        const html = await page.content();
+        fs.mkdirSync(outDir, { recursive: true });
+        fs.writeFileSync(outFile, html);
+
+        success++;
+        console.log(`[${success + failed + skipped}/${products.length}] OK  /products/${slug}`);
+      } catch (err) {
+        failed++;
+        console.error(`[${success + failed + skipped}/${products.length}] FAIL /products/${slug} — ${err.message}`);
+      }
+
+      processedSinceRecycle++;
+      if (processedSinceRecycle >= RECYCLE_EVERY) {
+        processedSinceRecycle = 0;
+        try {
+          await page.close();
+          page = await browser.newPage();
+        } catch (recycleErr) {
+          console.error('Page recycle failed, browser may have crashed:', recycleErr.message);
+          throw recycleErr;
+        }
       }
     }
+
+    console.log(`\nDone. ${success} rendered, ${skipped} already done, ${failed} failed.`);
+  } finally {
+    browserClosedNormally = true;
+
+    if (page && !page.isClosed?.()) {
+      await page.close().catch(() => {});
+    }
+
+    if (browser) {
+      await browser.close().catch(() => {});
+    }
+
+    if (previewServer) {
+      await previewServer.httpServer.close().catch(() => {});
+    }
   }
-
-  await browser.close();
-  await previewServer.httpServer.close();
-
-  console.log(`\nDone. ${success} rendered, ${skipped} already done, ${failed} failed.`);
 }
 
 main().catch((err) => {
