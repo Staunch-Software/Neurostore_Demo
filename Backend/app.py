@@ -7317,6 +7317,67 @@ products.extend([
     {
         "id": 163, "name": "Acronis Cyber File Infrastructure", "category": "Backup", "softwareType": "File Infrastructure Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-infrastructure.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["File infrastructure protection", "Scalable data management", "Recovery-focused operations"], "shortDescription": "Acronis file infrastructure protection for resilient, recoverable business data."
+    },
+    {
+        "id": 164,
+        "name": "Ai PC M5 - AMD Ryzen AI Max+ 395, 128GB RAM, 1TB SSD",
+        "category": "Hardware",
+        "softwareType": None,
+        "family": "Ai PC M5 Series",
+        "term": None,
+        "brand": "Ai PC",
+        "image": "/products/pc-1.png",
+        "images": [
+            "/products/pc-1.png",
+            "/products/pc-2.png",
+            "/products/pc-3.png",
+            "/products/pc-4.png",
+            "/products/pc-5.png",
+            "/products/pc-6.png",
+            "/products/pc-7.png",
+            "/products/pc-8.png",
+            "/products/pc-9.png",
+            "/products/pc-10.png"
+        ],
+        "price": None,
+        "badge": "Mini AI Workstation",
+        "moq": "Per unit",
+        "enquiryOnly": True,
+        "features": [
+            "AMD Ryzen AI Max+ 395 processor with integrated NPU for on-device AI acceleration",
+            "128GB high-bandwidth unified memory for large local AI model inference",
+            "1TB NVMe SSD storage",
+            "Compact multi-functional mini PC form factor for AI, content creation and general workloads"
+        ],
+        "shortDescription": "A compact multi-functional AI PC built around the AMD Ryzen AI Max+ 395 APU, offering 128GB of memory and 1TB storage for local AI inference and demanding compute tasks.",
+        "description": "The Ai PC M5 is a multi-functional mini desktop powered by the AMD Ryzen AI Max+ 395 processor, combining CPU, NPU and integrated GPU compute in a single compact chassis. With 128GB of memory, it is designed to support local large language model inference, data analysis, content creation and general-purpose workloads without relying on a discrete GPU.",
+        "additionalInfo": {
+            "Product Edition": "M5",
+            "Publisher / Brand": "Ai PC",
+            "Part Number": "Not specified",
+            "Product ID": "Not specified",
+            "Software Type": "N/A",
+            "Product Type": "Hardware",
+            "Family": "Ai PC M5",
+            "Agreement": "N/A",
+            "Segment": "Commercial / Prosumer",
+            "Version": "M5",
+            "Term": "N/A",
+            "Purchase Unit": "Per unit",
+            "Purchase Price": "Not specified",
+            "List Price": "Not specified",
+            "Price List Valid To": "N/A",
+            "License Type": "N/A (Physical Hardware)",
+            "Delivery": "Physical Shipment",
+            "CPU": "AMD Ryzen AI Max+ 395",
+            "Memory": "128GB",
+            "Storage": "1TB",
+            "Input": "20V === 12A",
+            "Supported OS": "Windows / Linux",
+            "Compliance": "Not specified",
+            "Support & Updates": "Manufacturer warranty (terms not specified)"
+        },
+        "warranty": "Not specified — check with seller/manufacturer for warranty terms."
     }
 ])
 # ══════════════════════════════════════════════════════════════════════════════
