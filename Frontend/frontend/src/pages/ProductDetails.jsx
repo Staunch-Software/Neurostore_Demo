@@ -25,6 +25,8 @@ const ProductDetails = () => {
     const [showCartDrawer, setShowCartDrawer] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+    const product = products.find((p) => generateSlug(p.name) === productName);
+
     const productImages = Array.isArray(product?.images) && product.images.length > 0
         ? product.images
         : [product?.image].filter(Boolean);
@@ -60,8 +62,6 @@ const ProductDetails = () => {
     useEffect(() => {
         setSelectedImageIndex(0);
     }, [productName]);
-
-    const product = products.find((p) => generateSlug(p.name) === productName);
 
     const isNewEnquiryProduct = product?.enquiryOnly;
 
