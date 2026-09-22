@@ -112,8 +112,10 @@ async function main() {
       await browser.close().catch(() => {});
     }
 
-    if (previewServer) {
-      await previewServer.httpServer.close().catch(() => {});
+    if (previewServer?.httpServer) {
+      await new Promise((resolve) => {
+        previewServer.httpServer.close(() => resolve());
+      }).catch(() => {});
     }
   }
 }
