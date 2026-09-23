@@ -218,13 +218,19 @@ export const Navbar = () => {
             {/* Products Dropdown */}
             <div
               className="neuro-dropdown-wrapper"
-              onMouseLeave={() => setProductsOpen(false)}
+              onMouseLeave={() => {
+                setProductsOpen(false);
+                setSoftwareOpen(false);
+              }}
             >
 
               <button
                 className="neuro-nav-link"
                 onMouseEnter={() => setProductsOpen(true)}
-                onClick={() => setProductsOpen(!productsOpen)}
+                onClick={() => {
+                  setProductsOpen(!productsOpen);
+                  navigate('/products');
+                }}
               >
                 Products <ChevronDown size={14} />
               </button>
@@ -237,58 +243,38 @@ export const Navbar = () => {
                     exit={{ opacity: 0, y: 10 }}
                     className="neuro-dropdown-menu"
                   >
-
-                    {/* All Products with Sub-dropdown for Software and AI Software */}
-                    <div
+                    <Link
+                      to="/products?brand=Microsoft"
                       className="neuro-dropdown-item"
-                      onMouseEnter={() => setSoftwareOpen(true)}
-                      onMouseLeave={() => setSoftwareOpen(false)}
+                      onClick={() => {
+                        setProductsOpen(false);
+                        setSoftwareOpen(false);
+                      }}
                     >
-                      <Link
-                        to="/products"
-                        style={{
-                          textDecoration: 'none',
-                          color: 'inherit',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          width: '100%'
-                        }}
-                        onClick={() => {
-                          setProductsOpen(false);
-                          setSoftwareOpen(false);
-                        }}
-                      >
-                        <span>Microsoft</span>
-                        
-                      </Link>
+                      <span>Microsoft</span>
+                    </Link>
 
-                      {/* {softwareOpen && (
-                        <div className="neuro-dropdown-submenu">
-                          <Link
-                            to="/products/software"
-                            className="neuro-dropdown-item"
-                            onClick={() => {
-                              setProductsOpen(false);
-                              setSoftwareOpen(false);
-                            }}
-                          >
-                           
-                          </Link>
+                    <Link
+                      to="/products?brand=Acronis"
+                      className="neuro-dropdown-item"
+                      onClick={() => {
+                        setProductsOpen(false);
+                        setSoftwareOpen(false);
+                      }}
+                    >
+                      <span>Acronis</span>
+                    </Link>
 
-                          <Link
-                            to="/products/ai-software"
-                            className="neuro-dropdown-item"
-                            onClick={() => {
-                              setProductsOpen(false);
-                              setSoftwareOpen(false);
-                            }}
-                          >
-                           
-                          </Link>
-                        </div>
-                      )} */}
-                    </div>
+                    <Link
+                      to="/products?brand=AI%20PC"
+                      className="neuro-dropdown-item"
+                      onClick={() => {
+                        setProductsOpen(false);
+                        setSoftwareOpen(false);
+                      }}
+                    >
+                      <span>AI PC</span>
+                    </Link>
                   </motion.div>
                 )}
               </AnimatePresence>

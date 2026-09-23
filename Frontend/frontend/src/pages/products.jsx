@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import SEO from '../components/SEO';
 import { ShopContext } from '../components/context/ShopContext';
@@ -15,12 +15,15 @@ const generateSlug = (text) => {
 const Products = () => {
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount } = useContext(ShopContext);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const [justAdded, setJustAdded] = useState({});
     const [showCartDrawer, setShowCartDrawer] = useState(false);
 
-    // No category filtering anymore — show all products
-    const filtered = products;
+    const selectedBrand = searchParams.get('brand');
+    const filtered = selectedBrand
+        ? products.filter((product) => product.brand && product.brand.toLowerCase() === selectedBrand.toLowerCase())
+        : products;
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9;
