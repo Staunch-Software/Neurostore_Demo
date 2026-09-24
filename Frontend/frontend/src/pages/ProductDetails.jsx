@@ -234,7 +234,7 @@ const ProductDetails = () => {
             <div className="container">
 
                 <Link to="/products" className="back-link">
-                    <ChevronLeft size={16} /> Back to Inventory
+                    <ChevronLeft size={16} /> Back
                 </Link>
 
                 <div className="pd-top-section">
