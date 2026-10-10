@@ -330,11 +330,11 @@ const ProductDetails = () => {
                         )}
 
                         <div className="pd-action-row">
-                            <a href="tel:+9104422353175" className="pd-call-btn">
+                            <a href="tel:+919384813815" className="pd-call-btn">
                                 <Phone size={16} /> {product.enquiryOnly ? 'Call' : 'Call for Price'}
                             </a>
                             <a
-                                href={`https://wa.me/9104422353175?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
+                                href={`https://wa.me/919384813815?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="pd-call-btn pd-whatsapp-btn"

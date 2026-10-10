@@ -315,7 +315,7 @@ const Products = () => {
                                     )}
 
                                     <div className="p-action-buttons" onClick={(e) => e.stopPropagation()}>
-                                        <a href="tel:+9104422353175" className="action-btn btn-call">
+                                        <a href="tel:+919384813815" className="action-btn btn-call">
                                             <Phone size={14} /> {p.enquiryOnly ? 'Call' : 'Call for Price'}
                                         </a>
 
@@ -324,7 +324,7 @@ const Products = () => {
                                         </Link>
 
                                         <a
-                                            href={`https://wa.me/9104422353175?text=Hi, I'm interested in ${encodeURIComponent(p.name)}`}
+                                            href={`https://wa.me/919384813815?text=Hi, I'm interested in ${encodeURIComponent(p.name)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="action-btn btn-whatsapp"
