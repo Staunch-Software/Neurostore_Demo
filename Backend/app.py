@@ -672,6 +672,8 @@ products = [
     {
         "id": 2,
         "name": "Access LTSC 2024",
+        "productId": "1741774",
+        "partNumber": "DG7GMGF0PN5J:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Access LTSC 2024",
@@ -716,6 +718,8 @@ products = [
     {
         "id": 3,
         "name": "BizTalk Server 2020 Branch",
+        "productId": "1213143",
+        "partNumber": "DG7GMGF0G49Z:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "BizTalk Server 2020 Branch",
@@ -760,6 +764,8 @@ products = [
     {
         "id": 4,
         "name": "BizTalk Server 2020 Enterprise",
+        "productId": "1213147",
+        "partNumber": "DG7GMGF0G49X:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "BizTalk Server 2020 Enterprise",
@@ -804,6 +810,8 @@ products = [
     {
         "id": 5,
         "name": "BizTalk Server 2020 Standard",
+        "productId": "1213151",
+        "partNumber": "DG7GMGF0G49W:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "BizTalk Server 2020 Standard",
@@ -848,6 +856,8 @@ products = [
     {
         "id": 6,
         "name": "ESU for SQL 2014 EE 2 Core pack for 1st year EOS (Coverage July 9 2025 - July 14 2026)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000J",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -892,6 +902,8 @@ products = [
     {
         "id": 7,
         "name": "ESU for SQL 2014 EE 2 Core pack for 2nd year EOS (Coverage July 9 2025 - July 14 2026)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000W",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -936,6 +948,8 @@ products = [
     {
         "id": 8,
         "name": "ESU for SQL 2014 EE 2 Core pack for 3rd year EOS (Coverage July 15 2026 - July 14 2027)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000Q",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -980,6 +994,8 @@ products = [
     {
         "id": 9,
         "name": "ESU for SQL 2014 EE Per Server for 1st year EOS(Coverage July 9 2025 - July 14 2026)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000L",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1024,6 +1040,8 @@ products = [
     {
         "id": 10,
         "name": "ESU for SQL 2014 EE Per Server for 2nd year EOS (Coverage July 9 2025 - July 14 2026)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000Z",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1068,6 +1086,8 @@ products = [
     {
         "id": 11,
         "name": "ESU for SQL 2014 EE Per Server for 3rd year EOS (Coverage July 15 2026 - July 14 2027)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000X",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1112,6 +1132,8 @@ products = [
     {
         "id": 12,
         "name": "ESU for SQL 2014 Std 2 Core pack for 1st year EOS (Coverage July 9 2025 - July 14 2026)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000K",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1156,6 +1178,8 @@ products = [
     {
         "id": 13,
         "name": "ESU for SQL 2014 Std 2 Core pack for 2nd year EOS (Coverage July 9 2025 - July 14 2026)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000S",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1200,6 +1224,8 @@ products = [
     {
         "id": 14,
         "name": "ESU for SQL 2014 Std 2 Core pack for 3rd year EOS (Coverage July 15 2026 - July 14 2027)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000R",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1244,6 +1270,8 @@ products = [
     {
         "id": 15,
         "name": "ESU for SQL 2014 Std Per Server for 1st year EOS (Coverage July 9 2025 - July 14 2026)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000H",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1288,6 +1316,8 @@ products = [
     {
         "id": 16,
         "name": "ESU for SQL 2014 Std Per Server for 2nd year EOS (Coverage July 9 2025 - July 14 2026)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000T",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1332,6 +1362,8 @@ products = [
     {
         "id": 17,
         "name": "ESU for SQL 2014 Std Per Server for 3rd year EOS (Coverage July 15 2026 - July 14 2027)",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000V",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for SQL Server",
@@ -1376,6 +1408,8 @@ products = [
     {
         "id": 18,
         "name": "ESU for SQL 2016 EE 2 Core pack Year 1 (July 15 2026 - July 14 2027)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:000C",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1420,6 +1454,8 @@ products = [
     {
         "id": 19,
         "name": "ESU for SQL 2016 EE 2 Core pack Year 2 (July 15 2027 - July 14 2028)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0007",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1464,6 +1500,8 @@ products = [
     {
         "id": 20,
         "name": "ESU for SQL 2016 EE 2 Core pack Year 3 (July 15 2028 - July 14 2029)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0004",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1508,6 +1546,8 @@ products = [
     {
         "id": 21,
         "name": "ESU for SQL 2016 EE Per Server Year 1 (July 15 2026 - July 14 2027)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1552,6 +1592,8 @@ products = [
     {
         "id": 22,
         "name": "ESU for SQL 2016 EE Per Server Year 2 (July 15 2027 - July 14 2028)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1596,6 +1638,8 @@ products = [
     {
         "id": 23,
         "name": "ESU for SQL 2016 EE Per Server Year 3 (July 15 2028 - July 14 2029)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0008",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1640,6 +1684,8 @@ products = [
     {
         "id": 24,
         "name": "ESU for SQL 2016 Std 2 Core pack Year 1 (July 15 2026 - July 14 2027)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:000D",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1684,6 +1730,8 @@ products = [
     {
         "id": 25,
         "name": "ESU for SQL 2016 Std 2 Core pack Year 2 (July 15 2027 - July 14 2028)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1728,6 +1776,8 @@ products = [
     {
         "id": 26,
         "name": "ESU for SQL 2016 Std 2 Core pack Year 3 (July 15 2028 - July 14 2029)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0005",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1772,6 +1822,8 @@ products = [
     {
         "id": 27,
         "name": "ESU for SQL 2016 Std Per Server Year 1 (July 15 2026 - July 14 2027)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0006",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1816,6 +1868,8 @@ products = [
     {
         "id": 28,
         "name": "ESU for SQL 2016 Std Per Server Year 2 (July 15 2027 - July 14 2028)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:000B",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1860,6 +1914,8 @@ products = [
     {
         "id": 29,
         "name": "ESU for SQL 2016 Std Per Server Year 3 (July 15 2028 - July 14 2029)",
+        "productId": "1894302",
+        "partNumber": "DG7GMGDZTC0F:0009",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2016 ESU",
@@ -1904,6 +1960,8 @@ products = [
     {
         "id": 30,
         "name": "Excel LTSC 2024",
+        "productId": "1741773",
+        "partNumber": "DG7GMGF0PN5H:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Excel LTSC 2024",
@@ -1948,6 +2006,8 @@ products = [
     {
         "id": 31,
         "name": "Excel LTSC for Mac 2024",
+        "productId": "1741772",
+        "partNumber": "DG7GMGF0PN5G:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Excel LTSC for Mac 2024",
@@ -1992,6 +2052,8 @@ products = [
     {
         "id": 32,
         "name": "Exchange Server Enterprise 2019 Device CAL",
+        "productId": "1271444",
+        "partNumber": "DG7GMGF0F4MD:0005",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Exchange Server Enterprise CAL 2019",
@@ -2036,6 +2098,8 @@ products = [
     {
         "id": 33,
         "name": "Exchange Server Enterprise 2019 User CAL",
+        "productId": "1271444",
+        "partNumber": "DG7GMGF0F4MD:0004",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Exchange Server Enterprise CAL 2019",
@@ -2080,6 +2144,8 @@ products = [
     {
         "id": 34,
         "name": "Exchange Server Standard 2019 Device CAL",
+        "productId": "1271442",
+        "partNumber": "DG7GMGF0F4MB:0005",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Exchange Server Standard CAL 2019",
@@ -2124,6 +2190,8 @@ products = [
     {
         "id": 35,
         "name": "Exchange Server Standard 2019 User CAL",
+        "productId": "1271442",
+        "partNumber": "DG7GMGF0F4MB:0004",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Exchange Server Standard CAL 2019",
@@ -2168,6 +2236,8 @@ products = [
     {
         "id": 36,
         "name": "Office LTSC Professional Plus 2024",
+        "productId": "1741771",
+        "partNumber": "DG7GMGF0PN5F:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Office LTSC Professional Plus 2024",
@@ -2212,6 +2282,8 @@ products = [
     {
         "id": 37,
         "name": "Office LTSC Standard 2024",
+        "productId": "1741770",
+        "partNumber": "DG7GMGF0PN5D:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Office LTSC Standard 2024",
@@ -2256,6 +2328,8 @@ products = [
     {
         "id": 38,
         "name": "Office LTSC Standard for Mac 2024",
+        "productId": "1741769",
+        "partNumber": "DG7GMGF0PN5C:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Office LTSC Standard for Mac 2024",
@@ -2300,6 +2374,8 @@ products = [
     {
         "id": 39,
         "name": "Outlook LTSC 2024",
+        "productId": "1741775",
+        "partNumber": "DG7GMGF0PN5V:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Outlook LTSC 2024",
@@ -2344,6 +2420,8 @@ products = [
     {
         "id": 40,
         "name": "Outlook LTSC for Mac 2024",
+        "productId": "1741776",
+        "partNumber": "DG7GMGF0PN5W:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Outlook LTSC for Mac 2024",
@@ -2388,6 +2466,8 @@ products = [
     {
         "id": 41,
         "name": "PowerPoint LTSC 2024",
+        "productId": "1741768",
+        "partNumber": "DG7GMGF0PN47:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "PowerPoint LTSC 2024",
@@ -2432,6 +2512,8 @@ products = [
     {
         "id": 42,
         "name": "PowerPoint LTSC for Mac 2024",
+        "productId": "1741767",
+        "partNumber": "DG7GMGF0PN46:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "PowerPoint LTSC for Mac 2024",
@@ -2476,6 +2558,8 @@ products = [
     {
         "id": 43,
         "name": "Project Professional 2024",
+        "productId": "1741766",
+        "partNumber": "DG7GMGF0PN45:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Project Professional 2024",
@@ -2520,6 +2604,8 @@ products = [
     {
         "id": 44,
         "name": "Project Server 2019",
+        "productId": "1213156",
+        "partNumber": "DG7GMGF0F4MH:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Project Server 2019",
@@ -2564,6 +2650,8 @@ products = [
     {
         "id": 45,
         "name": "Project Server 2019 Device CAL",
+        "productId": "1213159",
+        "partNumber": "DG7GMGF0F4LF:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Project Server CAL 2019",
@@ -2608,6 +2696,8 @@ products = [
     {
         "id": 46,
         "name": "Project Server 2019 User CAL",
+        "productId": "1213159",
+        "partNumber": "DG7GMGF0F4LF:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Project Server CAL 2019",
@@ -2652,6 +2742,8 @@ products = [
     {
         "id": 47,
         "name": "Project Standard 2024",
+        "productId": "1741765",
+        "partNumber": "DG7GMGF0PN44:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Project Standard 2024",
@@ -2696,6 +2788,8 @@ products = [
     {
         "id": 48,
         "name": "Rights Management Services (RMS) 2025 CAL- 1 User",
+        "productId": "1752048",
+        "partNumber": "DG7GMGF0PWHF:0006",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Rights Management Services CAL 2025",
@@ -2740,6 +2834,8 @@ products = [
     {
         "id": 49,
         "name": "Rights Management Services (RMS) 2025 CAL-1 Device",
+        "productId": "1752048",
+        "partNumber": "DG7GMGF0PWHF:0005",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Rights Management Services CAL 2025",
@@ -2784,6 +2880,8 @@ products = [
     {
         "id": 50,
         "name": "SQL Server 2025 - 1 Device CAL",
+        "productId": "1880687",
+        "partNumber": "DG7GMGF0VNHV:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2025 CAL",
@@ -2828,6 +2926,8 @@ products = [
     {
         "id": 51,
         "name": "SQL Server 2025 - 1 User CAL",
+        "productId": "1880687",
+        "partNumber": "DG7GMGF0VNHV:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2025 CAL",
@@ -2872,6 +2972,8 @@ products = [
     {
         "id": 52,
         "name": "SQL Server 2025 Enterprise core - 2 core License Pack",
+        "productId": "1880691",
+        "partNumber": "DG7GMGF0VNGX:0006",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2025 Enterprise - 2 core License Pack",
@@ -2916,6 +3018,8 @@ products = [
     {
         "id": 53,
         "name": "SQL Server 2025 Standard core - 2 core License Pack",
+        "productId": "1880693",
+        "partNumber": "DG7GMGF0VNH2:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2025 Standard - 2 core License Pack",
@@ -2960,6 +3064,8 @@ products = [
     {
         "id": 54,
         "name": "SQL Server 2025 Standard edition Perpetual 1 Server License",
+        "productId": "1880692",
+        "partNumber": "DG7GMGF0VNJS:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SQL Server 2025 Standard Edition",
@@ -3004,6 +3110,8 @@ products = [
     {
         "id": 55,
         "name": "SharePoint Enterprise 2019 Device CAL",
+        "productId": "1213169",
+        "partNumber": "DG7GMGF0F4LV:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SharePoint Enterprise CAL 2019",
@@ -3048,6 +3156,8 @@ products = [
     {
         "id": 56,
         "name": "SharePoint Enterprise 2019 User CAL",
+        "productId": "1213169",
+        "partNumber": "DG7GMGF0F4LV:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SharePoint Enterprise CAL 2019",
@@ -3092,6 +3202,8 @@ products = [
     {
         "id": 57,
         "name": "SharePoint Standard 2019 Device CAL",
+        "productId": "1213174",
+        "partNumber": "DG7GMGF0F4LS:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SharePoint Standard CAL 2019",
@@ -3136,6 +3248,8 @@ products = [
     {
         "id": 58,
         "name": "SharePoint Standard 2019 User CAL",
+        "productId": "1213174",
+        "partNumber": "DG7GMGF0F4LS:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "SharePoint Standard CAL 2019",
@@ -3180,6 +3294,8 @@ products = [
     {
         "id": 59,
         "name": "Skype for Business Server Enterprise 2019 Device CAL",
+        "productId": "1213146",
+        "partNumber": "DG7GMGF0F4LP:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Skype for Business Server Enterprise CAL 2019",
@@ -3224,6 +3340,8 @@ products = [
     {
         "id": 60,
         "name": "Skype for Business Server Enterprise 2019 User CAL",
+        "productId": "1213146",
+        "partNumber": "DG7GMGF0F4LP:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Skype for Business Server Enterprise CAL 2019",
@@ -3268,6 +3386,8 @@ products = [
     {
         "id": 61,
         "name": "Skype for Business Server Plus 2019 Device CAL",
+        "productId": "1213150",
+        "partNumber": "DG7GMGF0F4LN:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Skype for Business Server Plus CAL 2019",
@@ -3312,6 +3432,8 @@ products = [
     {
         "id": 62,
         "name": "Skype for Business Server Plus 2019 User CAL",
+        "productId": "1213150",
+        "partNumber": "DG7GMGF0F4LN:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Skype for Business Server Plus CAL 2019",
@@ -3356,6 +3478,8 @@ products = [
     {
         "id": 63,
         "name": "Skype for Business Server Standard 2019 Device CAL",
+        "productId": "1213155",
+        "partNumber": "DG7GMGF0F4K1:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Skype for Business Server Standard CAL 2019",
@@ -3400,6 +3524,8 @@ products = [
     {
         "id": 64,
         "name": "Skype for Business Server Standard 2019 User CAL",
+        "productId": "1213155",
+        "partNumber": "DG7GMGF0F4K1:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Skype for Business Server Standard CAL 2019",
@@ -3444,6 +3570,8 @@ products = [
     {
         "id": 65,
         "name": "Visio LTSC Professional 2024",
+        "productId": "1741764",
+        "partNumber": "DG7GMGF0PN43:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Visio LTSC Professional 2024",
@@ -3488,6 +3616,8 @@ products = [
     {
         "id": 66,
         "name": "Visio LTSC Standard 2024",
+        "productId": "1741763",
+        "partNumber": "DG7GMGF0PN42:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Visio LTSC Standard 2024",
@@ -3532,6 +3662,8 @@ products = [
     {
         "id": 67,
         "name": "Visual Studio Professional 2026",
+        "productId": "1876739",
+        "partNumber": "DG7GMGF0VJ96:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Visual Studio Professional 2026",
@@ -3576,6 +3708,8 @@ products = [
     {
         "id": 68,
         "name": "Win Server DC Core Ext Security 2012 2 Core Y1 (October 2023-2024)",
+        "productId": "1613062",
+        "partNumber": "DG7GMGF0HPVW:0009",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for Windows Server DC Core",
@@ -3620,6 +3754,8 @@ products = [
     {
         "id": 69,
         "name": "Win Server DC Core Ext Security 2012 2 Core Y2 (October 2024-2025)",
+        "productId": "1613062",
+        "partNumber": "DG7GMGF0HPVW:0008",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for Windows Server DC Core",
@@ -3664,6 +3800,8 @@ products = [
     {
         "id": 70,
         "name": "Win Server DC Core Ext Security 2012 8 Core Y1 (October 2023-2024)",
+        "productId": "1613062",
+        "partNumber": "DG7GMGF0HPVW:0006",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for Windows Server DC Core",
@@ -3708,6 +3846,8 @@ products = [
     {
         "id": 71,
         "name": "Win Server DC Core Ext Security 2012 8 Core Y2 (October 2024-2025)",
+        "productId": "1613062",
+        "partNumber": "DG7GMGF0HPVW:0007",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for Windows Server DC Core",
@@ -3752,6 +3892,8 @@ products = [
     {
         "id": 72,
         "name": "Win Server Std Core Ext Security 2012 2 Core Y1 (October 2023-2024)",
+        "productId": "1613060",
+        "partNumber": "DG7GMGF0HPVV:0007",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for Windows Server Standard Core",
@@ -3796,6 +3938,8 @@ products = [
     {
         "id": 73,
         "name": "Win Server Std Core Ext Security 2012 2 Core Y2 (October 2024-2025)",
+        "productId": "1613060",
+        "partNumber": "DG7GMGF0HPVV:0006",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for Windows Server Standard Core",
@@ -3840,6 +3984,8 @@ products = [
     {
         "id": 74,
         "name": "Win Server Std Core Ext Security 2012 8 Core Y1 (October 2023-2024)",
+        "productId": "1613060",
+        "partNumber": "DG7GMGF0HPVV:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for Windows Server Standard Core",
@@ -3884,6 +4030,8 @@ products = [
     {
         "id": 75,
         "name": "Win Server Std Core Ext Security 2012 8 Core Y2 (October 2024-2025)",
+        "productId": "1613060",
+        "partNumber": "DG7GMGF0HPVV:0008",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Extended Security Updates for Windows Server Standard Core",
@@ -3928,6 +4076,8 @@ products = [
     {
         "id": 76,
         "name": "Windows 10 ESU Year 1 (2025 - 2026)",
+        "productId": "1837466",
+        "partNumber": "DG7GMGF0SSGZ:0004",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 ESU",
@@ -3972,6 +4122,8 @@ products = [
     {
         "id": 77,
         "name": "Windows 10 ESU Year 2 (2026 - 2027)",
+        "productId": "1837466",
+        "partNumber": "DG7GMGF0SSGZ:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 ESU",
@@ -4016,6 +4168,8 @@ products = [
     {
         "id": 78,
         "name": "Windows 10 ESU Year 3 (2027 - 2028)",
+        "productId": "1837466",
+        "partNumber": "DG7GMGF0SSGZ:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 ESU",
@@ -4060,6 +4214,8 @@ products = [
     {
         "id": 79,
         "name": "Windows 10 Enterprise LTSB 2016 ESU Year 1 (2026 - 2027)",
+        "productId": "1894303",
+        "partNumber": "DG7GMGDZT98X:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 Enterprise LTSB 2016 ESU",
@@ -4104,6 +4260,8 @@ products = [
     {
         "id": 80,
         "name": "Windows 10 Enterprise LTSB 2016 ESU Year 2 (2027 - 2028)",
+        "productId": "1894303",
+        "partNumber": "DG7GMGDZT98X:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 Enterprise LTSB 2016 ESU",
@@ -4148,6 +4306,8 @@ products = [
     {
         "id": 81,
         "name": "Windows 10 Enterprise LTSB 2016 ESU Year 3 (2028 - 2029)",
+        "productId": "1894303",
+        "partNumber": "DG7GMGDZT98X:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 Enterprise LTSB 2016 ESU",
@@ -4192,6 +4352,8 @@ products = [
     {
         "id": 82,
         "name": "Windows 10 Enterprise LTSC 2021 Upgrade",
+        "productId": "1386576",
+        "partNumber": "DG7GMGF0D19L:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 Enterprise LTSC 2021 Upgrade",
@@ -4236,6 +4398,8 @@ products = [
     {
         "id": 83,
         "name": "Windows 10 Enterprise N LTSC 2021 Upgrade",
+        "productId": "1386577",
+        "partNumber": "DG7GMGF0D19M:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 Enterprise N LTSC 2021 Upgrade",
@@ -4280,6 +4444,8 @@ products = [
     {
         "id": 84,
         "name": "Windows 10 IoT Enterprise LTSC 2021",
+        "productId": "1597839",
+        "partNumber": "DG7GMGF0H3RD:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 10 IoT Enterprise LTSC 2021",
@@ -4324,6 +4490,8 @@ products = [
     {
         "id": 85,
         "name": "Windows 11 Enterprise LTSC 2024 Upgrade",
+        "productId": "1757128",
+        "partNumber": "DG7GMGF0PP46:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 Enterprise LTSC 2024 Upgrade",
@@ -4368,6 +4536,8 @@ products = [
     {
         "id": 86,
         "name": "Windows 11 Enterprise N LTSC 2024 Upgrade",
+        "productId": "1757127",
+        "partNumber": "DG7GMGF0PP45:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 Enterprise N LTSC 2024 Upgrade",
@@ -4412,6 +4582,8 @@ products = [
     {
         "id": 87,
         "name": "Windows 11 Home N to Pro N Upgrade for Microsoft 365 Business",
+        "productId": "1371339",
+        "partNumber": "DG7GMGF0D8H3:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 Pro N",
@@ -4456,6 +4628,8 @@ products = [
     {
         "id": 88,
         "name": "Windows 11 Home to Pro Upgrade for Microsoft 365 Business",
+        "productId": "1371342",
+        "partNumber": "DG7GMGF0D8H4:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 Pro",
@@ -4500,6 +4674,8 @@ products = [
     {
         "id": 89,
         "name": "Windows 11 IoT Enterprise LTSC 2024",
+        "productId": "1757129",
+        "partNumber": "DG7GMGF0PP49:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 IoT Enterprise LTSC 2024",
@@ -4544,6 +4720,8 @@ products = [
     {
         "id": 90,
         "name": "Windows 11 Pro N Upgrade",
+        "productId": "1371339",
+        "partNumber": "DG7GMGF0D8H3:0004",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 Pro N",
@@ -4588,6 +4766,8 @@ products = [
     {
         "id": 91,
         "name": "Windows 11 Pro Upgrade",
+        "productId": "1371342",
+        "partNumber": "DG7GMGF0D8H4:0004",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 Pro",
@@ -4632,6 +4812,8 @@ products = [
     {
         "id": 92,
         "name": "Windows GGWA - Windows 11 Pro - Legalization Get Genuine",
+        "productId": "1425889",
+        "partNumber": "DG7GMGF0L4TL:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 GGWA",
@@ -4676,6 +4858,8 @@ products = [
     {
         "id": 93,
         "name": "Windows GGWA - Windows 11 Pro N - Legalization Get Genuine",
+        "productId": "1425889",
+        "partNumber": "DG7GMGF0L4TL:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows 11 GGWA",
@@ -4720,6 +4904,8 @@ products = [
     {
         "id": 94,
         "name": "Windows Rights Management External Connector 2025",
+        "productId": "1809687",
+        "partNumber": "DG7GMGF0XCZ2:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server Rights Management External Connector",
@@ -4764,6 +4950,8 @@ products = [
     {
         "id": 95,
         "name": "Windows Server 2025 - 1 Device CAL",
+        "productId": "1752047",
+        "partNumber": "DG7GMGF0PWHT:0005",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server CAL 2025",
@@ -4808,6 +4996,8 @@ products = [
     {
         "id": 96,
         "name": "Windows Server 2025 - 1 User CAL",
+        "productId": "1752047",
+        "partNumber": "DG7GMGF0PWHT:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server CAL 2025",
@@ -4852,6 +5042,8 @@ products = [
     {
         "id": 97,
         "name": "Windows Server 2025 Datacenter - 16 Core",
+        "productId": "1752049",
+        "partNumber": "DG7GMGF0PWHD:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server Data Center Core 2025",
@@ -4896,6 +5088,8 @@ products = [
     {
         "id": 98,
         "name": "Windows Server 2025 Datacenter - 2 Core",
+        "productId": "1752049",
+        "partNumber": "DG7GMGF0PWHD:0004",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server Data Center Core 2025",
@@ -4940,6 +5134,8 @@ products = [
     {
         "id": 99,
         "name": "Windows Server 2025 External Connector",
+        "productId": "1809688",
+        "partNumber": "DG7GMGF0XCZ4:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server 2025 External Connector",
@@ -4984,6 +5180,8 @@ products = [
     {
         "id": 100,
         "name": "Windows Server 2025 Remote Desktop Services - 1 Device CAL",
+        "productId": "1752050",
+        "partNumber": "DG7GMGF0PWHB:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server 2025 Remote Desktop Services",
@@ -5028,6 +5226,8 @@ products = [
     {
         "id": 101,
         "name": "Windows Server 2025 Remote Desktop Services - 1 User CAL",
+        "productId": "1752050",
+        "partNumber": "DG7GMGF0PWHB:0004",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server 2025 Remote Desktop Services",
@@ -5072,6 +5272,8 @@ products = [
     {
         "id": 102,
         "name": "Windows Server 2025 Remote Desktop Services External Connector - License 1",
+        "productId": "1757130",
+        "partNumber": "DG7GMGF0PWHS:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Remote Desktop External Connector 2025",
@@ -5116,6 +5318,8 @@ products = [
     {
         "id": 103,
         "name": "Windows Server 2025 Standard - 16 Core License Pack",
+        "productId": "1752051",
+        "partNumber": "DG7GMGF0PWHC:0003",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server Standard Core 2025",
@@ -5160,6 +5364,8 @@ products = [
     {
         "id": 104,
         "name": "Windows Server 2025 Standard - 2 Core",
+        "productId": "1752051",
+        "partNumber": "DG7GMGF0PWHC:0006",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Windows Server Standard Core 2025",
@@ -5204,6 +5410,8 @@ products = [
     {
         "id": 105,
         "name": "Word LTSC 2024",
+        "productId": "1741762",
+        "partNumber": "DG7GMGF0PN41:0002",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Word LTSC 2024",
@@ -5248,6 +5456,8 @@ products = [
     {
         "id": 106,
         "name": "Word LTSC for Mac 2024",
+        "productId": "1741761",
+        "partNumber": "DG7GMGF0PN40:0001",
         "category": "Software",
         "softwareType": "Perpetual Software",
         "family": "Word LTSC for Mac 2024",
@@ -5292,6 +5502,8 @@ products = [
     {
         "id": 107,
         "name": "Azure SQL Edge - 1 Year - Annual",
+        "productId": "1254677",
+        "partNumber": "DG7GMGF0GJC2:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Azure SQL Edge",
@@ -5336,6 +5548,8 @@ products = [
     {
         "id": 108,
         "name": "Azure SQL Edge - 3 Year - Triennial",
+        "productId": "1254677",
+        "partNumber": "DG7GMGF0GJC2:0001",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Azure SQL Edge",
@@ -5380,6 +5594,8 @@ products = [
     {
         "id": 109,
         "name": "ESU for SQL 2014 EE 2 Core pack for 2nd Year EOS (Coverage July 9 2025 - July 14 2026) - OneTime",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000G",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Extended Security Updates for SQL Server",
@@ -5424,6 +5640,8 @@ products = [
     {
         "id": 110,
         "name": "ESU for SQL 2014 EE Per Server for 2nd Year EOS(Coverage July 9 2025 - July 14 2026) - OneTime",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000M",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Extended Security Updates for SQL Server",
@@ -5468,6 +5686,8 @@ products = [
     {
         "id": 111,
         "name": "ESU for SQL 2014 Std 2 Core pack for 2nd Year EOS (Coverage July 9 2025 - July 14 2026) - OneTime",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000P",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Extended Security Updates for SQL Server",
@@ -5512,6 +5732,8 @@ products = [
     {
         "id": 112,
         "name": "ESU for SQL 2014 Std Per Server for 2nd Year EOS (Coverage July 9 2025 - July 14 2026) - OneTime",
+        "productId": "1613059",
+        "partNumber": "DG7GMGF0HX95:000N",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Extended Security Updates for SQL Server",
@@ -5556,6 +5778,8 @@ products = [
     {
         "id": 113,
         "name": "SQL Server 2022 Enterprise - 2 Core License Pack - 1 Year - Annual",
+        "productId": "1543997",
+        "partNumber": "DG7GMGF0M7XV:0002",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "SQL Server Enterprise Core 2022",
@@ -5600,6 +5824,8 @@ products = [
     {
         "id": 114,
         "name": "SQL Server 2025 Enterprise - 2 core License Pack - 1 Year - Annual",
+        "productId": "1880691",
+        "partNumber": "DG7GMGF0VNGX:0002",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "SQL Server 2025 Enterprise - 2 core License Pack",
@@ -5644,6 +5870,8 @@ products = [
     {
         "id": 115,
         "name": "SQL Server 2025 Enterprise - 2 core License Pack - 3 Year - Triennial",
+        "productId": "1880691",
+        "partNumber": "DG7GMGF0VNGX:0005",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "SQL Server 2025 Enterprise - 2 core License Pack",
@@ -5688,6 +5916,8 @@ products = [
     {
         "id": 116,
         "name": "SQL Server 2025 Standard - 2 core License Pack - 1 Year - Annual",
+        "productId": "1880693",
+        "partNumber": "DG7GMGF0VNH2:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "SQL Server 2025 Standard - 2 core License Pack",
@@ -5732,6 +5962,8 @@ products = [
     {
         "id": 117,
         "name": "SQL Server 2025 Standard - 2 core License Pack - 3 Year - Triennial",
+        "productId": "1880693",
+        "partNumber": "DG7GMGF0VNH2:0006",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "SQL Server 2025 Standard - 2 core License Pack",
@@ -5776,6 +6008,8 @@ products = [
     {
         "id": 118,
         "name": "SQL Server Big Data Node Cores - 1 Year Subscription - Annual",
+        "productId": "1148682",
+        "partNumber": "DG7GMGF0FKZX:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "SQL Server Big Data Node Cores",
@@ -5820,6 +6054,8 @@ products = [
     {
         "id": 119,
         "name": "SQL Server Big Data Node Cores - 1 Year Subscription - Annual",
+        "productId": "1148682",
+        "partNumber": "DG7GMGF0FKZX:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "SQL Server Big Data Node Cores",
@@ -5864,6 +6100,8 @@ products = [
     {
         "id": 120,
         "name": "SQL Server Standard 2022- 2 Core License Pack - 1 Year - Annual",
+        "productId": "1543998",
+        "partNumber": "DG7GMGF0M7XW:0004",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "SQL Server Standard Core 2022",
@@ -5908,6 +6146,8 @@ products = [
     {
         "id": 121,
         "name": "System Center 2025 Datacenter - 2 Core License Pack 1 Year - Annual",
+        "productId": "1791785",
+        "partNumber": "DG7GMGF0PP48:0001",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "System Center 2025 Datacenter",
@@ -5952,6 +6192,8 @@ products = [
     {
         "id": 122,
         "name": "System Center 2025 Datacenter - 2 core License Pack 3 Year - Triennial",
+        "productId": "1791785",
+        "partNumber": "DG7GMGF0PP48:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "System Center 2025 Datacenter",
@@ -5996,6 +6238,8 @@ products = [
     {
         "id": 123,
         "name": "System Center 2025 Standard - 2 Core License Pack 1 Year - Annual",
+        "productId": "1791786",
+        "partNumber": "DG7GMGF0PP47:0001",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "System Center 2025 Standard",
@@ -6040,6 +6284,8 @@ products = [
     {
         "id": 124,
         "name": "System Center 2025 Standard - 2 Core License Pack 3 Year - Triennial",
+        "productId": "1791786",
+        "partNumber": "DG7GMGF0PP47:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "System Center 2025 Standard",
@@ -6084,6 +6330,8 @@ products = [
     {
         "id": 125,
         "name": "Win Server DC Core Ext Security 2012 2 Core Y3 (October 2025-2026) - OneTime",
+        "productId": "1613062",
+        "partNumber": "DG7GMGF0HPVW:000B",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Extended Security Updates for Windows Server DC Core",
@@ -6128,6 +6376,8 @@ products = [
     {
         "id": 126,
         "name": "Win Server DC Core Ext Security 2012 8 Core Y3 (October 2025-2026) - OneTime",
+        "productId": "1613062",
+        "partNumber": "DG7GMGF0HPVW:0001",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Extended Security Updates for Windows Server DC Core",
@@ -6172,6 +6422,8 @@ products = [
     {
         "id": 127,
         "name": "Win Server Std Core Ext Security 2012 2 Core Y3 (October 2025-2026) - OneTime",
+        "productId": "1613060",
+        "partNumber": "DG7GMGF0HPVV:0009",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Extended Security Updates for Windows Server Standard Core",
@@ -6216,6 +6468,8 @@ products = [
     {
         "id": 128,
         "name": "Win Server Std Core Ext Security 2012 8 Core Y3 (October 2025-2026) - OneTime",
+        "productId": "1613060",
+        "partNumber": "DG7GMGF0HPVV:000B",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Extended Security Updates for Windows Server Standard Core",
@@ -6260,6 +6514,8 @@ products = [
     {
         "id": 129,
         "name": "Windows Server 2022 Remote Desktop Services - 1 User CAL 1 Year - Annual",
+        "productId": "1357894",
+        "partNumber": "DG7GMGF0D7HX:0007",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Remote Desktop Server CAL 2022",
@@ -6304,6 +6560,8 @@ products = [
     {
         "id": 130,
         "name": "Windows Server 2022 Standard - 8 Core License Pack 1 Year",
+        "productId": "1357897",
+        "partNumber": "DG7GMGF0D5RK:0002",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Standard Core 2022",
@@ -6348,6 +6606,8 @@ products = [
     {
         "id": 131,
         "name": "Windows Server 2022 Standard - 8 Core License Pack 1 Year - Annual",
+        "productId": "1357897",
+        "partNumber": "DG7GMGF0D5RK:0002",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Standard Core 2022",
@@ -6392,6 +6652,8 @@ products = [
     {
         "id": 132,
         "name": "Windows Server 2022 Standard - 8 Core License Pack 3 Year - Triennial",
+        "productId": "1357897",
+        "partNumber": "DG7GMGF0D5RK:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Standard Core 2022",
@@ -6436,6 +6698,8 @@ products = [
     {
         "id": 133,
         "name": "Windows Server 2025 CAL - 1 Device CAL - 1 Year - Annual",
+        "productId": "1752047",
+        "partNumber": "DG7GMGF0PWHT:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server CAL 2025",
@@ -6480,6 +6744,8 @@ products = [
     {
         "id": 134,
         "name": "Windows Server 2025 CAL - 1 Device CAL - 3 Year - Triennial",
+        "productId": "1752047",
+        "partNumber": "DG7GMGF0PWHT:0001",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server CAL 2025",
@@ -6524,6 +6790,8 @@ products = [
     {
         "id": 135,
         "name": "Windows Server 2025 CAL - 1 User CAL - 1 Year - Annual",
+        "productId": "1752047",
+        "partNumber": "DG7GMGF0PWHT:0004",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server CAL 2025",
@@ -6568,6 +6836,8 @@ products = [
     {
         "id": 136,
         "name": "Windows Server 2025 CAL - 1 User CAL - 3 Year - Triennial",
+        "productId": "1752047",
+        "partNumber": "DG7GMGF0PWHT:0006",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server CAL 2025",
@@ -6612,6 +6882,8 @@ products = [
     {
         "id": 137,
         "name": "Windows Server 2025 Datacenter - 2 Core License Pack 1 Year - Annual",
+        "productId": "1752049",
+        "partNumber": "DG7GMGF0PWHD:0002",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Data Center Core 2025",
@@ -6656,6 +6928,8 @@ products = [
     {
         "id": 138,
         "name": "Windows Server 2025 Datacenter - 2 Core License Pack 3 Year - Triennial",
+        "productId": "1752049",
+        "partNumber": "DG7GMGF0PWHD:0005",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Data Center Core 2025",
@@ -6700,6 +6974,8 @@ products = [
     {
         "id": 139,
         "name": "Windows Server 2025 Datacenter - 8 Core License Pack 1 Year - Annual",
+        "productId": "1752049",
+        "partNumber": "DG7GMGF0PWHD:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Data Center Core 2025",
@@ -6744,6 +7020,8 @@ products = [
     {
         "id": 140,
         "name": "Windows Server 2025 Datacenter - 8 Core License Pack 3 Year - Triennial",
+        "productId": "1752049",
+        "partNumber": "DG7GMGF0PWHD:0006",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Data Center Core 2025",
@@ -6788,6 +7066,8 @@ products = [
     {
         "id": 141,
         "name": "Windows Server 2025 RMS CAL - 1 Device CAL - 1 Year - Annual",
+        "productId": "1752048",
+        "partNumber": "DG7GMGF0PWHF:0001",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Rights Management Services CAL 2025",
@@ -6832,6 +7112,8 @@ products = [
     {
         "id": 142,
         "name": "Windows Server 2025 RMS CAL - 1 Device CAL - 3 Year - Triennial",
+        "productId": "1752048",
+        "partNumber": "DG7GMGF0PWHF:0002",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Rights Management Services CAL 2025",
@@ -6876,6 +7158,8 @@ products = [
     {
         "id": 143,
         "name": "Windows Server 2025 RMS CAL - 1 User CAL - 1 Year - Annual",
+        "productId": "1752048",
+        "partNumber": "DG7GMGF0PWHF:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Rights Management Services CAL 2025",
@@ -6920,6 +7204,8 @@ products = [
     {
         "id": 144,
         "name": "Windows Server 2025 RMS CAL - 1 User CAL - 3 Year - Triennial",
+        "productId": "1752048",
+        "partNumber": "DG7GMGF0PWHF:0004",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Rights Management Services CAL 2025",
@@ -6964,6 +7250,8 @@ products = [
     {
         "id": 145,
         "name": "Windows Server 2025 Remote Desktop Services - 1 User CAL 1 Year - Annual",
+        "productId": "1752050",
+        "partNumber": "DG7GMGF0PWHB:0002",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server 2025 Remote Desktop Services",
@@ -7008,6 +7296,8 @@ products = [
     {
         "id": 146,
         "name": "Windows Server 2025 Remote Desktop Services - 1 User CAL 3 Year - Triennial",
+        "productId": "1752050",
+        "partNumber": "DG7GMGF0PWHB:0003",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server 2025 Remote Desktop Services",
@@ -7052,6 +7342,8 @@ products = [
     {
         "id": 147,
         "name": "Windows Server 2025 Standard - 2 Core License Pack 1 Year - Annual",
+        "productId": "1752051",
+        "partNumber": "DG7GMGF0PWHC:0004",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Standard Core 2025",
@@ -7096,6 +7388,8 @@ products = [
     {
         "id": 148,
         "name": "Windows Server 2025 Standard - 2 Core License Pack 3 Year - Triennial",
+        "productId": "1752051",
+        "partNumber": "DG7GMGF0PWHC:0001",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Standard Core 2025",
@@ -7140,6 +7434,8 @@ products = [
     {
         "id": 149,
         "name": "Windows Server 2025 Standard - 8 Core License Pack 1 Year - Annual",
+        "productId": "1752051",
+        "partNumber": "DG7GMGF0PWHC:0002",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Standard Core 2025",
@@ -7184,6 +7480,8 @@ products = [
     {
         "id": 150,
         "name": "Windows Server 2025 Standard - 8 Core License Pack 3 Year - Triennial",
+        "productId": "1752051",
+        "partNumber": "DG7GMGF0PWHC:0005",
         "category": "Software",
         "softwareType": "Software Subscriptions",
         "family": "Windows Server Standard Core 2025",
@@ -7229,55 +7527,55 @@ products = [
 
 products.extend([
     {
-        "id": 151, "name": "Endpoint Security", "category": "Endpoint Security", "softwareType": "Managed Security Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-endpoint-security.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 151, "name": "Endpoint Security", "productId": "7318426", "category": "Endpoint Security", "softwareType": "Managed Security Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-endpoint-security.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Endpoint detection and response", "Managed threat prevention", "Policy and device protection"], "shortDescription": "Managed endpoint protection that helps secure devices, users, and business data."
     },
     {
-        "id": 152, "name": "SaaS Security", "category": "SaaS Security", "softwareType": "Managed Security Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-saas-security.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 152, "name": "SaaS Security", "productId": "5842097", "category": "SaaS Security", "softwareType": "Managed Security Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-saas-security.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["SaaS application visibility", "Identity and access protection", "Configuration risk monitoring"], "shortDescription": "Protect cloud applications, identities, and sensitive information across your SaaS environment."
     },
     {
-        "id": 153, "name": "Security Awareness Training", "category": "Security Awareness Training", "softwareType": "Training Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-security-awareness-training.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 153, "name": "Security Awareness Training", "productId": "9163754", "category": "Security Awareness Training", "softwareType": "Training Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-security-awareness-training.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Security awareness courses", "Phishing simulation support", "Progress and compliance reporting"], "shortDescription": "Build safer everyday security habits with practical awareness training for your team."
     },
     {
-        "id": 154, "name": "Remote Monitoring and Management (RMM)", "category": "RMM", "softwareType": "Managed IT Service", "family": "IT Operations Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-remote-monitoring-management.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 154, "name": "Remote Monitoring and Management (RMM)", "productId": "4627183", "category": "RMM", "softwareType": "Managed IT Service", "family": "IT Operations Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-remote-monitoring-management.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["24/7 infrastructure monitoring", "Remote maintenance and patching", "Proactive issue resolution"], "shortDescription": "Keep endpoints and infrastructure healthy with proactive remote monitoring and management."
     },
     {
-        "id": 155, "name": "Professional Service Automation (PSA)", "category": "PSA", "softwareType": "Business Operations Service", "family": "IT Operations Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-professional-service-automation.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 155, "name": "Professional Service Automation (PSA)", "productId": "8051946", "category": "PSA", "softwareType": "Business Operations Service", "family": "IT Operations Services", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-professional-service-automation.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Ticket and workflow management", "Time, project, and resource tracking", "Service desk reporting"], "shortDescription": "Streamline service delivery, projects, resources, and reporting with professional service automation."
     },
     {
-        "id": 156, "name": "M365 Backup", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Neurostore", "image": "/products/m365%20image.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 156, "name": "M365 Backup", "productId": "3476208", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Neurostore", "image": "/products/m365%20image.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Microsoft 365 data protection", "Mailbox, OneDrive, and SharePoint backup", "Flexible retention planning"], "shortDescription": "Protect Microsoft 365 mailboxes, files, and collaboration data with managed backup."
     },
     {
-        "id": 157, "name": "Direct Backup", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-direct-backup-public-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 157, "name": "Direct Backup", "productId": "6984315", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-direct-backup-public-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Direct workstation and server backup", "Policy-based scheduling", "Fast file and system recovery"], "shortDescription": "Reliable direct backup for critical workstations, servers, and business systems."
     },
     {
-        "id": 158, "name": "Public Cloud Backup", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-direct-backup-public-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 158, "name": "Public Cloud Backup", "productId": "2539761", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-direct-backup-public-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Cloud-hosted backup copies", "Scalable storage planning", "Off-site resilience"], "shortDescription": "Extend your backup strategy with scalable, resilient public cloud storage."
     },
     {
-        "id": 159, "name": "Disaster Recovery", "category": "Backup", "softwareType": "Business Continuity Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-disaster-recovery.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 159, "name": "Disaster Recovery", "productId": "8741529", "category": "Backup", "softwareType": "Business Continuity Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-disaster-recovery.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Business continuity planning", "Recovery time objective alignment", "System restoration support"], "shortDescription": "Prepare for outages with recovery planning and protection for business-critical systems."
     },
     {
-        "id": 160, "name": "Email Archiving", "category": "Backup", "softwareType": "Data Protection Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-email-archieve.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 160, "name": "Email Archiving", "productId": "5196837", "category": "Backup", "softwareType": "Data Protection Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-email-archieve.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Long-term email retention", "Searchable archive access", "Compliance-ready preservation"], "shortDescription": "Retain, search, and protect business email with a managed archive solution."
     },
     {
-        "id": 161, "name": "CyberFrame", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-frame.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 161, "name": "CyberFrame", "productId": "7425069", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-frame.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Managed backup platform", "Centralized policy management", "Recovery support"], "shortDescription": "CyberFrame backup protection designed around your environment and recovery requirements."
     },
     {
-        "id": 162, "name": "Acronis Cyber File Cloud", "category": "Backup", "softwareType": "Cloud File Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-files-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 162, "name": "Acronis Cyber File Cloud", "productId": "3869142", "category": "Backup", "softwareType": "Cloud File Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-files-cloud.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Cloud file protection", "Secure file access and sharing", "Centralized administration"], "shortDescription": "Protect and manage business files in the cloud with Acronis Cyber File Cloud."
     },
     {
-        "id": 163, "name": "Acronis Cyber File Infrastructure", "category": "Backup", "softwareType": "File Infrastructure Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-infrastructure.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 163, "name": "Acronis Cyber File Infrastructure", "productId": "9273406", "category": "Backup", "softwareType": "File Infrastructure Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-cyber-infrastructure.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["File infrastructure protection", "Scalable data management", "Recovery-focused operations"], "shortDescription": "Acronis file infrastructure protection for resilient, recoverable business data."
     },
     {
@@ -7330,6 +7628,36 @@ products.extend([
         "warranty": "Not specified — check with seller/manufacturer for warranty terms."
     }
 ])
+
+brand_codes = {"Microsoft": "MS", "Acronis": "AC", "Ai PC": "AI PC"}
+
+for product in products:
+    product["stockAvailability"] = "Available"
+    if product["brand"] in brand_codes:
+        product["brandCode"] = brand_codes[product["brand"]]
+    if 151 <= product["id"] <= 163:
+        product["description"] = (
+            f'{product["shortDescription"]} Neurostore will confirm the service scope, '
+            "deployment requirements, subscription options, and delivery plan during consultation."
+        )
+        product["additionalInfo"] = {
+            "Product Edition": product["name"],
+            "Publisher / Brand": product["brand"],
+            "Product ID": product["productId"],
+            "Software Type": product["softwareType"],
+            "Product Type": "Managed Solution",
+            "Family": product["family"],
+            "Term": product["term"],
+            "Purchase Unit": "Based on requirements",
+            "Pricing": "Available on request",
+            "Delivery": "Provisioning plan confirmed after consultation",
+            "Support": "Support scope confirmed with final quotation"
+        }
+        product["warranty"] = (
+            "Service assurance, support coverage, and applicable warranty terms are confirmed "
+            "in the final proposal based on the selected scope and subscription."
+        )
+
 # ══════════════════════════════════════════════════════════════════════════════
 # AUTH ROUTES
 # ══════════════════════════════════════════════════════════════════════════════
