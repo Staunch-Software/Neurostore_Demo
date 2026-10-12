@@ -35,15 +35,13 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Services Section */}
+          {/* Products Section */}
             <div className="footer-column quick-links">
-              <h3 className="footer-title">SERVICES</h3>
+              <h3 className="footer-title">Products</h3>
               <ul>
-                <li><a href="#">Software Development</a></li>
-                <li><a href="#">Cybersecurity</a></li>
-                <li><a href="#">Managed IT Services</a></li>
-                <li><a href="#">Cloud Computing</a></li>
-                <li><a href="#">AI Based Solutions</a></li>
+                <li><Link to="/products?brand=Microsoft">Microsoft</Link></li>
+                <li><Link to="/products?brand=Acronis">Acronis</Link></li>
+                <li><Link to="/products?brand=AI%20PC">AI PC</Link></li>
               </ul>
             </div>
 
@@ -62,7 +60,7 @@ const Footer = () => {
                   <i className="fas fa-phone"></i>
                   <div>
                     <span className="label">Phone:</span>
-                    <a href="tel:+91 (044) 22353175">+91 (044) 22353175</a>
+                    <a href="tel:+919384813815">+91 93848 13815</a>
                   </div>
                 </li>
                 <li>
@@ -101,7 +99,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="container footer-bottom-container">
           <div className="footer-bottom-copyright">
-            <p>&copy; Neurostore. All Rights Reserved.</p>
+            <p>&copy; Neurostore All Rights Reserved.</p>
           </div>
           <div className="footer-bottom-links">
             <Link to="/terms-and-conditions">Terms and<br />Conditions</Link>
