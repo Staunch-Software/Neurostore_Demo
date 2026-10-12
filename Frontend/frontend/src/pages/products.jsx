@@ -12,6 +12,12 @@ const generateSlug = (text) => {
     return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 };
 
+const getBrandCode = (product) => product.brandCode || ({
+    microsoft: 'MS',
+    acronis: 'AC',
+    'ai pc': 'AI PC'
+}[product.brand?.toLowerCase()]);
+
 const Products = () => {
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount } = useContext(ShopContext);
     const navigate = useNavigate();
@@ -243,6 +249,7 @@ const Products = () => {
                         const inCart = cartItems && cartItems[p.id] > 0;
                         const added  = justAdded[p.id];
                         const productUrl = `/products/${generateSlug(p.name)}`;
+                        const brandCode = getBrandCode(p);
 
                         return (
                             <div
@@ -264,13 +271,23 @@ const Products = () => {
                                 <div className="product-details">
                                     <div className="p-category-row">
                                         <span className="p-category">{p.category}</span>
-                                        {p.brand && <span className="p-brand-tag">{p.brand}</span>}
+                                        {(brandCode || p.brand) && (
+                                            <span className="p-brand-tag" title={p.brand} aria-label={`Brand: ${p.brand}`}>
+                                                {brandCode || p.brand}
+                                            </span>
+                                        )}
                                     </div>
                                     <h3 className="p-name">
                                         <Link to={productUrl} className="p-name-link" onClick={(e) => e.stopPropagation()}>
                                             {p.name}
                                         </Link>
                                     </h3>
+
+                                    <div className="p-stock-status" role="status" aria-label={`Stock: ${p.stockAvailability || 'Available'}`}>
+                                        <span className="stock-status-dot" aria-hidden="true" />
+                                        <span className="stock-status-label">Stock:</span>
+                                        <strong>{p.stockAvailability || 'Available'}</strong>
+                                    </div>
 
                                     {p.shortDescription && (
                                         <p className="p-card-desc">{p.shortDescription}</p>

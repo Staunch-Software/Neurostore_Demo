@@ -11,6 +11,12 @@ const generateSlug = (text) => {
     return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 };
 
+const getBrandCode = (product) => product.brandCode || ({
+    microsoft: 'MS',
+    acronis: 'AC',
+    'ai pc': 'AI PC'
+}[product.brand?.toLowerCase()]);
+
 const ProductDetails = () => {
     const { productName } = useParams();
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount, wishlistItems, toggleWishlist } = useContext(ShopContext);
@@ -63,8 +69,6 @@ const ProductDetails = () => {
         setSelectedImageIndex(0);
     }, [productName]);
 
-    const isNewEnquiryProduct = product?.enquiryOnly;
-
     // Track product page view for admin analytics (fire-and-forget)
     useEffect(() => {
         if (!product) return;
@@ -92,6 +96,7 @@ const ProductDetails = () => {
     const inCart       = cartItems && cartItems[product.id] > 0;
     const cartCount    = cartItems?.[product.id] || 0;
     const isWishlisted = wishlistItems?.[product.id] > 0;
+    const brandCode    = getBrandCode(product);
 
     const cartProducts = products.filter(p => cartItems[p.id] > 0);
     const totalAmount  = getTotalCartAmount();
@@ -286,7 +291,14 @@ const ProductDetails = () => {
                     <div className="pd-info-col">
 
                         <div className="pd-title-row">
-                            <h1 className="pd-title">{product.name}</h1>
+                            <div className="pd-heading-group">
+                                {brandCode && (
+                                    <span className="pd-brand-code" title={product.brand} aria-label={`Brand: ${product.brand}`}>
+                                        {brandCode}
+                                    </span>
+                                )}
+                                <h1 className="pd-title">{product.name}</h1>
+                            </div>
 
                             {/* ── CHANGED: size 22→30, stroke #94a3b8→#475569, strokeWidth 2→2.5, button 48px→62px ── */}
                             <button
@@ -316,6 +328,12 @@ const ProductDetails = () => {
                             <div className="pd-license-badge">
                                 <span>⚡ Instant Digital Activation</span>
                             </div>
+                        </div>
+
+                        <div className="pd-stock-status" role="status" aria-label={`Stock: ${product.stockAvailability || 'Available'}`}>
+                            <span className="stock-status-dot" aria-hidden="true" />
+                            <span className="stock-status-label">Stock:</span>
+                            <strong>{product.stockAvailability || 'Available'}</strong>
                         </div>
 
                         {product.features && product.features.length > 0 && (
@@ -390,7 +408,7 @@ const ProductDetails = () => {
                     </div>
                 </div>
 
-                {!isNewEnquiryProduct && <div className="pd-bottom-section">
+                <div className="pd-bottom-section">
                     <div className="pd-tabs-header">
                         <button className={`pd-tab-btn ${activeTab === 'description' ? 'active' : ''}`} onClick={() => setActiveTab('description')}>Description</button>
                         <button className={`pd-tab-btn ${activeTab === 'additional'  ? 'active' : ''}`} onClick={() => setActiveTab('additional')}>Additional Information</button>
@@ -427,7 +445,7 @@ const ProductDetails = () => {
                             </div>
                         )}
                     </div>
-                </div>}
+                </div>
             </div>
 
             {cartDrawer}
