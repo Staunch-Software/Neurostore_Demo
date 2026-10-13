@@ -6564,6 +6564,107 @@ export const products = [
             "Support & Updates": "Official Microsoft Product Support & Security Updates"
         },
         "warranty": "Official Microsoft Commercial Software License & Standard Product Assurance."
+    },
+    {
+        "id": 151, "name": "Endpoint Security", "productId": "7318426", "category": "Endpoint Security", "softwareType": "Managed Security Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-endpoint-security.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Endpoint detection and response", "Managed threat prevention", "Policy and device protection"], "shortDescription": "Managed endpoint protection that helps secure devices, users, and business data."
+    },
+    {
+        "id": 152, "name": "SaaS Security", "productId": "5842097", "category": "SaaS Security", "softwareType": "Managed Security Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-saas-security.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["SaaS application visibility", "Identity and access protection", "Configuration risk monitoring"], "shortDescription": "Protect cloud applications, identities, and sensitive information across your SaaS environment."
+    },
+    {
+        "id": 153, "name": "Security Awareness Training", "productId": "9163754", "category": "Security Awareness Training", "softwareType": "Training Service", "family": "Cybersecurity Services", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-security-awareness-training.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Security awareness courses", "Phishing simulation support", "Progress and compliance reporting"], "shortDescription": "Build safer everyday security habits with practical awareness training for your team."
+    },
+    {
+        "id": 154, "name": "Remote Monitoring and Management (RMM)", "productId": "4627183", "category": "RMM", "softwareType": "Managed IT Service", "family": "IT Operations Services", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-remote-monitoring-management.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["24/7 infrastructure monitoring", "Remote maintenance and patching", "Proactive issue resolution"], "shortDescription": "Keep endpoints and infrastructure healthy with proactive remote monitoring and management."
+    },
+    {
+        "id": 155, "name": "Professional Service Automation (PSA)", "productId": "8051946", "category": "PSA", "softwareType": "Business Operations Service", "family": "IT Operations Services", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-professional-service-automation.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Ticket and workflow management", "Time, project, and resource tracking", "Service desk reporting"], "shortDescription": "Streamline service delivery, projects, resources, and reporting with professional service automation."
+    },
+    {
+        "id": 156, "name": "M365 Backup", "productId": "3476208", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Neurostore", "image": getImage("m365 image.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Microsoft 365 data protection", "Mailbox, OneDrive, and SharePoint backup", "Flexible retention planning"], "shortDescription": "Protect Microsoft 365 mailboxes, files, and collaboration data with managed backup."
+    },
+    {
+        "id": 157, "name": "Direct Backup", "productId": "6984315", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-direct-backup-public-cloud.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Direct workstation and server backup", "Policy-based scheduling", "Fast file and system recovery"], "shortDescription": "Reliable direct backup for critical workstations, servers, and business systems."
+    },
+    {
+        "id": 158, "name": "Public Cloud Backup", "productId": "2539761", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-direct-backup-public-cloud.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Cloud-hosted backup copies", "Scalable storage planning", "Off-site resilience"], "shortDescription": "Extend your backup strategy with scalable, resilient public cloud storage."
+    },
+    {
+        "id": 159, "name": "Disaster Recovery", "productId": "8741529", "category": "Backup", "softwareType": "Business Continuity Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-disaster-recovery.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Business continuity planning", "Recovery time objective alignment", "System restoration support"], "shortDescription": "Prepare for outages with recovery planning and protection for business-critical systems."
+    },
+    {
+        "id": 160, "name": "Email Archiving", "productId": "5196837", "category": "Backup", "softwareType": "Data Protection Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-email-archieve.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Long-term email retention", "Searchable archive access", "Compliance-ready preservation"], "shortDescription": "Retain, search, and protect business email with a managed archive solution."
+    },
+    {
+        "id": 161, "name": "CyberFrame", "productId": "7425069", "category": "Backup", "softwareType": "Backup Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-cyber-frame.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Managed backup platform", "Centralized policy management", "Recovery support"], "shortDescription": "CyberFrame backup protection designed around your environment and recovery requirements."
+    },
+    {
+        "id": 162, "name": "Acronis Cyber File Cloud", "productId": "3869142", "category": "Backup", "softwareType": "Cloud File Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-cyber-files-cloud.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["Cloud file protection", "Secure file access and sharing", "Centralized administration"], "shortDescription": "Protect and manage business files in the cloud with Acronis Cyber File Cloud."
+    },
+    {
+        "id": 163, "name": "Acronis Cyber File Infrastructure", "productId": "9273406", "category": "Backup", "softwareType": "File Infrastructure Protection", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": getImage("acronis-cyber-infrastructure.jpg.jpeg"), "enquiryOnly": true, "badge": "Perpetual License",
+        "features": ["File infrastructure protection", "Scalable data management", "Recovery-focused operations"], "shortDescription": "Acronis file infrastructure protection for resilient, recoverable business data."
+    },
+    {
+        "id": 164,
+        "name": "Ai PC M5 - AMD Ryzen AI Max+ 395, 128GB RAM, 1TB SSD",
+        "category": "Hardware",
+        "softwareType": null,
+        "family": "Ai PC M5 Series",
+        "term": null,
+        "brand": "Ai PC",
+        "image": getImage("pc-9.png"),
+        "price": null,
+        "badge": "Mini AI Workstation",
+        "moq": "Per unit",
+        "enquiryOnly": true,
+        "features": [
+            "AMD Ryzen AI Max+ 395 processor with integrated NPU for on-device AI acceleration",
+            "128GB high-bandwidth unified memory for large local AI model inference",
+            "1TB NVMe SSD storage",
+            "Compact multi-functional mini PC form factor for AI, content creation and general workloads"
+        ],
+        "shortDescription": "A compact multi-functional AI PC built around the AMD Ryzen AI Max+ 395 APU, offering 128GB of memory and 1TB storage for local AI inference and demanding compute tasks.",
+        "description": "The Ai PC M5 is a multi-functional mini desktop powered by the AMD Ryzen AI Max+ 395 processor, combining CPU, NPU and integrated GPU compute in a single compact chassis. With 128GB of memory, it is designed to support local large language model inference, data analysis, content creation and general-purpose workloads without relying on a discrete GPU.",
+        "additionalInfo": {
+            "Product Edition": "M5",
+            "Publisher / Brand": "Ai PC",
+            "Part Number": "Not specified",
+            "Product ID": "Not specified",
+            "Software Type": "N/A",
+            "Product Type": "Hardware",
+            "Family": "Ai PC M5",
+            "Agreement": "N/A",
+            "Segment": "Commercial / Prosumer",
+            "Version": "M5",
+            "Term": "N/A",
+            "Purchase Unit": "Per unit",
+            "Purchase Price": "Not specified",
+            "List Price": "Not specified",
+            "Price List Valid To": "N/A",
+            "License Type": "N/A (Physical Hardware)",
+            "Delivery": "Physical Shipment",
+            "CPU": "AMD Ryzen AI Max+ 395",
+            "Memory": "128GB",
+            "Storage": "1TB",
+            "Input": "20V === 12A",
+            "Supported OS": "Windows / Linux",
+            "Compliance": "Not specified",
+            "Support & Updates": "Manufacturer warranty (terms not specified)"
+        },
+        "warranty": "Not specified - check with seller/manufacturer for warranty terms."
     }
 ];
 
@@ -6580,7 +6681,8 @@ export const productImageOverrides = {
     160: getImage("acronis-email-archieve.jpg.jpeg"),
     161: getImage("acronis-cyber-frame.jpg.jpeg"),
     162: getImage("acronis-cyber-files-cloud.jpg.jpeg"),
-    163: getImage("acronis-cyber-infrastructure.jpg.jpeg")
+    163: getImage("acronis-cyber-infrastructure.jpg.jpeg"),
+    164: getImage("pc-9.png")
 };
 
 
