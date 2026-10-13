@@ -172,18 +172,23 @@
     gap: 9px;
 }
 
-.pd-brand-code {
+.pd-product-id {
     display: inline-flex;
     align-items: center;
     min-height: 27px;
     padding: 5px 10px;
-    border: 1px solid #fed7aa;
+    border: 1px solid #dbeafe;
     border-radius: 6px;
-    background: #fff7ed;
-    color: #9a3412;
+    background: #eff6ff;
+    color: #475569;
     font-size: 0.75rem;
-    font-weight: 800;
     line-height: 1;
+}
+
+.pd-product-id strong {
+    margin-left: 4px;
+    color: #2563eb;
+    font-weight: 800;
 }
 
 .pd-title {

@@ -97,6 +97,7 @@ const ProductDetails = () => {
     const cartCount    = cartItems?.[product.id] || 0;
     const isWishlisted = wishlistItems?.[product.id] > 0;
     const brandCode    = getBrandCode(product);
+    const productId    = product.additionalInfo?.['Product ID'] || product.productId;
 
     const cartProducts = products.filter(p => cartItems[p.id] > 0);
     const totalAmount  = getTotalCartAmount();
@@ -292,9 +293,9 @@ const ProductDetails = () => {
 
                         <div className="pd-title-row">
                             <div className="pd-heading-group">
-                                {brandCode && (
-                                    <span className="pd-brand-code" title={product.brand} aria-label={`Brand: ${product.brand}`}>
-                                        {brandCode}
+                                {productId && (
+                                    <span className="pd-product-id">
+                                        Product ID: <strong>{brandCode ? `${brandCode} - ` : ''}{productId}</strong>
                                     </span>
                                 )}
                                 <h1 className="pd-title">{product.name}</h1>

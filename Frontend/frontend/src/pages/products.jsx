@@ -250,6 +250,7 @@ const Products = () => {
                         const added  = justAdded[p.id];
                         const productUrl = `/products/${generateSlug(p.name)}`;
                         const brandCode = getBrandCode(p);
+                        const productId = p.additionalInfo?.['Product ID'] || p.productId;
 
                         return (
                             <div
@@ -271,9 +272,9 @@ const Products = () => {
                                 <div className="product-details">
                                     <div className="p-category-row">
                                         <span className="p-category">{p.category}</span>
-                                        {(brandCode || p.brand) && (
-                                            <span className="p-brand-tag" title={p.brand} aria-label={`Brand: ${p.brand}`}>
-                                                {brandCode || p.brand}
+                                        {productId && (
+                                            <span className="p-product-id">
+                                                Product ID: <strong>{brandCode ? `${brandCode} - ` : ''}{productId}</strong>
                                             </span>
                                         )}
                                     </div>
