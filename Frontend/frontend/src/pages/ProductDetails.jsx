@@ -86,10 +86,27 @@ const ProductDetails = () => {
     }, );
 
     if (!product) {
+        // Product list empty (not loaded yet): neutral state, never noindex
+        if (!products || products.length === 0) {
+            return (
+                <div className="product-not-found">
+                    Loading product...
+                </div>
+            );
+        }
+
+        // Product list loaded, but this slug doesn't exist
         return (
-            <div className="product-not-found">
-                Product not found! <Link to="/products">Go back</Link>
-            </div>
+            <>
+                <SEO
+                    title="Product not found | Neurostore"
+                    description="This product is no longer available on Neurostore."
+                    noindex
+                />
+                <div className="product-not-found">
+                    Product not found! <Link to="/products">Go back</Link>
+                </div>
+            </>
         );
     }
 

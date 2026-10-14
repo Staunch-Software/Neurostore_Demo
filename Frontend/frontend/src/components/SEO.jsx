@@ -1,27 +1,31 @@
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
-function SEO({ 
-  title, 
-  description, 
+function SEO({
+  title,
+  description,
   keywords,
   ogImage = 'https://neurostore.in/og-image.webp',
-  ogType = 'website'
+  ogType = 'website',
+  noindex = false
 }) {
   const location = useLocation();
-  const canonicalUrl = `https://neurostore.in${location.pathname}`;
+  const cleanPath = location.pathname.replace(/\/+$/, '') || '/';
+  const canonicalUrl = `https://neurostore.in${cleanPath}`;
 
   return (
     <Helmet>
       {/* ── Basic SEO ── */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
+      {title && <title>{title}</title>}
+      {description && <meta name="description" content={description} />}
       {keywords && <meta name="keywords" content={keywords} />}
-      <link rel="canonical" href={canonicalUrl} />
+      {noindex
+        ? <meta name="robots" content="noindex, follow" />
+        : <link rel="canonical" href={canonicalUrl} />}
 
       {/* ── Open Graph ── */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
+      {title && <meta property="og:title" content={title} />}
+      {description && <meta property="og:description" content={description} />}
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={ogImage} />
@@ -29,8 +33,8 @@ function SEO({
 
       {/* ── Twitter Card ── */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
+      {title && <meta name="twitter:title" content={title} />}
+      {description && <meta name="twitter:description" content={description} />}
       <meta name="twitter:image" content={ogImage} />
     </Helmet>
   );
