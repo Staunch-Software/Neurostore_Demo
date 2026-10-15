@@ -36,7 +36,14 @@ async function main() {
 
   try {
     console.log('Starting local preview server for dist/...');
-    previewServer = await preview({ preview: { port: 4173 } });
+       previewServer = await preview({
+     preview: {
+       port: 4173,
+       proxy: {
+         '/api': { target: 'https://neurostore.in', changeOrigin: true, secure: false },
+       },
+     },
+   });
     const port = previewServer.config.preview.port;
     const baseUrl = `http://localhost:${port}`;
 
@@ -56,6 +63,7 @@ async function main() {
     let success = 0;
     let failed = 0;
     let skipped = 0;
+    let consecutiveFails = 0;
     let processedSinceRecycle = 0;
     const RECYCLE_EVERY = 20; // close/reopen page every N products to release memory
 
@@ -83,9 +91,13 @@ async function main() {
         fs.writeFileSync(outFile, html);
 
         success++;
+        consecutiveFails = 0;
         console.log(`[${success + failed + skipped}/${products.length}] OK  /products/${slug}`);
       } catch (err) {
         failed++;
+        consecutiveFails++;
+        if (consecutiveFails >= 5) throw new Error('5 pages failed in a row - aborting early');
+
         console.error(`[${success + failed + skipped}/${products.length}] FAIL /products/${slug} — ${err.message}`);
       }
 
