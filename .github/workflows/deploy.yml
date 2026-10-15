@@ -15,6 +15,8 @@ jobs:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
+          script_stop: true
+          command_timeout: 30m
           script: |
             cd /home/AdminDeveloper/Neurostore_Demo
             git fetch origin
@@ -22,6 +24,7 @@ jobs:
             cd Frontend/frontend
             npm install
             npm run build
+            test "$(ls -d dist/products/*/ 2>/dev/null | wc -l)" -ge 150 || { echo "Prerender produced too few pages, aborting"; exit 1; }
             sudo rm -rf /var/www/html/*
             sudo cp -r dist/* /var/www/html/
             sudo chmod -R 755 /var/www/html

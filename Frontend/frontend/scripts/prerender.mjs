@@ -19,7 +19,8 @@ function generateSlug(text) {
 }
 
 // Windows Chrome path — adjust if yours differs
-const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+   const WIN_CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+   const CHROME_PATH = process.env.CHROME_PATH || (fs.existsSync(WIN_CHROME) ? WIN_CHROME : undefined);
 
 async function main() {
   console.log('Fetching product list from live API...');
@@ -39,11 +40,11 @@ async function main() {
     const port = previewServer.config.preview.port;
     const baseUrl = `http://localhost:${port}`;
 
-    console.log('Launching Chrome...');
-    browser = await puppeteer.launch({
-      executablePath: CHROME_PATH,
-      headless: 'new',
-    });
+       browser = await puppeteer.launch({
+         ...(CHROME_PATH ? { executablePath: CHROME_PATH } : {}),
+         headless: 'new',
+         args: ['--no-sandbox', '--disable-setuid-sandbox'],
+       });
     page = await browser.newPage();
 
     browser.on('disconnected', () => {
@@ -74,6 +75,7 @@ async function main() {
       const url = `${baseUrl}/products/${slug}`;
       try {
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+        await page.waitForSelector('h1.pd-title', { timeout: 15000 });
         await new Promise((r) => setTimeout(r, 400));
 
         const html = await page.content();
