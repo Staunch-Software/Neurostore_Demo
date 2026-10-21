@@ -1,34 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import { ArrowRight, BadgeCheck, Headphones, Search, ShieldCheck, Truck } from 'lucide-react';
 import '../pages/home.css';
 import BookService from '../components/bookservice';
-import githubCopilot from '../assets/Github Copilot.webp';
-import productOne from '../assets/SQL Server 2022 Enterprise - 2 Core License Pack - 1 Year - Annual.jpg';
-import productTwo from '../assets/Win Server Std Core Ext Security 2012 2 Core Y1 (October 2023-2024).jpg';
-import productThree from '../assets/Windows 11 IoT Enterprise LTSC 2024.jpg';
-import productFour from '../assets/Windows Server 2025 Standard - 2 Core License Pack 1 Year - Annual.jpg';
-import productFive from '../assets/Windows Server 2025 Standard - 8 Core License Pack 1 Year - Annual.jpg';
-import productSix from '../assets/Windows Server 2025 Remote Desktop Services - 1 User CAL.jpg';
+import { ShopContext } from '../components/context/ShopContext';
+import heroBanner from '../assets/hero-banner-1.jpg';
 
 const backendUrl = import.meta.env.VITE_API_URL || "";
 
 const generateSlug = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
-const productHighlights = [
-    { name: 'SQL Server 2022 Enterprise', productName: 'SQL Server 2022 Enterprise - 2 Core License Pack - 1 Year - Annual', image: productOne, alt: 'SQL Server 2022 Enterprise license' },
-    { name: 'Windows Server Core Security', productName: 'Win Server Std Core Ext Security 2012 2 Core Y1 (October 2023-2024)', image: productTwo, alt: 'Windows Server Standard Core Extension Security' },
-    { name: 'Windows 11 IoT Enterprise', productName: 'Windows 11 IoT Enterprise LTSC 2024', image: productThree, alt: 'Windows 11 IoT Enterprise LTSC 2024' },
-    { name: 'Windows Server 2025 Standard', productName: 'Windows Server 2025 Standard - 2 Core License Pack 1 Year - Annual', image: productFour, alt: 'Windows Server 2025 Standard 2 Core' },
-    { name: 'Windows Server 2025 8 Core', productName: 'Windows Server 2025 Standard - 8 Core License Pack 1 Year - Annual', image: productFive, alt: 'Windows Server 2025 Standard 8 Core' },
-    { name: 'Windows Server 2025 Remote Desktop', productName: 'Windows Server 2025 Remote Desktop Services - 1 User CAL', image: productSix, alt: 'Windows Server 2025 Remote Desktop Services 1 User CAL' },
+const enquiryMessages = [
+    "Can't find the product you're looking for?",
+    'Need help choosing the right technology?',
+    'Looking for a product that is not listed?',
+    'Need a custom quote for your business?',
+    'Unsure which license fits your team?',
 ];
 
 const Home = () => {
+    const { products } = useContext(ShopContext);
     const [bookingOpen, setBookingOpen] = useState(false);
     const [selectedService, setSelectedService] = useState('');
 
     const [thankYouOpen, setThankYouOpen] = useState(false);
+
+    const featuredProducts = products
+        .filter((product) => product.price && product.image)
+        .slice(0, 8);
+
+    const shopCategories = [
+        { label: 'Microsoft Software', detail: 'Licenses, servers & productivity', to: '/products?brand=Microsoft', mark: 'MS' },
+        { label: 'Cyber Protection', detail: 'Backup, security & recovery', to: '/products?brand=Acronis', mark: 'AC' },
+        { label: 'AI Workstations', detail: 'Purpose-built systems for AI', to: '/products?brand=AI%20PC', mark: 'AI' },
+        { label: 'All Products', detail: 'Browse the complete catalog', to: '/products', mark: 'ALL' },
+    ];
 
     const services = [
         { title: 'Acronis Cybersecurity', icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>), color: 'gradient-primary-secondary' },
@@ -102,91 +109,108 @@ const Home = () => {
                 ogImage="https://neurostore.in/og-image.webp"
                 ogType="website"
             />
-            {/* MICROSOFT AI SHOWCASE */}
-            <section className="microsoft-ai-showcase">
-                <div className="container microsoft-ai-container">
-                    <div className="microsoft-ai-copy animate-on-scroll">
-                        <span className="section-badge">Microsoft AI</span>
-                        <h2>Power your work with <span className="text-gradient">Microsoft AI</span> solutions.</h2>
-                        <p>
-                            From secure productivity to intelligent automation, Microsoft AI helps teams move faster,
-                            reduce repetitive work, and unlock smarter decision-making across every workflow.
+            <main className="storefront-home">
+                <section className="storefront-hero" style={{ backgroundImage: `url(${heroBanner})` }}>
+                    <div className="storefront-hero-shade" />
+                    <div className="container storefront-hero-content">
+                        <p className="storefront-kicker">India&apos;s AI technology marketplace</p>
+                        <h1>NeuroStore</h1>
+                        <p className="storefront-hero-copy">
+                            Enterprise software, AI workstations, cybersecurity and infrastructure products,
+                            sourced for teams that need technology to work from day one.
                         </p>
-                        <div className="microsoft-ai-points">
-                            <div className="microsoft-ai-point">
-                                <span className="point-bullet">✓</span>
-                                <span>AI-assisted coding, writing, and research for modern teams.</span>
-                            </div>
-                            <div className="microsoft-ai-point">
-                                <span className="point-bullet">✓</span>
-                                <span>Creative tools that accelerate design, marketing, and content.</span>
-                            </div>
-                            <div className="microsoft-ai-point">
-                                <span className="point-bullet">✓</span>
-                                <span>Enterprise-ready workflows built for productivity and security.</span>
-                            </div>
-                        </div>
-                        <Link to="/products" className="microsoft-ai-button">Explore AI Products</Link>
-                    </div>
-
-                    <div className="microsoft-ai-visual animate-on-scroll">
-                        <img src={githubCopilot} alt="GitHub Copilot AI assistant" />
-                    </div>
-                </div>
-            </section>
-
-            {/* ENQUIRY MARQUEE TICKER */}
-            <div className="enquiry-ticker-wrapper">
-                <div className="enquiry-ticker-track">
-                    {/* Group 1 — original */}
-                    {[...Array(5)].map((_, i) => (
-                        <span key={`a-${i}`} className="enquiry-ticker-item">
-                            Can&apos;t find the product you&apos;re looking for?&nbsp;
-                            <strong>Enquire now:</strong>&nbsp;
-                            <a href="tel:+919384813815" className="ticker-phone">+91 93848 13815</a>
-                            <span className="ticker-sep">✦</span>
-                        </span>
-                    ))}
-                    {/* Group 2 — exact duplicate for seamless loop */}
-                    {[...Array(5)].map((_, i) => (
-                        <span key={`b-${i}`} className="enquiry-ticker-item">
-                            Can&apos;t find the product you&apos;re looking for?&nbsp;
-                            <strong>Enquire now:</strong>&nbsp;
-                            <a href="tel:+919384813815" className="ticker-phone">+91 93848 13815</a>
-                            <span className="ticker-sep">✦</span>
-                        </span>
-                    ))}
-                </div>
-            </div>
-            <br></br>
-            <br></br>
- 
-            {/* OUR PRODUCTS GALLERY */}
-            <section className="featured-products-section">
-                <div className="container featured-products-container">
-                    <div className="section-header animate-on-scroll">
-                        <span className="section-badge">Our Products</span>
-                        <h2>Explore our <span className="text-gradient">AI tools</span></h2>
-                        <p>Discover the software and creative solutions teams use to build faster and work smarter.</p>
-                    </div>
-
-                    <div className="product-gallery-grid">
-                        {productHighlights.map((item) => (
-                            <Link
-                                key={item.name}
-                                to={`/products/${generateSlug(item.productName)}`}
-                                className="product-gallery-card animate-on-scroll"
-                                aria-label={`View ${item.name}`}
-                            >
-                                <img src={item.image} alt={item.alt} className="product-gallery-image" loading="lazy" />
-                                <div className="product-gallery-overlay">
-                                    <span>{item.name}</span>
-                                </div>
+                        <div className="storefront-hero-actions">
+                            <Link to="/products" className="storefront-primary-btn">
+                                Shop all products <ArrowRight size={18} />
                             </Link>
+                            <Link to="/contact" className="storefront-secondary-btn">Talk to a specialist</Link>
+                        </div>
+                        <Link to="/products" className="storefront-search-prompt" aria-label="Search the NeuroStore catalog">
+                            <Search size={20} />
+                            <span>What technology are you looking for?</span>
+                            <strong>Search catalog</strong>
+                        </Link>
+                    </div>
+                </section>
+
+                <div className="enquiry-ticker-wrapper" aria-label="Product enquiry contact">
+                    <div className="enquiry-ticker-track">
+                        {[...enquiryMessages, ...enquiryMessages].map((message, index) => (
+                            <span key={index} className="enquiry-ticker-item">
+                                {message}&nbsp;
+                                <strong>Enquire now:</strong>&nbsp;
+                                <a href="tel:+919384813815" className="ticker-phone">+91 93848 13815</a>
+                                <span className="ticker-sep">✦</span>
+                            </span>
                         ))}
                     </div>
                 </div>
-            </section>
+
+                <section className="storefront-benefits" aria-label="Shopping benefits">
+                    <div className="container storefront-benefits-grid">
+                        <div><BadgeCheck size={22} /><span><strong>Genuine products</strong>Authorized commercial licensing</span></div>
+                        <div><ShieldCheck size={22} /><span><strong>Secure checkout</strong>Protected ordering and payment</span></div>
+                        <div><Truck size={22} /><span><strong>India-wide delivery</strong>Digital and physical fulfillment</span></div>
+                        <div><Headphones size={22} /><span><strong>Expert assistance</strong>Pre-sales and deployment support</span></div>
+                    </div>
+                </section>
+
+                <section className="storefront-categories">
+                    <div className="container">
+                        <div className="storefront-section-heading animate-on-scroll">
+                            <div>
+                                <span>Shop by department</span>
+                                <h2>Find the right technology faster</h2>
+                            </div>
+                            <Link to="/products">View all departments <ArrowRight size={17} /></Link>
+                        </div>
+                        <div className="storefront-category-grid">
+                            {shopCategories.map((category) => (
+                                <Link to={category.to} className="storefront-category-item animate-on-scroll" key={category.label}>
+                                    <span className="storefront-category-mark">{category.mark}</span>
+                                    <span><strong>{category.label}</strong><small>{category.detail}</small></span>
+                                    <ArrowRight size={18} />
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section className="storefront-products">
+                    <div className="container">
+                        <div className="storefront-section-heading animate-on-scroll">
+                            <div>
+                                <span>Featured products</span>
+                                <h2>Popular for business</h2>
+                            </div>
+                            <Link to="/products">Shop the full catalog <ArrowRight size={17} /></Link>
+                        </div>
+                        <div className="storefront-product-grid">
+                            {featuredProducts.map((product) => (
+                                <Link
+                                    to={`/products/${generateSlug(product.name)}`}
+                                    className="storefront-product-card animate-on-scroll"
+                                    key={product.id}
+                                >
+                                    <div className="storefront-product-image">
+                                        <img src={product.image} alt={product.name} loading="lazy" />
+                                        {product.badge && <span>{product.badge}</span>}
+                                    </div>
+                                    <div className="storefront-product-info">
+                                        <small>{product.brand || product.category}</small>
+                                        <h3>{product.name}</h3>
+                                        <p>{product.shortDescription || product.category}</p>
+                                        <div className="storefront-product-buy-row">
+                                            <strong>₹{Number(product.price).toLocaleString('en-IN')}</strong>
+                                            <span>View product <ArrowRight size={15} /></span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            </main>
 
 
             {/* CATEGORIES SECTION - Commented out & Hidden
