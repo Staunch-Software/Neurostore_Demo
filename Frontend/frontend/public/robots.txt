@@ -6,8 +6,6 @@ Allow: /
 
 User-agent: *
 Allow: /
-
-
 Disallow: /login
 
-Sitemap: https:/neurostore.in/sitemap.xml
+Sitemap: https://neurostore.in/sitemap.xml
