@@ -7513,7 +7513,7 @@ products.extend([
         "features": ["Cloud-hosted backup copies", "Scalable storage planning", "Off-site resilience"], "shortDescription": "Extend your backup strategy with scalable, resilient public cloud storage."
     },
     {
-        "id": 159, "name": "Disaster Recovery", "productId": "8741529", "category": "Backup", "softwareType": "Business Continuity Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-disaster-recovery.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
+        "id": 159, "name": "Disaster Recovery", "productId": "87415293", "category": "Backup", "softwareType": "Business Continuity Service", "family": "Backup Solutions", "term": "Contact for requirements", "brand": "Acronis", "image": "/products/acronis-disaster-recovery.jpeg", "enquiryOnly": True, "badge": "Perpetual License",
         "features": ["Business continuity planning", "Recovery time objective alignment", "System restoration support"], "shortDescription": "Prepare for outages with recovery planning and protection for business-critical systems."
     },
     {
