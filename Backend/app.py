@@ -7770,6 +7770,120 @@ def get_products():
 # CART & WISHLIST  (per-user, persisted in DB)
 # ══════════════════════════════════════════════════════════════════════════════
 
+@app.route('/google-shopping-feed.xml', methods=['GET'])
+def google_shopping_feed():
+    from xml.etree.ElementTree import Element, SubElement, tostring
+    from flask import Response
+    from pathlib import Path
+    from decimal import Decimal, ROUND_HALF_UP
+    from html import escape
+    import re
+
+    store_url = "https://neurostore.in"
+
+    mapping_file = Path(__file__).parent / "product_image_mapping.json"
+
+    with open(mapping_file, "r", encoding="utf-8") as file:
+        image_mapping = json.load(file)
+
+    rss = Element("rss", {
+        "version": "2.0",
+        "xmlns:g": "http://base.google.com/ns/1.0"
+    })
+
+    channel = SubElement(rss, "channel")
+    SubElement(channel, "title").text = "NeuroStore"
+    SubElement(channel, "link").text = store_url
+    SubElement(channel, "description").text = (
+        "Products available from NeuroStore"
+    )
+
+    def make_slug(name):
+        return re.sub(
+            r"(^-|-$)+",
+            "",
+            re.sub(r"[^a-z0-9]+", "-", (name or "").lower())
+        )
+
+    for product in products:
+        # Exclude enquiry-only products and products without a valid price.
+        if product.get("enquiryOnly"):
+            continue
+
+        try:
+            base_price = Decimal(str(product.get("price")))
+            if not base_price.is_finite() or base_price <= 0:
+                continue
+        except Exception:
+            continue
+
+        # Calculate the displayed base price plus 18% GST.
+        final_price = (
+            base_price * Decimal("1.18")
+        ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+        name = product.get("name", "").strip()
+        if not name:
+            continue
+
+        item = SubElement(channel, "item")
+
+        SubElement(item, "g:id").text = str(product.get("id"))
+        SubElement(item, "g:title").text = name[:150]
+
+        description = (
+            product.get("shortDescription")
+            or product.get("description")
+            or name
+        )
+        SubElement(item, "g:description").text = description[:5000]
+
+        SubElement(item, "g:link").text = (
+            f"{store_url}/products/{make_slug(name)}"
+        )
+
+
+        product_name = (product.get("name") or "").strip().lower()
+        image_url = image_mapping.get(product_name)
+
+        if not image_url:
+            image_path = (product.get("image") or "").strip()
+            if image_path.startswith("https://"):
+                image_url = image_path
+            elif image_path.startswith("/"):
+                image_url = store_url.rstrip("/") + image_path
+            else:
+                continue
+
+        SubElement(item, "g:image_link").text = image_url
+        SubElement(item, "g:availability").text = (
+            "in_stock"
+            if str(product.get("stockAvailability", "")).lower()
+            in ("available", "in stock", "in_stock")
+            else "out_of_stock"
+        )
+        SubElement(item, "g:price").text = f"{final_price} INR"
+        SubElement(item, "g:condition").text = "new"
+
+        brand = product.get("brand")
+        if brand:
+            SubElement(item, "g:brand").text = brand
+
+        # Add a GTIN only if the product has a verified GTIN.
+        # Do not use an internal product ID as a GTIN.
+
+    xml_data = tostring(
+        rss,
+        encoding="utf-8",
+        xml_declaration=True
+    )
+
+    return Response(
+        xml_data,
+        content_type="application/xml; charset=utf-8"
+    )
+
+
 @app.route('/api/cart', methods=['GET', 'POST'])
 def handle_cart():
     user_email = request.headers.get('User-Email', 'guest')
