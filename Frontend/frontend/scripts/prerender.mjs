@@ -22,6 +22,22 @@ function generateSlug(text) {
    const WIN_CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
    const CHROME_PATH = process.env.CHROME_PATH || (fs.existsSync(WIN_CHROME) ? WIN_CHROME : undefined);
 
+
+   async function newPage(browser) {
+     const p = await browser.newPage();
+     await p.setRequestInterception(true);
+     p.on('request', (req) => {
+       const u = req.url();
+       if (u.includes('google-analytics.com') || u.includes('googletagmanager.com') || u.includes('/api/track/view')) {
+         req.abort();
+       } else {
+         req.continue();
+       }
+     });
+     return p;
+   }
+
+
 async function main() {
   console.log('Fetching product list from live API...');
   const res = await fetch('https://neurostore.in/api/products');
@@ -52,7 +68,7 @@ async function main() {
          headless: 'new',
          args: ['--no-sandbox', '--disable-setuid-sandbox'],
        });
-    page = await browser.newPage();
+    page = await newPage(browser);
 
     browser.on('disconnected', () => {
       if (!browserClosedNormally) {
@@ -82,9 +98,17 @@ async function main() {
 
       const url = `${baseUrl}/products/${slug}`;
       try {
-        await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
-        await page.waitForSelector('h1.pd-title', { timeout: 15000 });
-        await new Promise((r) => setTimeout(r, 400));
+                for (let attempt = 1; attempt <= 3; attempt++) {
+          try {
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await page.waitForSelector('h1.pd-title', { timeout: 15000 });
+            break;
+          } catch (e) {
+            if (attempt === 3) throw e;
+            await new Promise((r) => setTimeout(r, 2000));
+          }
+        }
+        await new Promise((r) => setTimeout(r, 800));
 
         const html = await page.content();
         fs.mkdirSync(outDir, { recursive: true });
@@ -96,9 +120,9 @@ async function main() {
       } catch (err) {
         failed++;
         consecutiveFails++;
+        console.error(`[${success + failed + skipped}/${products.length}] FAIL /products/${slug} — ${err.message}`);
         if (consecutiveFails >= 5) throw new Error('5 pages failed in a row - aborting early');
 
-        console.error(`[${success + failed + skipped}/${products.length}] FAIL /products/${slug} — ${err.message}`);
       }
 
       processedSinceRecycle++;
@@ -106,7 +130,7 @@ async function main() {
         processedSinceRecycle = 0;
         try {
           await page.close();
-          page = await browser.newPage();
+          page = await newPage(browser);
         } catch (recycleErr) {
           console.error('Page recycle failed, browser may have crashed:', recycleErr.message);
           throw recycleErr;
