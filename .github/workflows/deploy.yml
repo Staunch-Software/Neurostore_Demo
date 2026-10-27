@@ -19,8 +19,13 @@ jobs:
           command_timeout: 30m
           script: |
             cd /home/AdminDeveloper/Neurostore_Demo
+            mkdir -p /home/AdminDeveloper/db-backups
+            cp Backend/neurostore.db /home/AdminDeveloper/db-backups/neurostore-$(date +%Y%m%d-%H%M%S).db
+            ls -1t /home/AdminDeveloper/db-backups/*.db | tail -n +31 | xargs -r rm --
+            cp Backend/neurostore.db /tmp/neurostore.db.keep
             git fetch origin
             git reset --hard origin/main
+            cp /tmp/neurostore.db.keep Backend/neurostore.db
             cd Frontend/frontend
             npm install
             npm run build
