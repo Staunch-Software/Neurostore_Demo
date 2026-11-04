@@ -1,10 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import SEO from '../components/SEO';      
+import SEO from '../components/SEO';     
+import { trackEvent, trackAdsConversion } from '../adsTracking'; 
 import { useParams, Link, useNavigate,  } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
 import { Phone, CheckCircle2, Truck, Package, ShieldCheck, Mail, ChevronLeft, ShoppingCart, Check, Heart, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield, Smartphone, CreditCard, Building2, WalletCards } from 'lucide-react';
 import './ProductDetails.css';
+const ADS_ADD_TO_CART = 'AW-17996663122/PASTE_THE_VALUE_FROM_GOOGLE_ADS';
 
 const generateSlug = (text) => {
     if (!text) return '';

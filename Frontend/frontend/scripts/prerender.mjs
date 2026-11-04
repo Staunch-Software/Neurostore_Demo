@@ -4,6 +4,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+if (process.env.SKIP_PRERENDER === '1') {
+     console.log('SKIP_PRERENDER=1: skipping prerender (local build only).');
+     process.exit(0);
+}
+
 // The live site uses a self-signed certificate in this environment.
 // Disable certificate checking only for this prerender script so build-time
 // product fetching can work during local/static generation.
