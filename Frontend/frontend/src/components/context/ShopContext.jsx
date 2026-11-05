@@ -363,14 +363,68 @@ export const ShopContextProvider = (props) => {
         return totalItems;
     };
 
-    // ── CART FUNCTIONS ────────────────────────────────────────────
-    const addToCart = (itemId) => {
 
-        setCartItems((prev) => ({
-            ...prev,
-            [itemId]: (prev[itemId] || 0) + 1
-        }));
-    };
+
+// ── CART FUNCTIONS ────────────────────────────────────────────
+const addToCart = (itemId) => {
+
+    // Find the product using its ID
+    const product = products.find(
+        (item) => String(item.id) === String(itemId)
+    );
+
+    // Existing cart functionality
+    setCartItems((prev) => ({
+        ...prev,
+        [itemId]: (prev[itemId] || 0) + 1
+    }));
+
+    // GA4 Add to Cart Tracking
+// ── GA4 ADD TO CART TRACKING ─────────────────────────
+
+if (product) {
+
+    window.dataLayer = window.dataLayer || [];
+
+    const productPrice = Number(product.price);
+
+    if (!Number.isFinite(productPrice)) {
+        console.error("Invalid product price:", product);
+        return;
+    }
+
+    window.dataLayer.push({
+        ecommerce: null
+    });
+
+    window.dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+            currency: "INR",
+            value: productPrice,
+            items: [
+                {
+                    item_id: String(product.id),
+                    item_name: product.name,
+                    price: productPrice,
+                    quantity: 1
+                }
+            ]
+        }
+    });
+
+    console.log("GA4 Add to Cart Event:", {
+        id: product.id,
+        name: product.name,
+        price: productPrice
+    });
+
+} else {
+
+    console.error("Product not found for GA4 tracking:", itemId);
+
+}
+};
 
     const removeFromCart = (itemId) => {
 
