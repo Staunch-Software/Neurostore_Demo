@@ -139,7 +139,7 @@ const Home = () => {
                             <span key={index} className="enquiry-ticker-item">
                                 {message}&nbsp;
                                 <strong>Enquire now:</strong>&nbsp;
-                                <a href="tel:+919384813815" className="ticker-phone">+91 93848 13815</a>
+                                <a href="tel:+919384813818" className="ticker-phone">+91 93848 13818</a>
                                 <span className="ticker-sep">✦</span>
                             </span>
                         ))}

@@ -4,6 +4,8 @@ import { trackEvent, trackAdsConversion } from '../adsTracking';
 import { useParams, Link, useNavigate,  } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
+import QuoteRequestModal from '../components/QuoteRequestModal';
+import { isQuoteOnly } from '../pricing';
 import { Phone, CheckCircle2, Truck, Package, ShieldCheck, Mail, ChevronLeft, ShoppingCart, Check, Heart, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield, Smartphone, CreditCard, Building2, WalletCards } from 'lucide-react';
 import './ProductDetails.css';
 const ADS_ADD_TO_CART = 'AW-17996663122/PASTE_THE_VALUE_FROM_GOOGLE_ADS';
@@ -31,6 +33,7 @@ const ProductDetails = () => {
     const [justAdded, setJustAdded]       = useState(false);
     const [wishlistAnim, setWishlistAnim] = useState(false);
     const [showCartDrawer, setShowCartDrawer] = useState(false);
+    const [showQuote, setShowQuote] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
     const product = products.find((p) => generateSlug(p.name) === productName);
@@ -117,9 +120,18 @@ const ProductDetails = () => {
     const isWishlisted = wishlistItems?.[product.id] > 0;
     const brandCode    = getBrandCode(product);
     const productId    = product.additionalInfo?.['Product ID'] || product.productId;
+    const basePrice    = Number(product.price) || 0;
+    const gstAmount    = basePrice * 0.18;
+    const totalPrice   = basePrice + gstAmount;
+    const formatPrice  = (amount) => amount.toLocaleString('en-IN', {
+        minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
+        maximumFractionDigits: 2,
+    });
 
     const cartProducts = products.filter(p => cartItems[p.id] > 0);
     const totalAmount  = getTotalCartAmount();
+    const quoteProducts = cartProducts.filter(isQuoteOnly);
+    const hasPricedItems = cartProducts.some((p) => !isQuoteOnly(p));
     const totalItems   = cartProducts.reduce((t, p) => t + cartItems[p.id], 0);
 
     const handleInquirySubmit = async (e) => {
@@ -186,7 +198,9 @@ const ProductDetails = () => {
                                     <p className="cart-drawer__item-name">{p.name}</p>
                                     <p className="cart-drawer__item-cat">{p.category}</p>
                                     <p className="cart-drawer__item-price">
-                                        ₹{(p.price * cartItems[p.id]).toLocaleString()}
+                                        {isQuoteOnly(p)
+                                            ? 'Price on Request'
+                                            : `₹${(p.price * cartItems[p.id]).toLocaleString()}`}
                                     </p>
                                     <div className="cart-drawer__qty">
                                         <button onClick={() => removeFromCart(p.id)}>
@@ -210,26 +224,38 @@ const ProductDetails = () => {
                 </div>
                 {cartProducts.length > 0 && (
                     <div className="cart-drawer__footer">
-                        <div className="cart-drawer__summary">
-                            <div className="cart-drawer__summary-row">
-                                <span>Subtotal</span>
-                                <span>₹{totalAmount.toLocaleString()}</span>
+                        {hasPricedItems && (
+                            <div className="cart-drawer__summary">
+                                <div className="cart-drawer__summary-row">
+                                    <span>Subtotal</span>
+                                    <span>₹{totalAmount.toLocaleString()}</span>
+                                </div>
+                                <div className="cart-drawer__summary-row">
+                                    <span>Tax (18%)</span>
+                                    <span>₹{(totalAmount * 0.18).toLocaleString()}</span>
+                                </div>
+                                <div className="cart-drawer__summary-row cart-drawer__summary-row--total">
+                                    <span>Total</span>
+                                    <span>₹{(totalAmount * 1.18).toLocaleString()}</span>
+                                </div>
                             </div>
-                            <div className="cart-drawer__summary-row">
-                                <span>Tax (18%)</span>
-                                <span>₹{(totalAmount * 0.18).toLocaleString()}</span>
-                            </div>
-                            <div className="cart-drawer__summary-row cart-drawer__summary-row--total">
-                                <span>Total</span>
-                                <span>₹{(totalAmount * 1.18).toLocaleString()}</span>
-                            </div>
-                        </div>
-                        <button
-                            className="cart-drawer__checkout-btn"
-                            onClick={() => { setShowCartDrawer(false); navigate('/checkout'); }}
-                        >
-                            Proceed to Checkout <ArrowRight size={18} />
-                        </button>
+                        )}
+                        {quoteProducts.length > 0 && (
+                            <button
+                                className="cart-drawer__checkout-btn"
+                                onClick={() => setShowQuote(true)}
+                            >
+                                Request Quote ({quoteProducts.length} item{quoteProducts.length > 1 ? 's' : ''}) <ArrowRight size={18} />
+                            </button>
+                        )}
+                        {hasPricedItems && (
+                            <button
+                                className="cart-drawer__checkout-btn"
+                                onClick={() => { setShowCartDrawer(false); navigate('/checkout'); }}
+                            >
+                                Proceed to Checkout <ArrowRight size={18} />
+                            </button>
+                        )}
                         <button
                             className="cart-drawer__view-btn"
                             onClick={() => { setShowCartDrawer(false); navigate('/cart'); }}
@@ -338,16 +364,36 @@ const ProductDetails = () => {
                         <p className="pd-short-desc">{product.shortDescription}</p>
 
                         <div className="pd-price-row-box">
-                            {product.enquiryOnly ? (
-                                <div className="pd-enquiry-price">Pricing available on request</div>
-                            ) : <div className="pd-price-main">
-                                <span className="pd-currency">₹</span>
-                                <span className="pd-amount">{product.price?.toLocaleString() || '1,000'}</span>
-                                <span className="pd-gst">+ 18% GST</span>
-                            </div>}
-                            <div className="pd-license-badge">
-                                <span>⚡ Instant Digital Activation</span>
+                            <div className="pd-price-topline">
+                                {isQuoteOnly(product) ? (
+                                    <div className="pd-enquiry-price">Pricing available on request</div>
+                                ) : (
+                                    <div className="pd-price-main">
+                                        <span className="pd-currency">₹</span>
+                                        <span className="pd-amount">{formatPrice(basePrice)}</span>
+                                        <span className="pd-gst">+ 18% GST</span>
+                                    </div>
+                                )}
+                                <div className="pd-license-badge">
+                                    <span>⚡ Instant Digital Activation</span>
+                                </div>
                             </div>
+                            {!isQuoteOnly(product) && (
+                                <div className="pd-price-breakdown">
+                                    <div className="pd-price-item">
+                                        <span>Product price</span>
+                                        <strong>₹{formatPrice(basePrice)}</strong>
+                                    </div>
+                                    <div className="pd-price-item">
+                                        <span>GST (18%)</span>
+                                        <strong>₹{formatPrice(gstAmount)}</strong>
+                                    </div>
+                                    <div className="pd-price-item pd-total-item">
+                                        <span>Total payable</span>
+                                        <strong>₹{formatPrice(totalPrice)}</strong>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="pd-stock-status" role="status" aria-label={`Stock: ${product.stockAvailability || 'Available'}`}>
@@ -368,11 +414,11 @@ const ProductDetails = () => {
                         )}
 
                         <div className="pd-action-row">
-                            <a href="tel:+919384813815" className="pd-call-btn">
+                            <a href="tel:+919384813818" className="pd-call-btn">
                                 <Phone size={16} /> {product.enquiryOnly ? 'Call' : 'Call for Price'}
                             </a>
                             <a
-                                href={`https://wa.me/919384813815?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
+                                href={`https://wa.me/919384813818?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="pd-call-btn pd-whatsapp-btn"
@@ -399,12 +445,12 @@ const ProductDetails = () => {
                             <span><ShieldCheck  size={16} color="#10b981" /> Secure 256-bit Checkout</span>
                         </div>
 
-                        {!product.enquiryOnly && <button
+                        <button
                             onClick={handleAddToCart}
                             className={`pd-cart-btn ${justAdded ? 'pd-cart-btn--added' : ''} ${inCart ? 'pd-cart-btn--in-cart' : ''}`}
                         >
                             {justAdded ? <><Check size={18} /> Added to Cart!</> : inCart ? <><ShoppingCart size={18} /> Add More ({cartCount} in cart)</> : <><ShoppingCart size={18} /> ADD TO CART</>}
-                        </button>}
+                        </button>
 
                         <button onClick={() => setShowModal(true)} className="pd-inquiry-btn">
                             <Mail size={18} /> SEND INQUIRY
@@ -447,12 +493,14 @@ const ProductDetails = () => {
                                 {product.additionalInfo ? (
                                     <table className="pd-info-table">
                                         <tbody>
-                                            {Object.entries(product.additionalInfo).map(([key, value]) => (
-                                                <tr key={key}>
-                                                    <td className="table-key">{key}</td>
-                                                    <td className="table-value">{value}</td>
-                                                </tr>
-                                            ))}
+                                            {Object.entries(product.additionalInfo)
+                                                .filter(([key]) => !['List Price', 'Purchase Price'].includes(key))
+                                                .map(([key, value]) => (
+                                                    <tr key={key}>
+                                                        <td className="table-key">{key}</td>
+                                                        <td className="table-value">{value}</td>
+                                                    </tr>
+                                                ))}
                                         </tbody>
                                     </table>
                                 ) : <p>No additional info provided.</p>}
@@ -469,6 +517,14 @@ const ProductDetails = () => {
             </div>
 
             {cartDrawer}
+
+            {showQuote && (
+                <QuoteRequestModal
+                    items={quoteProducts.map((p) => ({ name: p.name, qty: cartItems[p.id] }))}
+                    onClose={() => setShowQuote(false)}
+                    onSent={() => quoteProducts.forEach((p) => updateCartItemCount(0, p.id))}
+                />
+            )}
 
             {showModal && (
                 <div className="pd-modal-overlay" onClick={() => setShowModal(false)}>

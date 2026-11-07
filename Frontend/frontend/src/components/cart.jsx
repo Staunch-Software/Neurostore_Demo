@@ -1,5 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ShopContext } from './context/ShopContext';
+import QuoteRequestModal from './QuoteRequestModal';
+import { isQuoteOnly } from '../pricing';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ArrowRight, ShieldCheck, ShoppingBag } from 'lucide-react';
 import './cart.css';
@@ -17,13 +19,18 @@ const Cart = () => {
 
     const totalAmount = getTotalCartAmount();
     const navigate    = useNavigate();
+    const [showQuote, setShowQuote] = useState(false);
+
+    const cartProducts   = products.filter((p) => cartItems[p.id] > 0);
+    const quoteProducts  = cartProducts.filter(isQuoteOnly);
+    const hasPricedItems = cartProducts.some((p) => !isQuoteOnly(p));
 
     return (
         <div className="cart-page-wrapper">
             <div className="cart-container">
                 <h1 className="cart-page-title">Shopping Cart</h1>
 
-                {totalAmount > 0 ? (
+                {cartProducts.length > 0 ? (
                     <div className="cart-layout-grid">
 
                         {/* ── LEFT: CART ITEMS LIST ── */}
@@ -70,7 +77,9 @@ const Cart = () => {
 
                                                 {/* Item Subtotal */}
                                                 <div className="item-total-box">
-                                                    ₹{(product.price * cartItems[product.id]).toLocaleString()}
+                                                    {isQuoteOnly(product)
+                                                        ? 'Price on Request'
+                                                        : `₹${(product.price * cartItems[product.id]).toLocaleString()}`}
                                                 </div>
 
                                             </div>
@@ -86,33 +95,48 @@ const Cart = () => {
                             <div className="summary-card-neuro">
                                 <h2>Summary</h2>
 
-                                <div className="sum-row">
-                                    <span>Subtotal</span>
-                                    <span>₹{totalAmount.toLocaleString()}</span>
-                                </div>
-                                <div className="sum-row">
-                                    <span>Shipping</span>
-                                    <span style={{ color: '#10b981', fontWeight: '600' }}>Free</span>
-                                </div>
-                                <div className="sum-row">
-                                    <span>Tax (18%)</span>
-                                    <span>₹{(totalAmount * 0.18).toLocaleString()}</span>
-                                </div>
+                                {hasPricedItems && (
+                                    <>
+                                        <div className="sum-row">
+                                            <span>Subtotal</span>
+                                            <span>₹{totalAmount.toLocaleString()}</span>
+                                        </div>
+                                        <div className="sum-row">
+                                            <span>Shipping</span>
+                                            <span style={{ color: '#10b981', fontWeight: '600' }}>Free</span>
+                                        </div>
+                                        <div className="sum-row">
+                                            <span>Tax (18%)</span>
+                                            <span>₹{(totalAmount * 0.18).toLocaleString()}</span>
+                                        </div>
 
-                                <div className="sum-divider"></div>
+                                        <div className="sum-divider"></div>
 
-                                <div className="sum-total">
-                                    <span>Total</span>
-                                    <span>₹{(totalAmount * 1.18).toLocaleString()}</span>
-                                </div>
+                                        <div className="sum-total">
+                                            <span>Total</span>
+                                            <span>₹{(totalAmount * 1.18).toLocaleString()}</span>
+                                        </div>
+                                    </>
+                                )}
+
+                                {quoteProducts.length > 0 && (
+                                    <button
+                                        className="checkout-btn-neuro"
+                                        onClick={() => setShowQuote(true)}
+                                    >
+                                        Request Quote ({quoteProducts.length} item{quoteProducts.length > 1 ? 's' : ''}) <ArrowRight size={18} />
+                                    </button>
+                                )}
 
                                 {/* Checkout button — goes directly, no login check */}
-                                <button
-                                    className="checkout-btn-neuro"
-                                    onClick={() => navigate('/checkout')}
-                                >
-                                    Proceed to Checkout <ArrowRight size={18} />
-                                </button>
+                                {hasPricedItems && (
+                                    <button
+                                        className="checkout-btn-neuro"
+                                        onClick={() => navigate('/checkout')}
+                                    >
+                                        Proceed to Checkout <ArrowRight size={18} />
+                                    </button>
+                                )}
 
                                 <div className="secure-tag">
                                     <ShieldCheck size={14} /> 256-bit SSL Secure
@@ -131,6 +155,14 @@ const Cart = () => {
                 )}
 
             </div>
+
+            {showQuote && (
+                <QuoteRequestModal
+                    items={quoteProducts.map((p) => ({ name: p.name, qty: cartItems[p.id] }))}
+                    onClose={() => setShowQuote(false)}
+                    onSent={() => quoteProducts.forEach((p) => updateCartItemCount(0, p.id))}
+                />
+            )}
         </div>
     );
 };

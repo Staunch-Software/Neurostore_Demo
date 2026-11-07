@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 // We import local products ONLY to match the local Webpack images to the database data!
 import { products as localImageMap, productImageOverrides } from "../../assets/products";
+import { isQuoteOnly } from "../../pricing";
 
 export const ShopContext = createContext(null);
 
@@ -339,7 +340,7 @@ export const ShopContextProvider = (props) => {
                         product.id === Number(item)
                 );
 
-                if (itemInfo) {
+                if (itemInfo && !isQuoteOnly(itemInfo)) {
 
                     totalAmount +=
                         cartItems[item] * itemInfo.price;
@@ -381,6 +382,11 @@ const addToCart = (itemId) => {
 
     // GA4 Add to Cart Tracking
 // ── GA4 ADD TO CART TRACKING ─────────────────────────
+
+if (product && isQuoteOnly(product)) {
+    // Quote-only items have no price, so there is no purchase value to track.
+    return;
+}
 
 if (product) {
 
@@ -452,8 +458,9 @@ if (product) {
 
         const empty = {};
 
+        // Paid checkout must not drop items that are still waiting for a quote.
         products.forEach((p) => {
-            empty[p.id] = 0;
+            empty[p.id] = isQuoteOnly(p) ? (cartItems[p.id] || 0) : 0;
         });
 
         setCartItems(empty);

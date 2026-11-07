@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ShopContext } from '../components/context/ShopContext';
+import { isQuoteOnly } from '../pricing';
 import {
     ArrowLeft, CreditCard, Truck, ShieldCheck,
     Package, Smartphone, Building2,
@@ -146,12 +147,12 @@ const Checkout = () => {
     const finalAmount  = totalAmount * 1.18;
     const fullAddress  = `${formData.address}, ${formData.city}, ${formData.state} - ${formData.zip}`;
     const orderItems   = {};
-    products.forEach(p => { if (cartItems[p.id] > 0) orderItems[p.id] = cartItems[p.id]; });
+    products.forEach(p => { if (cartItems[p.id] > 0 && !isQuoteOnly(p)) orderItems[p.id] = cartItems[p.id]; });
     const orderEmail   = user?.email || email;
     const customerName = user?.name  || guestName || 'Customer';
 
-    // ── Build cart items list for display ──
-    const cartProductsList = products.filter(p => cartItems[p.id] > 0);
+    // ── Build cart items list for display (quote-only items are not part of the paid order) ──
+    const cartProductsList = products.filter(p => cartItems[p.id] > 0 && !isQuoteOnly(p));
 
     const autoSaveAddress = async () => {
         if (!user?.email) return;
@@ -595,7 +596,7 @@ const Checkout = () => {
                         <div className="summary-card">
                             <h3>Order Summary</h3>
                             <div className="summary-items">
-                                {products.map(p => cartItems[p.id] > 0 && (
+                                {products.map(p => cartItems[p.id] > 0 && !isQuoteOnly(p) && (
                                     <div key={p.id} className="summary-item-row">
                                         <span>{p.name} (x{cartItems[p.id]})</span>
                                         <span>₹{(p.price * cartItems[p.id]).toLocaleString()}</span>

@@ -249,39 +249,83 @@
 
 .pd-price-row-box {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
+    flex-direction: column;
+    padding: 14px 18px;
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border-radius: 10px;
     margin-bottom: 22px;
+}
+
+.pd-price-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
 }
 
 .pd-price-main {
     display: flex;
     align-items: baseline;
-    gap: 4px;
+    gap: 5px;
 }
 
 .pd-currency {
-    font-size: 1.2rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 800;
     color: #0f172a;
 }
 
 .pd-amount {
-    font-size: 1.8rem;
-    font-weight: 800;
     color: #0f172a;
-    letter-spacing: -0.5px;
+    font-size: 1.75rem;
+    font-weight: 800;
 }
 
 .pd-gst {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #64748b;
     margin-left: 6px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.pd-price-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid #cbd5e1;
+    margin-top: 12px;
+    padding-top: 10px;
+}
+
+.pd-price-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 0 14px;
+    border-right: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 0.72rem;
+}
+
+.pd-price-item:first-child {
+    padding-left: 0;
+}
+
+.pd-price-item:last-child {
+    padding-right: 0;
+    border-right: 0;
+}
+
+.pd-price-item strong {
+    color: #334155;
+    font-size: 0.92rem;
+}
+
+.pd-total-item span,
+.pd-total-item strong {
+    color: #0f172a;
+    font-weight: 800;
 }
 
 .pd-license-badge {
@@ -1041,6 +1085,11 @@
 }
 
 @media (max-width: 500px) {
+    .pd-price-topline { align-items: flex-start; flex-direction: column; gap: 10px; }
+    .pd-price-breakdown { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pd-price-item { padding: 0 8px; }
+    .pd-price-item strong { font-size: 0.78rem; }
+    .pd-license-badge { font-size: 0.72rem; }
     .pd-modal-box      { padding: 30px 20px; }
     .cart-drawer__footer { padding: 16px 18px 20px; }
     .cart-drawer__header { padding: 18px 20px; }

@@ -164,9 +164,9 @@ export const Navbar = () => {
         <div className="neuro-container neuro-top-bar-content">
 
           <div className="neuro-contact-info">
-            <a href="tel:+919384813815" className="neuro-contact-link">
+            <a href="tel:+919384813818" className="neuro-contact-link">
               <Phone size={14} />
-              +91 93848 13815
+              +91 93848 13818
             </a>
 
             <a href="mailto:info@neurostore.ai" className="neuro-contact-link">

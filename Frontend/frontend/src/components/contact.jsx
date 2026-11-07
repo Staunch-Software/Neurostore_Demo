@@ -321,7 +321,7 @@ const Contact = () => {
                         </div>
                         <div className="contact-page-contact-details">
                             <h3 className="contact-page-contact-label">Phone</h3>
-                            <a href="tel:+919384813815" className="contact-page-contact-link">+91 9384813815</a>
+                            <a href="tel:+919384813818" className="contact-page-contact-link">+91 9384813818</a>
                         </div>
                     </div>
 

@@ -3,6 +3,8 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import SEO from '../components/SEO';
 import { ShopContext } from '../components/context/ShopContext';
+import QuoteRequestModal from '../components/QuoteRequestModal';
+import { isQuoteOnly } from '../pricing';
 import { ShoppingCart, ChevronRight, Phone, ChevronLeft, Check, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield } from 'lucide-react';
 import './products.css';
 import './ProductDetails.css';
@@ -25,6 +27,7 @@ const Products = () => {
 
     const [justAdded, setJustAdded] = useState({});
     const [showCartDrawer, setShowCartDrawer] = useState(false);
+    const [showQuote, setShowQuote] = useState(false);
 
     const selectedBrand = searchParams.get('brand');
     const filtered = selectedBrand
@@ -121,6 +124,8 @@ const Products = () => {
 
     const cartProducts = products.filter(p => (cartItems?.[p.id] || 0) > 0);
     const totalAmount  = getTotalCartAmount();
+    const quoteProducts = cartProducts.filter(isQuoteOnly);
+    const hasPricedItems = cartProducts.some((p) => !isQuoteOnly(p));
     const totalItems   = cartProducts.reduce((t, p) => t + (cartItems?.[p.id] || 0), 0);
 
     const cartDrawer = createPortal(
@@ -156,7 +161,9 @@ const Products = () => {
                                     <p className="cart-drawer__item-name">{p.name}</p>
                                     <p className="cart-drawer__item-cat">{p.category}</p>
                                     <p className="cart-drawer__item-price">
-                                        ₹{(p.price * (cartItems?.[p.id] || 0)).toLocaleString()}
+                                        {isQuoteOnly(p)
+                                            ? 'Price on Request'
+                                            : `₹${(p.price * (cartItems?.[p.id] || 0)).toLocaleString()}`}
                                     </p>
                                     <div className="cart-drawer__qty">
                                         <button onClick={() => removeFromCart(p.id)}>
@@ -180,26 +187,38 @@ const Products = () => {
                 </div>
                 {cartProducts.length > 0 && (
                     <div className="cart-drawer__footer">
-                        <div className="cart-drawer__summary">
-                            <div className="cart-drawer__summary-row">
-                                <span>Subtotal</span>
-                                <span>₹{totalAmount.toLocaleString()}</span>
+                        {hasPricedItems && (
+                            <div className="cart-drawer__summary">
+                                <div className="cart-drawer__summary-row">
+                                    <span>Subtotal</span>
+                                    <span>₹{totalAmount.toLocaleString()}</span>
+                                </div>
+                                <div className="cart-drawer__summary-row">
+                                    <span>Tax (18%)</span>
+                                    <span>₹{(totalAmount * 0.18).toLocaleString()}</span>
+                                </div>
+                                <div className="cart-drawer__summary-row cart-drawer__summary-row--total">
+                                    <span>Total</span>
+                                    <span>₹{(totalAmount * 1.18).toLocaleString()}</span>
+                                </div>
                             </div>
-                            <div className="cart-drawer__summary-row">
-                                <span>Tax (18%)</span>
-                                <span>₹{(totalAmount * 0.18).toLocaleString()}</span>
-                            </div>
-                            <div className="cart-drawer__summary-row cart-drawer__summary-row--total">
-                                <span>Total</span>
-                                <span>₹{(totalAmount * 1.18).toLocaleString()}</span>
-                            </div>
-                        </div>
-                        <button
-                            className="cart-drawer__checkout-btn"
-                            onClick={() => { setShowCartDrawer(false); navigate('/checkout'); }}
-                        >
-                            Proceed to Checkout <ArrowRight size={18} />
-                        </button>
+                        )}
+                        {quoteProducts.length > 0 && (
+                            <button
+                                className="cart-drawer__checkout-btn"
+                                onClick={() => setShowQuote(true)}
+                            >
+                                Request Quote ({quoteProducts.length} item{quoteProducts.length > 1 ? 's' : ''}) <ArrowRight size={18} />
+                            </button>
+                        )}
+                        {hasPricedItems && (
+                            <button
+                                className="cart-drawer__checkout-btn"
+                                onClick={() => { setShowCartDrawer(false); navigate('/checkout'); }}
+                            >
+                                Proceed to Checkout <ArrowRight size={18} />
+                            </button>
+                        )}
                         <button
                             className="cart-drawer__view-btn"
                             onClick={() => { setShowCartDrawer(false); navigate('/cart'); }}
@@ -319,21 +338,19 @@ const Products = () => {
                                         </span>
                                     </div>
 
-                                    {!p.enquiryOnly && (
-                                        <button
-                                            className={`action-btn btn-cart btn-cart--full ${added ? 'btn-cart--added' : ''}`}
-                                            onClick={(e) => { e.stopPropagation(); handleAddToCart(p); }}
-                                            title={inCart ? `${cartItems[p.id]} in cart` : 'Add to Cart'}
-                                        >
-                                            {added
-                                                ? <><Check size={14} /> Added!</>
-                                                : <><ShoppingCart size={14} /> {inCart ? `+1 (${cartItems[p.id]} in cart)` : 'Add to Cart'}</>
-                                            }
-                                        </button>
-                                    )}
+                                    <button
+                                        className={`action-btn btn-cart btn-cart--full ${added ? 'btn-cart--added' : ''}`}
+                                        onClick={(e) => { e.stopPropagation(); handleAddToCart(p); }}
+                                        title={inCart ? `${cartItems[p.id]} in cart` : 'Add to Cart'}
+                                    >
+                                        {added
+                                            ? <><Check size={14} /> Added!</>
+                                            : <><ShoppingCart size={14} /> {inCart ? `+1 (${cartItems[p.id]} in cart)` : 'Add to Cart'}</>
+                                        }
+                                    </button>
 
                                     <div className="p-action-buttons" onClick={(e) => e.stopPropagation()}>
-                                        <a href="tel:+919384813815" className="action-btn btn-call">
+                                        <a href="tel:+919384813818" className="action-btn btn-call">
                                             <Phone size={14} /> {p.enquiryOnly ? 'Call' : 'Call for Price'}
                                         </a>
 
@@ -342,7 +359,7 @@ const Products = () => {
                                         </Link>
 
                                         <a
-                                            href={`https://wa.me/919384813815?text=Hi, I'm interested in ${encodeURIComponent(p.name)}`}
+                                            href={`https://wa.me/919384813818?text=Hi, I'm interested in ${encodeURIComponent(p.name)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="action-btn btn-whatsapp"
@@ -415,6 +432,14 @@ const Products = () => {
             </main>
 
             {cartDrawer}
+
+            {showQuote && (
+                <QuoteRequestModal
+                    items={quoteProducts.map((p) => ({ name: p.name, qty: cartItems[p.id] }))}
+                    onClose={() => setShowQuote(false)}
+                    onSent={() => quoteProducts.forEach((p) => updateCartItemCount(0, p.id))}
+                />
+            )}
         </div>
         </>
     );
