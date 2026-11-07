@@ -1,4 +1,4 @@
-import os
+﻿import os
 import json
 import hmac
 import random
@@ -12,10 +12,11 @@ import threading
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from flask import send_from_directory
 from dotenv import load_dotenv
+from pathlib import Path
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 
@@ -25,9 +26,9 @@ app = Flask(__name__)
 CORS(app)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # DATABASE
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def get_db_connection():
     conn = sqlite3.connect('neurostore.db')
     conn.row_factory = sqlite3.Row
@@ -116,9 +117,9 @@ def init_db():
 init_db()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # ADMIN AUTH MIDDLEWARE
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 ADMIN_USER = os.getenv("ADMIN_USERNAME", "neuroadmin")
 ADMIN_PASS = os.getenv("ADMIN_PASSWORD", "staunchtech2026")
 
@@ -133,9 +134,9 @@ def require_admin(f):
     return decorated
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # EMAIL CONFIG
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 EMAIL_USER         = os.getenv("EMAIL_USER", "staunchtech2025@gmail.com")
 EMAIL_PASS         = os.getenv("EMAIL_PASS", "iureiloiizprbolo")
 OTP_EXPIRY_MINUTES = int(os.getenv("OTP_EXPIRY_MINUTES", 10))
@@ -227,11 +228,11 @@ def _build_item_rows(items_dict):
         rows_html  += (
             f'<tr>'
             f'<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;font-size:13px;color:#334155;">{product_name}</td>'
-            f'<td style="padding:10px 12px;text-align:center;border-bottom:1px solid #f1f5f9;">×{qty_num}</td>'
-            f'<td style="padding:10px 12px;text-align:right;font-weight:600;border-bottom:1px solid #f1f5f9;">₹{total_item_price:,}</td>'
+            f'<td style="padding:10px 12px;text-align:center;border-bottom:1px solid #f1f5f9;">Ã—{qty_num}</td>'
+            f'<td style="padding:10px 12px;text-align:right;font-weight:600;border-bottom:1px solid #f1f5f9;">â‚¹{total_item_price:,}</td>'
             f'</tr>'
         )
-        rows_plain += f'  • {product_name}  ×{qty_num}  —  ₹{total_item_price:,}\n'
+        rows_plain += f'  â€¢ {product_name}  Ã—{qty_num}  â€”  â‚¹{total_item_price:,}\n'
     return rows_html, rows_plain
 
 
@@ -242,8 +243,8 @@ def send_order_confirmation_email(
 ):
     """
     Send two emails in a single SMTP session:
-      1. Customer confirmation  → to_email   (if provided)
-      2. Store/admin alert      → STORE_EMAIL (always)
+      1. Customer confirmation  â†’ to_email   (if provided)
+      2. Store/admin alert      â†’ STORE_EMAIL (always)
     """
     try:
         item_rows_html, item_rows_plain = _build_item_rows(items_dict)
@@ -251,7 +252,7 @@ def send_order_confirmation_email(
         year          = datetime.now().year
         order_date    = datetime.now().strftime('%d %b %Y, %I:%M %p')
 
-        # ── 1. Customer confirmation HTML ──────────────────────────────────────
+        # â”€â”€ 1. Customer confirmation HTML â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         customer_html = f"""
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f8fafc;padding:40px 20px;">
           <div style="background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;">
@@ -265,7 +266,7 @@ def send_order_confirmation_email(
             <!-- Body -->
             <div style="padding:36px;">
               <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
-                <p style="margin:0;font-size:15px;font-weight:700;color:#15803d;">✅ Order Confirmed &mdash; #{order_id}</p>
+                <p style="margin:0;font-size:15px;font-weight:700;color:#15803d;">âœ… Order Confirmed &mdash; #{order_id}</p>
               </div>
               <p style="font-size:15px;color:#334155;margin-bottom:20px;">
                 Hi <strong>{customer_name}</strong>, thank you for shopping with NeuroStore!
@@ -287,8 +288,8 @@ def send_order_confirmation_email(
 
               <!-- Total -->
               <div style="text-align:right;margin-bottom:20px;">
-                <span style="font-size:16px;font-weight:800;color:#6366f1;">Total: ₹{int(total):,}</span>
-                <span style="display:block;font-size:12px;color:#94a3b8;margin-top:4px;">Incl. 18% GST &nbsp;·&nbsp; {payment_label}</span>
+                <span style="font-size:16px;font-weight:800;color:#6366f1;">Total: â‚¹{int(total):,}</span>
+                <span style="display:block;font-size:12px;color:#94a3b8;margin-top:4px;">Incl. 18% GST &nbsp;Â·&nbsp; {payment_label}</span>
               </div>
 
               <!-- Shipping -->
@@ -298,19 +299,19 @@ def send_order_confirmation_email(
               </div>
 
               <p style="font-size:13px;color:#64748b;line-height:1.6;">
-                📦 Estimated delivery: <strong>3–7 business days</strong><br/>
+                ðŸ“¦ Estimated delivery: <strong>3â€“7 business days</strong><br/>
                 Questions? Email us at <a href="mailto:info@staunchtec.com" style="color:#6366f1;font-weight:700;text-decoration:none;">info@staunchtec.com</a>
               </p>
             </div>
 
             <!-- Footer -->
             <div style="background:#f1f5f9;padding:16px 36px;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#94a3b8;">© {year} NeuroStore &nbsp;|&nbsp; All rights reserved</p>
+              <p style="margin:0;font-size:12px;color:#94a3b8;">Â© {year} NeuroStore &nbsp;|&nbsp; All rights reserved</p>
             </div>
           </div>
         </div>"""
 
-        # ── 2. Store/admin notification HTML ───────────────────────────────────
+        # â”€â”€ 2. Store/admin notification HTML â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         customer_display = to_email if to_email else 'Guest (no email)'
         payment_id_line  = f'<p style="margin:0;font-size:13px;color:#334155;"><strong>Payment ID:</strong> {payment_id}</p>' if payment_id else ''
 
@@ -327,7 +328,7 @@ def send_order_confirmation_email(
             <!-- Body -->
             <div style="padding:36px;">
               <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
-                <p style="margin:0;font-size:15px;font-weight:700;color:#1d4ed8;">🛒 New Order Placed &mdash; #{order_id}</p>
+                <p style="margin:0;font-size:15px;font-weight:700;color:#1d4ed8;">ðŸ›’ New Order Placed &mdash; #{order_id}</p>
                 <p style="margin:4px 0 0;font-size:12px;color:#3b82f6;">{order_date}</p>
               </div>
 
@@ -371,7 +372,7 @@ def send_order_confirmation_email(
               </table>
 
               <div style="text-align:right;margin-bottom:16px;">
-                <span style="font-size:17px;font-weight:800;color:#6366f1;">Order Total: ₹{int(total):,}</span>
+                <span style="font-size:17px;font-weight:800;color:#6366f1;">Order Total: â‚¹{int(total):,}</span>
                 <span style="display:block;font-size:12px;color:#94a3b8;margin-top:4px;">Incl. 18% GST</span>
               </div>
 
@@ -383,17 +384,17 @@ def send_order_confirmation_email(
 
             <!-- Footer -->
             <div style="background:#f1f5f9;padding:16px 36px;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#94a3b8;">© {year} NeuroStore Admin Panel</p>
+              <p style="margin:0;font-size:12px;color:#94a3b8;">Â© {year} NeuroStore Admin Panel</p>
             </div>
           </div>
         </div>"""
 
-        # ── Send emails in one SMTP session ───────────────────────────────
+        # â”€â”€ Send emails in one SMTP session â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         server = smtplib.SMTP('smtp.gmail.com', 587, timeout=15)
         server.starttls()
         server.login(EMAIL_USER, EMAIL_PASS)
 
-        # — Customer email (only if valid recipient address provided) —
+        # â€” Customer email (only if valid recipient address provided) â€”
         if to_email and isinstance(to_email, str) and '@' in to_email:
             try:
                 msg_customer = MIMEMultipart('alternative')
@@ -406,7 +407,7 @@ def send_order_confirmation_email(
             except Exception as customer_err:
                 print(f"[EMAIL ERROR] Failed sending to customer {to_email}: {customer_err}")
 
-        # — Store/admin notification (always sent) —
+        # â€” Store/admin notification (always sent) â€”
         if STORE_EMAIL and isinstance(STORE_EMAIL, str) and '@' in STORE_EMAIL:
             try:
                 msg_admin = MIMEMultipart('alternative')
@@ -454,14 +455,14 @@ def send_order_status_update_email(to_email, customer_name, order_id, new_status
     Called whenever admin changes the order status or a customer cancels.
     """
     if not to_email or not isinstance(to_email, str) or '@' not in to_email:
-        return False  # Guest order with no email — skip silently
+        return False  # Guest order with no email â€” skip silently
 
     try:
         item_rows_html, _ = _build_item_rows(items_dict)
         year = datetime.now().year
         updated_at = datetime.now().strftime('%d %b %Y, %I:%M %p')
 
-        # ── Extract product names from items_dict ───────────────────────────────
+        # â”€â”€ Extract product names from items_dict â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         parsed_items = items_dict
         if isinstance(parsed_items, str):
             try:
@@ -487,10 +488,10 @@ def send_order_status_update_email(to_email, customer_name, order_id, new_status
             banner_title  = f'Order #{order_id}'
             subject_title = f'Order #{order_id}'
 
-        # ── Visual Tracking Progress Bar Builder ─────────────────────────────
+        # â”€â”€ Visual Tracking Progress Bar Builder â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         step_order = {'Confirmed': 1, 'Processing': 2, 'Shipped': 3, 'Delivered': 4}
         curr_step = step_order.get(new_status, 0)
-        
+
         timeline_html = ""
         if new_status != 'Cancelled':
             steps = [
@@ -536,7 +537,7 @@ def send_order_status_update_email(to_email, customer_name, order_id, new_status
             </div>
             """
 
-        # ── Status-specific styling ──────────────────────────────────────────
+        # â”€â”€ Status-specific styling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         status_config = {
             'Confirmed':  {'icon': '\u2705', 'color': '#15803d', 'bg': '#f0fdf4', 'border': '#bbf7d0',
                            'message': 'Your order has been confirmed and is being prepared.'},
@@ -613,7 +614,7 @@ def send_order_status_update_email(to_email, customer_name, order_id, new_status
               <!-- Delivery Destination -->
               <div style="background:#f8fafc;border-radius:12px;padding:18px 20px;margin-bottom:28px;border:1px solid #e2e8f0;">
                 <div style="font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
-                  📍 Shipping Destination
+                  ðŸ“ Shipping Destination
                 </div>
                 <div style="font-size:14px;color:#1e293b;line-height:1.5;font-weight:500;">
                   {address}
@@ -658,9 +659,9 @@ def send_order_status_update_email(to_email, customer_name, order_id, new_status
         return False
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # PRODUCTS DATA
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 std_hw = {"Condition": "Brand New / Sealed", "Availability": "In Stock", "Delivery": "3-5 Business Days",
           "Return Policy": "7 Days Replacement", "Support": "Lifetime Email Support",
           "Packaging": "Official Retail Box", "Certifications": "ISO, CE, RoHS Compliant"}
@@ -7579,11 +7580,13 @@ products.extend([
             "Compliance": "Not specified",
             "Support & Updates": "Manufacturer warranty (terms not specified)"
         },
-        "warranty": "Not specified — check with seller/manufacturer for warranty terms."
+        "warranty": "Not specified â€” check with seller/manufacturer for warranty terms."
     }
 ])
 
 brand_codes = {"Microsoft": "MS", "Acronis": "AC", "Ai PC": "AI PC"}
+
+
 
 for product in products:
     product["stockAvailability"] = "Available"
@@ -7612,9 +7615,9 @@ for product in products:
             "in the final proposal based on the selected scope and subscription."
         )
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # AUTH ROUTES
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @app.route('/api/auth/send-otp', methods=['POST'])
 def send_otp():
@@ -7757,24 +7760,19 @@ def social_login():
     return jsonify({"status": "success", "user": {"name": real_name, "email": real_email}})
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # PRODUCTS
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @app.route('/api/products', methods=['GET'])
 def get_products():
     return jsonify(products)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# CART & WISHLIST  (per-user, persisted in DB)
-# ══════════════════════════════════════════════════════════════════════════════
-
 @app.route('/google-shopping-feed.xml', methods=['GET'])
 def google_shopping_feed():
     from xml.etree.ElementTree import Element, SubElement, tostring
     from flask import Response
-    from pathlib import Path
     from decimal import Decimal, ROUND_HALF_UP
     from html import escape
     import re
@@ -7884,6 +7882,11 @@ def google_shopping_feed():
     )
 
 
+
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# CART & WISHLIST  (per-user, persisted in DB)
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
 @app.route('/api/cart', methods=['GET', 'POST'])
 def handle_cart():
     user_email = request.headers.get('User-Email', 'guest')
@@ -7977,7 +7980,7 @@ def admin_user_profile(email):
     user_row = conn.execute(
         'SELECT id, name, email, phone FROM users WHERE email = ?', (email,)
     ).fetchone()
-    user_info = dict(user_row) if user_row else {'email': email, 'name': email.split('@')[0].capitalize(), 'phone': '—'}
+    user_info = dict(user_row) if user_row else {'email': email, 'name': email.split('@')[0].capitalize(), 'phone': 'â€”'}
 
     # 2. Orders for this user
     order_rows = conn.execute(
@@ -8036,10 +8039,10 @@ def admin_user_profile(email):
     })
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # INQUIRY & BOOKING
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @app.route('/api/inquiry', methods=['POST'])
 def handle_inquiry():
@@ -8135,9 +8138,9 @@ def handle_booking():
     return jsonify({"status": "error", "message": "Failed to send booking email."}), 500
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # ORDERS
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @app.route('/api/orders/user', methods=['GET'])
 def get_user_orders():
@@ -8187,14 +8190,14 @@ def place_order():
 
         # Always notify the store; send customer email only if we have their address
         send_order_confirmation_email_async(
-            to_email       = confirm_email,   # None for anonymous guests → only store notified
+            to_email       = confirm_email,   # None for anonymous guests â†’ only store notified
             customer_name  = customer_name,
             order_id       = order_id,
             items_dict     = items,
             total          = total,
             address        = address,
             payment_method = payment,
-            payment_id     = None,            # COD — no Razorpay payment ID
+            payment_id     = None,            # COD â€” no Razorpay payment ID
         )
 
         return jsonify({"status": "success", "message": "Order placed!", "order_id": order_id})
@@ -8256,7 +8259,7 @@ def cancel_order(order_id):
     )
     conn.commit()
 
-    # ── Fetch customer name for the cancellation email ─────────────────────
+    # â”€â”€ Fetch customer name for the cancellation email â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     cancel_email = order_dict.get('user_email')
     customer_name = 'Customer'
     if cancel_email and cancel_email != 'guest':
@@ -8265,7 +8268,7 @@ def cancel_order(order_id):
             customer_name = row['name']
     conn.close()
 
-    # ── Send cancellation email in a background thread ─────────────────────
+    # â”€â”€ Send cancellation email in a background thread â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     import threading
     threading.Thread(
         target=send_order_status_update_email,
@@ -8283,9 +8286,9 @@ def cancel_order(order_id):
 
     return jsonify({"status": "success", "message": "Order cancelled successfully."})
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # ADDRESSES
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @app.route('/api/addresses', methods=['GET'])
 def get_addresses():
@@ -8404,9 +8407,9 @@ def set_default_address(addr_id):
     conn.commit()
     conn.close()
     return jsonify({'status': 'success'})
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # RAZORPAY
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @app.route('/api/razorpay/create-order', methods=['POST'])
 def create_razorpay_order():
@@ -8442,7 +8445,7 @@ def create_razorpay_order():
 @app.route('/api/razorpay/verify', methods=['POST'])
 def verify_razorpay_payment():
     data                = request.json
-    user_email          = request.headers.get('User-Email')  # None for guests — that's fine
+    user_email          = request.headers.get('User-Email')  # None for guests â€” that's fine
     razorpay_order_id   = data.get('razorpay_order_id')
     razorpay_payment_id = data.get('razorpay_payment_id')
     razorpay_signature  = data.get('razorpay_signature')
@@ -8455,12 +8458,12 @@ def verify_razorpay_payment():
     if not key_secret:
         return jsonify({"success": False, "error": "Payment gateway not configured. Set RAZORPAY_KEY_SECRET in .env"}), 500
 
-    # ── Validate required fields ──
+    # â”€â”€ Validate required fields â”€â”€
     if not razorpay_order_id or not razorpay_payment_id or not razorpay_signature:
         return jsonify({"success": False, "error": "Missing payment verification fields"}), 400
 
     try:
-        # ── FIXED: use hmac.new correctly ──
+        # â”€â”€ FIXED: use hmac.new correctly â”€â”€
         message             = f"{razorpay_order_id}|{razorpay_payment_id}".encode('utf-8')
         generated_signature = hmac.new(
             key_secret.encode('utf-8'),
@@ -8470,7 +8473,7 @@ def verify_razorpay_payment():
 
         if generated_signature != razorpay_signature:
             print(f"Signature mismatch.\nExpected: {generated_signature}\nGot: {razorpay_signature}")
-            return jsonify({"success": False, "error": "Signature mismatch — payment not verified"}), 400
+            return jsonify({"success": False, "error": "Signature mismatch â€” payment not verified"}), 400
 
         conn     = get_db_connection()
         existing = conn.execute('SELECT id FROM orders WHERE payment_id = ?', (razorpay_payment_id,)).fetchone()
@@ -8505,7 +8508,7 @@ def verify_razorpay_payment():
             if row and row['name']:
                 customer_name = row['name']
 
-        # Always send — customer email only if available, store always notified
+        # Always send â€” customer email only if available, store always notified
         send_order_confirmation_email_async(
             to_email       = confirm_email,
             customer_name  = customer_name,
@@ -8524,9 +8527,9 @@ def verify_razorpay_payment():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # ADMIN ROUTES  (protected by HTTP Basic Auth)
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @app.route('/api/admin/login', methods=['POST'])
 def admin_login():
@@ -8597,7 +8600,7 @@ def update_order_status(order_id):
     conn.execute('UPDATE orders SET status = ? WHERE id = ?', (new_status, order_id))
     conn.commit()
 
-    # ── Fetch customer name for the email ──────────────────────────────────
+    # â”€â”€ Fetch customer name for the email â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     customer_email = order_dict.get('user_email')
     customer_name  = 'Customer'
     if customer_email and customer_email != 'guest':
@@ -8606,7 +8609,7 @@ def update_order_status(order_id):
             customer_name = row['name']
     conn.close()
 
-    # ── Send status-update email to customer ───────────────────────────────
+    # â”€â”€ Send status-update email to customer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     import threading
     threading.Thread(
         target=send_order_status_update_email,
@@ -8655,7 +8658,7 @@ def get_all_users():
                 'id': len(users_list) + 1,
                 'name': email.split('@')[0].capitalize(),
                 'email': ou['user_email'],
-                'phone': '—',
+                'phone': 'â€”',
                 'type': 'Order Customer'
             })
 
@@ -8751,9 +8754,9 @@ def admin_analytics_views():
     return jsonify({'top_viewed': top_products})
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # SERVE REACT APP
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @app.route('/')
 def serve():
@@ -8774,3 +8777,4 @@ def static_files(path):
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
+
