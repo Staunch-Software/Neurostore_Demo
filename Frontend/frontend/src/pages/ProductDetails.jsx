@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect,useRef } from 'react';
 import SEO from '../components/SEO';     
 import { trackEvent, trackAdsConversion } from '../adsTracking'; 
 import { useParams, Link, useNavigate,  } from 'react-router-dom';
@@ -25,6 +25,8 @@ const ProductDetails = () => {
     const { productName } = useParams();
     const { products, cartItems, addToCart, removeFromCart, updateCartItemCount, getTotalCartAmount, wishlistItems, toggleWishlist } = useContext(ShopContext);
     const navigate = useNavigate();
+
+    const lastViewedProductId = useRef(null);
    
     const [activeTab, setActiveTab]       = useState('description');
     const [showModal, setShowModal]       = useState(false);
@@ -37,6 +39,41 @@ const ProductDetails = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
     const product = products.find((p) => generateSlug(p.name) === productName);
+    
+    // GA4 View Item Tracking
+    useEffect(() => {
+        if (!product || product.id == null) return;
+
+    // Prevent duplicate events for the same product
+        if (lastViewedProductId.current === product.id) return;
+
+        lastViewedProductId.current = product.id;
+
+        window.dataLayer = window.dataLayer || [];
+
+        window.dataLayer.push({
+            ecommerce: null
+        });
+
+    window.dataLayer.push({
+        event: "view_item",
+        ecommerce: {
+            currency: "INR",
+            value: Number(product.price),
+            items: [
+                {
+                    item_id: String(product.id),
+                    item_name: product.name,
+                    price: Number(product.price),
+                    quantity: 1
+                }
+            ]
+        }
+    });
+
+    console.log("GA4 View Item Event:", product.name);
+
+}, [product?.id, product?.name, product?.price]);
 
     const productImages = Array.isArray(product?.images) && product.images.length > 0
         ? product.images
@@ -88,7 +125,7 @@ const ProductDetails = () => {
             }).catch(() => {}); // silently ignore network errors
         // eslint-disable-next-line no-unused-vars, no-empty
         } catch (_) {}
-    }, );
+    }, [product?.id]);
 
     if (!product) {
         // Product list empty (not loaded yet): neutral state, never noindex
