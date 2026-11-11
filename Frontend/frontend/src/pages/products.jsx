@@ -17,7 +17,8 @@ const generateSlug = (text) => {
 const getBrandCode = (product) => product.brandCode || ({
     microsoft: 'MS',
     acronis: 'AC',
-    'ai pc': 'AI PC'
+    'ai pc': 'AI PC',
+    adobe: 'AD'
 }[product.brand?.toLowerCase()]);
 
 const Products = () => {
@@ -267,7 +268,7 @@ const Products = () => {
                     {currentItems.map(p => {
                         const inCart = cartItems && cartItems[p.id] > 0;
                         const added  = justAdded[p.id];
-                        const productUrl = `/products/${generateSlug(p.name)}`;
+                        const productUrl = `/products/${p.slug || generateSlug(p.name)}`;
                         const brandCode = getBrandCode(p);
                         const productId = p.additionalInfo?.['Product ID'] || p.productId;
 

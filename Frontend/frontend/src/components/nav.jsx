@@ -59,7 +59,7 @@ const SearchBar = () => {
     setIsOpen(false);
     setQuery("");
     setResults([]);
-    navigate(`/products/${generateSlug(product.name)}`);
+    navigate(`/products/${product.slug || generateSlug(product.name)}`);
   };
 
   return (
@@ -263,6 +263,17 @@ export const Navbar = () => {
                       }}
                     >
                       <span>Acronis</span>
+                    </Link>
+
+                    <Link
+                      to="/products?brand=Adobe"
+                      className="neuro-dropdown-item"
+                      onClick={() => {
+                        setProductsOpen(false);
+                        setSoftwareOpen(false);
+                      }}
+                    >
+                      <span>Adobe</span>
                     </Link>
 
                     <Link

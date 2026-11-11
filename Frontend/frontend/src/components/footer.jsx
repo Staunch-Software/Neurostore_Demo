@@ -41,6 +41,7 @@ const Footer = () => {
               <ul>
                 <li><Link to="/products?brand=Microsoft">Microsoft</Link></li>
                 <li><Link to="/products?brand=Acronis">Acronis</Link></li>
+                <li><Link to="/products?brand=Adobe">Adobe</Link></li>
                 <li><Link to="/products?brand=AI%20PC">AI PC</Link></li>
               </ul>
             </div>

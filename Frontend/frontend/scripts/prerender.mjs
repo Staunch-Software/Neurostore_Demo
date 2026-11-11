@@ -89,7 +89,7 @@ async function main() {
     const RECYCLE_EVERY = 20; // close/reopen page every N products to release memory
 
     for (const product of products) {
-      const slug = generateSlug(product.name);
+      const slug = product.slug || generateSlug(product.name);
       if (!slug) { console.warn(`Skipping product with empty slug: ${product.id}`); continue; }
 
       const outDir = path.join(distDir, 'products', slug);

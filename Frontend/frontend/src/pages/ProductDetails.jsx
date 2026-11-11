@@ -18,7 +18,8 @@ const generateSlug = (text) => {
 const getBrandCode = (product) => product.brandCode || ({
     microsoft: 'MS',
     acronis: 'AC',
-    'ai pc': 'AI PC'
+    'ai pc': 'AI PC',
+    adobe: 'AD'
 }[product.brand?.toLowerCase()]);
 
 const ProductDetails = () => {
@@ -38,7 +39,7 @@ const ProductDetails = () => {
     const [showQuote, setShowQuote] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-    const product = products.find((p) => generateSlug(p.name) === productName);
+    const product = products.find((p) => (p.slug || generateSlug(p.name)) === productName);
     
     // GA4 View Item Tracking
     useEffect(() => {

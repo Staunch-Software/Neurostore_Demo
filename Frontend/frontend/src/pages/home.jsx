@@ -188,7 +188,7 @@ const Home = () => {
                         <div className="storefront-product-grid">
                             {featuredProducts.map((product) => (
                                 <Link
-                                    to={`/products/${generateSlug(product.name)}`}
+                                    to={`/products/${product.slug || generateSlug(product.name)}`}
                                     className="storefront-product-card animate-on-scroll"
                                     key={product.id}
                                 >

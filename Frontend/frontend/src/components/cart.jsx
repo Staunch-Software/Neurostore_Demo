@@ -25,6 +25,57 @@ const Cart = () => {
     const quoteProducts  = cartProducts.filter(isQuoteOnly);
     const hasPricedItems = cartProducts.some((p) => !isQuoteOnly(p));
 
+    // GA4 Begin Checkout Tracking
+const handleProceedToCheckout = () => {
+    const checkoutItems = cartProducts
+        .filter((product) => !isQuoteOnly(product))
+        .map((product) => {
+            const price = Number(product.price);
+            const quantity = Number(cartItems[product.id] || 0);
+
+            return {
+                item_id: String(product.id),
+                item_name: product.name,
+                price: price,
+                quantity: quantity
+            };
+        })
+        .filter((item) =>
+            Number.isFinite(item.price) &&
+            item.price >= 0 &&
+            item.quantity > 0
+        );
+
+    if (checkoutItems.length > 0) {
+        const checkoutValue = checkoutItems.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0
+        );
+
+        window.dataLayer = window.dataLayer || [];
+
+        window.dataLayer.push({
+            ecommerce: null
+        });
+
+        window.dataLayer.push({
+            event: "begin_checkout",
+            ecommerce: {
+                currency: "INR",
+                value: checkoutValue,
+                items: checkoutItems
+            }
+        });
+
+        console.log("GA4 Begin Checkout Event:", {
+            value: checkoutValue,
+            items: checkoutItems
+        });
+    }
+
+    navigate("/checkout");
+};
+
     return (
         <div className="cart-page-wrapper">
             <div className="cart-container">
@@ -128,15 +179,14 @@ const Cart = () => {
                                     </button>
                                 )}
 
-                                {/* Checkout button — goes directly, no login check */}
-                                {hasPricedItems && (
-                                    <button
-                                        className="checkout-btn-neuro"
-                                        onClick={() => navigate('/checkout')}
-                                    >
-                                        Proceed to Checkout <ArrowRight size={18} />
-                                    </button>
-                                )}
+                               {hasPricedItems && (
+    <button
+        className="checkout-btn-neuro"
+        onClick={handleProceedToCheckout}
+    >
+        Proceed to Checkout <ArrowRight size={18} />
+    </button>
+)}
 
                                 <div className="secure-tag">
                                     <ShieldCheck size={14} /> 256-bit SSL Secure

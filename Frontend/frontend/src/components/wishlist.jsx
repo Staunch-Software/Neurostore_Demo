@@ -27,7 +27,7 @@ const Wishlist = () => {
                     <div className="wishlist-grid">
                         {products.map((product) => {
                             if (wishlistItems[product.id] > 0) {
-                                const productUrl = `/products/${generateSlug(product.name)}`;
+                                const productUrl = `/products/${product.slug || generateSlug(product.name)}`;
                                 return (
                                     <div
                                         className="wishlist-card"
