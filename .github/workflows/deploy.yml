@@ -4,9 +4,10 @@ on:
     branches:
       - main
 
-    concurrency:
-      group: deploy-neurostore
-      cancel-in-progress: false
+concurrency:
+  group: deploy-neurostore
+  cancel-in-progress: false
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,7 +21,7 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           script_stop: true
-          command_timeout: 30m
+          command_timeout: 60m
           script: |
             cd /home/AdminDeveloper/Neurostore_Demo
             mkdir -p /home/AdminDeveloper/db-backups
