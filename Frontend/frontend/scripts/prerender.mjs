@@ -5,13 +5,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 if (process.env.SKIP_PRERENDER === '1') {
-     console.log('SKIP_PRERENDER=1: skipping prerender (local build only).');
-     process.exit(0);
+  console.log('SKIP_PRERENDER=1: skipping prerender (local build only).');
+  process.exit(0);
 }
 
 // The live site uses a self-signed certificate in this environment.
-// Disable certificate checking only for this prerender script so build-time
-// product fetching can work during local/static generation.
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -24,24 +22,22 @@ function generateSlug(text) {
 }
 
 // Windows Chrome path — adjust if yours differs
-   const WIN_CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-   const CHROME_PATH = process.env.CHROME_PATH || (fs.existsSync(WIN_CHROME) ? WIN_CHROME : undefined);
+const WIN_CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const CHROME_PATH = process.env.CHROME_PATH || (fs.existsSync(WIN_CHROME) ? WIN_CHROME : undefined);
 
-
-   async function newPage(browser) {
-     const p = await browser.newPage();
-     await p.setRequestInterception(true);
-     p.on('request', (req) => {
-       const u = req.url();
-       if (u.includes('google-analytics.com') || u.includes('googletagmanager.com') || u.includes('/api/track/view')) {
-         req.abort();
-       } else {
-         req.continue();
-       }
-     });
-     return p;
-   }
-
+async function newPage(browser) {
+  const p = await browser.newPage();
+  await p.setRequestInterception(true);
+  p.on('request', (req) => {
+    const u = req.url();
+    if (u.includes('google-analytics.com') || u.includes('googletagmanager.com') || u.includes('/api/track/view')) {
+      req.abort();
+    } else {
+      req.continue();
+    }
+  });
+  return p;
+}
 
 async function main() {
   console.log('Fetching product list from live API...');
@@ -51,29 +47,27 @@ async function main() {
   console.log(`Fetched ${products.length} products`);
 
   let browser = null;
-  let page = null;
   let previewServer = null;
   let browserClosedNormally = false;
 
   try {
     console.log('Starting local preview server for dist/...');
-       previewServer = await preview({
-     preview: {
-       port: 4173,
-       proxy: {
-         '/api': { target: 'https://neurostore.in', changeOrigin: true, secure: false },
-       },
-     },
-   });
+    previewServer = await preview({
+      preview: {
+        port: 4173,
+        proxy: {
+          '/api': { target: 'https://neurostore.in', changeOrigin: true, secure: false },
+        },
+      },
+    });
     const port = previewServer.config.preview.port;
     const baseUrl = `http://localhost:${port}`;
 
-       browser = await puppeteer.launch({
-         ...(CHROME_PATH ? { executablePath: CHROME_PATH } : {}),
-         headless: 'new',
-         args: ['--no-sandbox', '--disable-setuid-sandbox'],
-       });
-    page = await newPage(browser);
+    browser = await puppeteer.launch({
+      ...(CHROME_PATH ? { executablePath: CHROME_PATH } : {}),
+      headless: 'new',
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
 
     browser.on('disconnected', () => {
       if (!browserClosedNormally) {
@@ -81,13 +75,19 @@ async function main() {
       }
     });
 
+    // ---------- Parallel rendering ----------
+    const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY) || 4;
+    const RECYCLE_EVERY = 20; // per worker
+
     let success = 0;
     let failed = 0;
     let skipped = 0;
+    let completed = 0;
     let consecutiveFails = 0;
-    let processedSinceRecycle = 0;
-    const RECYCLE_EVERY = 20; // close/reopen page every N products to release memory
+    let fatalError = null;
 
+    // Build the job queue (skip empty slugs and already-rendered pages)
+    const queue = [];
     for (const product of products) {
       const slug = product.slug || generateSlug(product.name);
       if (!slug) { console.warn(`Skipping product with empty slug: ${product.id}`); continue; }
@@ -95,61 +95,81 @@ async function main() {
       const outDir = path.join(distDir, 'products', slug);
       const outFile = path.join(outDir, 'index.html');
 
-      // Resume support: skip if already rendered by a previous run
       if (fs.existsSync(outFile)) {
         skipped++;
+        completed++;
         continue;
       }
+      queue.push({ slug, outDir, outFile });
+    }
 
-      const url = `${baseUrl}/products/${slug}`;
+    let nextIndex = 0;
+
+    async function renderOne(page, job) {
+      const url = `${baseUrl}/products/${job.slug}`;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+          await page.waitForSelector('h1.pd-title', { timeout: 15000 });
+          break;
+        } catch (e) {
+          if (attempt === 3) throw e;
+          await new Promise((r) => setTimeout(r, 2000));
+        }
+      }
+      await new Promise((r) => setTimeout(r, 300));
+
+      const html = await page.content();
+      fs.mkdirSync(job.outDir, { recursive: true });
+      fs.writeFileSync(job.outFile, html);
+    }
+
+    async function worker() {
+      let page = await newPage(browser);
+      let processed = 0;
       try {
-                for (let attempt = 1; attempt <= 3; attempt++) {
+        while (!fatalError) {
+          const i = nextIndex++;
+          if (i >= queue.length) break;
+          const job = queue[i];
+
           try {
-            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-            await page.waitForSelector('h1.pd-title', { timeout: 15000 });
-            break;
-          } catch (e) {
-            if (attempt === 3) throw e;
-            await new Promise((r) => setTimeout(r, 2000));
+            await renderOne(page, job);
+            success++;
+            consecutiveFails = 0;
+            console.log(`[${++completed}/${products.length}] OK  /products/${job.slug}`);
+          } catch (err) {
+            failed++;
+            consecutiveFails++;
+            console.error(`[${++completed}/${products.length}] FAIL /products/${job.slug} — ${err.message}`);
+            if (consecutiveFails >= 5) {
+              fatalError = new Error('5 pages failed in a row - aborting early');
+              break;
+            }
+          }
+
+          processed++;
+          if (processed >= RECYCLE_EVERY) {
+            processed = 0;
+            await page.close().catch(() => {});
+            page = await newPage(browser);
           }
         }
-        await new Promise((r) => setTimeout(r, 800));
-
-        const html = await page.content();
-        fs.mkdirSync(outDir, { recursive: true });
-        fs.writeFileSync(outFile, html);
-
-        success++;
-        consecutiveFails = 0;
-        console.log(`[${success + failed + skipped}/${products.length}] OK  /products/${slug}`);
       } catch (err) {
-        failed++;
-        consecutiveFails++;
-        console.error(`[${success + failed + skipped}/${products.length}] FAIL /products/${slug} — ${err.message}`);
-        if (consecutiveFails >= 5) throw new Error('5 pages failed in a row - aborting early');
-
-      }
-
-      processedSinceRecycle++;
-      if (processedSinceRecycle >= RECYCLE_EVERY) {
-        processedSinceRecycle = 0;
-        try {
-          await page.close();
-          page = await newPage(browser);
-        } catch (recycleErr) {
-          console.error('Page recycle failed, browser may have crashed:', recycleErr.message);
-          throw recycleErr;
-        }
+        fatalError = fatalError || err;
+      } finally {
+        await page.close().catch(() => {});
       }
     }
+
+    console.log(`Rendering ${queue.length} pages with ${CONCURRENCY} parallel workers...`);
+    await Promise.all(Array.from({ length: CONCURRENCY }, () => worker()));
+
+    if (fatalError) throw fatalError;
 
     console.log(`\nDone. ${success} rendered, ${skipped} already done, ${failed} failed.`);
   } finally {
     browserClosedNormally = true;
-
-    if (page && !page.isClosed?.()) {
-      await page.close().catch(() => {});
-    }
 
     if (browser) {
       await browser.close().catch(() => {});
