@@ -7584,7 +7584,11 @@ products.extend([
     }
 ])
 
-brand_codes = {"Microsoft": "MS", "Acronis": "AC", "Ai PC": "AI PC"}
+adobe_products_path = Path(__file__).with_name("adobe_products.json")
+with adobe_products_path.open(encoding="utf-8") as adobe_products_file:
+    products.extend(json.load(adobe_products_file))
+
+brand_codes = {"Microsoft": "MS", "Acronis": "AC", "Ai PC": "AI PC", "Adobe": "AD"}
 
 
 
@@ -7592,6 +7596,13 @@ for product in products:
     product["stockAvailability"] = "Available"
     if product["brand"] in brand_codes:
         product["brandCode"] = brand_codes[product["brand"]]
+    if product["brand"] == "Adobe":
+        product["price"] = None
+        product["enquiryOnly"] = True
+        product_info = product.get("additionalInfo", {})
+        product_info.pop("Purchase Price", None)
+        product_info.pop("List Price", None)
+        product_info.pop("Price List Valid To", None)
     if 151 <= product["id"] <= 163:
         product["description"] = (
             f'{product["shortDescription"]} Neurostore will confirm the service scope, '
@@ -7836,9 +7847,8 @@ def google_shopping_feed():
         )
         SubElement(item, "g:description").text = description[:5000]
 
-        SubElement(item, "g:link").text = (
-            f"{store_url}/products/{make_slug(name)}"
-        )
+        product_slug = product.get("slug") or make_slug(name)
+        SubElement(item, "g:link").text = f"{store_url}/products/{product_slug}"
 
 
         product_name = (product.get("name") or "").strip().lower()
