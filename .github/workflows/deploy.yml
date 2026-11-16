@@ -33,8 +33,8 @@ jobs:
             cp /tmp/neurostore.db.keep Backend/neurostore.db
             cd Frontend/frontend
             npm install
-            npm run build
-            test "$(ls -d dist/products/*/ 2>/dev/null | wc -l)" -ge 150 || { echo "Prerender produced too few pages, aborting"; exit 1; }
+            PRERENDER_CONCURRENCY=2 npm run build
+            test "$(ls -d dist/products/*/ 2>/dev/null | wc -l)" -ge 2000 || { echo "Prerender produced too few pages, aborting"; exit 1; }
             sudo rm -rf /var/www/html/*
             sudo cp -r dist/* /var/www/html/
             sudo chmod -R 755 /var/www/html
