@@ -64,17 +64,44 @@ async function main() {
     const port = previewServer.config.preview.port;
     const baseUrl = `http://localhost:${port}`;
 
-    browser = await puppeteer.launch({
-      ...(CHROME_PATH ? { executablePath: CHROME_PATH } : {}),
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
+        async function launchBrowser() {
+      const b = await puppeteer.launch({
+        ...(CHROME_PATH ? { executablePath: CHROME_PATH } : {}),
+        headless: 'new',
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+        ],
+      });
+      b.on('disconnected', () => {
+        if (!browserClosedNormally) {
+          console.error('\n!! Chrome disconnected/crashed unexpectedly !!');
+        }
+      });
+      return b;
+    }
 
-    browser.on('disconnected', () => {
-      if (!browserClosedNormally) {
-        console.error('\n!! Chrome disconnected/crashed unexpectedly !!');
+    browser = await launchBrowser();
+    let browserGeneration = 0;
+    let restarting = null;
+
+    // Safely replace the shared browser (only one worker does the restart)
+    async function restartBrowser(seenGeneration) {
+      if (seenGeneration !== browserGeneration) return; // someone already restarted
+      if (!restarting) {
+        restarting = (async () => {
+          console.log('Restarting Chrome...');
+          const old = browser;
+          browser = await launchBrowser();
+          browserGeneration++;
+          await old.close().catch(() => {});
+          restarting = null;
+        })();
       }
-    });
+      await restarting;
+    }
 
     // ---------- Parallel rendering ----------
     const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY) || 2;
@@ -139,7 +166,8 @@ async function main() {
       fs.writeFileSync(job.outFile, html);
     }
 
-    async function worker() {
+        async function worker() {
+      let gen = browserGeneration;
       let page = await newPage(browser);
       let processed = 0;
       try {
@@ -149,30 +177,54 @@ async function main() {
           const job = queue[i];
 
           try {
+            // Browser was restarted by another worker: get a fresh tab
+            if (gen !== browserGeneration) {
+              gen = browserGeneration;
+              page = await newPage(browser);
+            }
+
             await renderOne(page, job);
             success++;
             consecutiveFails = 0;
             console.log(`[${++completed}/${totalJobs}] OK  ${job.urlPath}`);
-            } catch (err) {
-            failed++;
+          } catch (err) {
+            // Put the job back so it is retried, instead of counting it failed
+            const crashed = !browser.connected;
+            console.error(`FAIL ${job.urlPath} — ${err.message}`);
             consecutiveFails++;
-            console.error(`[${++completed}/${totalJobs}] FAIL ${job.urlPath} — ${err.message}`);
-
-            // A timed-out tab may be stuck, so open a fresh one
-            await page.close().catch(() => {});
-            page = await newPage(browser);
-            processed = 0;
 
             if (consecutiveFails >= 5 * CONCURRENCY) {
+              failed++;
               fatalError = new Error('Too many pages failed in a row - aborting early');
               break;
             }
+
+            if (crashed || /detached|Connection closed|Target closed|Session closed/i.test(err.message)) {
+              await restartBrowser(gen);
+              gen = browserGeneration;
+              page = await newPage(browser);
+              processed = 0;
+            } else {
+              await page.close().catch(() => {});
+              page = await newPage(browser);
+              processed = 0;
+            }
+
+            queue.push(job); // retry later
+            continue;
           }
 
           processed++;
           if (processed >= RECYCLE_EVERY) {
             processed = 0;
             await page.close().catch(() => {});
+            page = await newPage(browser);
+          }
+
+          // Proactively restart Chrome every 300 pages to stop memory build-up
+          if (completed % 300 === 0) {
+            await restartBrowser(gen);
+            gen = browserGeneration;
             page = await newPage(browser);
           }
         }
