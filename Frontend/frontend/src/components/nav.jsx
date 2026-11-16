@@ -9,6 +9,7 @@ import {
   User, LogOut
 } from 'lucide-react';
 import { ShopContext } from './context/ShopContext';
+import { FEATURED_CATEGORY_SLUGS, getCategoryBySlug } from '../catalog';
 import './nav.css';
 // Data for Dropdowns
 
@@ -139,6 +140,7 @@ export const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [softwareOpen, setSoftwareOpen] = useState(false);
 
   const cartCount = Object.values(cartItems || {}).reduce(
@@ -291,6 +293,52 @@ export const Navbar = () => {
               </AnimatePresence>
             </div>
  
+            {/* Categories Dropdown */}
+            <div
+              className="neuro-dropdown-wrapper"
+              onMouseLeave={() => setCategoriesOpen(false)}
+            >
+              <button
+                className="neuro-nav-link"
+                onMouseEnter={() => setCategoriesOpen(true)}
+                onClick={() => {
+                  setCategoriesOpen(false);
+                  navigate('/categories');
+                }}
+              >
+                Categories <ChevronDown size={14} />
+              </button>
+
+              <AnimatePresence>
+                {categoriesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="neuro-dropdown-menu neuro-dropdown-menu--wide"
+                  >
+                    {FEATURED_CATEGORY_SLUGS.map((slug) => (
+                      <Link
+                        key={slug}
+                        to={`/category/${slug}`}
+                        className="neuro-dropdown-item"
+                        onClick={() => setCategoriesOpen(false)}
+                      >
+                        <span>{getCategoryBySlug(slug).title}</span>
+                      </Link>
+                    ))}
+                    <Link
+                      to="/categories"
+                      className="neuro-dropdown-item neuro-dropdown-all"
+                      onClick={() => setCategoriesOpen(false)}
+                    >
+                      <span>All categories</span>
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* Brands - commented out
             <Link to="/brands" className="neuro-nav-link">
               Brands
@@ -549,6 +597,14 @@ export const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Products
+              </Link>
+
+              <Link
+                to="/categories"
+                className="neuro-mobile-nav-link"
+                onClick={() => setIsOpen(false)}
+              >
+                Categories
               </Link>
 
               <Link

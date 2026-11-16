@@ -210,6 +210,17 @@
   color: #6a4c93;
 }
 
+.neuro-dropdown-menu--wide {
+  width: 270px;
+}
+
+.neuro-dropdown-all {
+  margin-top: 4px;
+  border-top: 1px solid #eee;
+  color: #6a4c93;
+  font-weight: 600;
+}
+
 /* Sub-Dropdown */
 .neuro-dropdown-submenu {
   position: absolute;

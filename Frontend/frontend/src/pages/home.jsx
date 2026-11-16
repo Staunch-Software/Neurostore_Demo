@@ -5,6 +5,7 @@ import { ArrowRight, BadgeCheck, Headphones, Search, ShieldCheck, Truck } from '
 import '../pages/home.css';
 import BookService from '../components/bookservice';
 import { ShopContext } from '../components/context/ShopContext';
+import { FEATURED_CATEGORY_SLUGS, getCategoryBySlug } from '../catalog';
 import heroBanner from '../assets/hero-banner-1.jpg';
 
 const backendUrl = import.meta.env.VITE_API_URL || "";
@@ -33,9 +34,15 @@ const Home = () => {
     const shopCategories = [
         { label: 'Microsoft Software', detail: 'Licenses, servers & productivity', to: '/products?brand=Microsoft', mark: 'MS' },
         { label: 'Cyber Protection', detail: 'Backup, security & recovery', to: '/products?brand=Acronis', mark: 'AC' },
+        { label: 'Adobe Software', detail: 'Acrobat, Creative Cloud & more', to: '/products?brand=Adobe', mark: 'AD' },
         { label: 'AI Workstations', detail: 'Purpose-built systems for AI', to: '/products?brand=AI%20PC', mark: 'AI' },
         { label: 'All Products', detail: 'Browse the complete catalog', to: '/products', mark: 'ALL' },
     ];
+
+    const popularCategories = FEATURED_CATEGORY_SLUGS.map((slug) => {
+        const category = getCategoryBySlug(slug);
+        return { label: category.title, detail: category.group, to: `/category/${slug}`, mark: category.group === 'Microsoft' ? 'MS' : category.group === 'Adobe' ? 'AD' : 'SEC' };
+    });
 
     const services = [
         { title: 'Acronis Cybersecurity', icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>), color: 'gradient-primary-secondary' },
@@ -167,6 +174,27 @@ const Home = () => {
                         <div className="storefront-category-grid">
                             {shopCategories.map((category) => (
                                 <Link to={category.to} className="storefront-category-item animate-on-scroll" key={category.label}>
+                                    <span className="storefront-category-mark">{category.mark}</span>
+                                    <span><strong>{category.label}</strong><small>{category.detail}</small></span>
+                                    <ArrowRight size={18} />
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section className="storefront-categories">
+                    <div className="container">
+                        <div className="storefront-section-heading animate-on-scroll">
+                            <div>
+                                <span>Popular categories</span>
+                                <h2>Compare licences side by side</h2>
+                            </div>
+                            <Link to="/categories">All categories <ArrowRight size={17} /></Link>
+                        </div>
+                        <div className="storefront-category-grid">
+                            {popularCategories.map((category) => (
+                                <Link to={category.to} className="storefront-category-item animate-on-scroll" key={category.to}>
                                     <span className="storefront-category-mark">{category.mark}</span>
                                     <span><strong>{category.label}</strong><small>{category.detail}</small></span>
                                     <ArrowRight size={18} />

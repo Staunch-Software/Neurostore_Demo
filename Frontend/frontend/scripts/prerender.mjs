@@ -3,6 +3,7 @@ import { preview } from 'vite';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { getCategoryList } from '../src/catalog.js';
 
 if (process.env.SKIP_PRERENDER === '1') {
   console.log('SKIP_PRERENDER=1: skipping prerender (local build only).');
@@ -100,17 +101,31 @@ async function main() {
         completed++;
         continue;
       }
-      queue.push({ slug, outDir, outFile });
+      queue.push({ urlPath: `/products/${slug}`, selector: 'h1.pd-title', outDir, outFile });
     }
+
+    // Category pages: /categories plus one page per category that contains products
+    const categoryPaths = ['/categories', ...getCategoryList(products).map((entry) => `/category/${entry.category.slug}`)];
+    for (const urlPath of categoryPaths) {
+      const outDir = path.join(distDir, ...urlPath.split('/').filter(Boolean));
+      const outFile = path.join(outDir, 'index.html');
+      if (fs.existsSync(outFile)) {
+        skipped++;
+        completed++;
+        continue;
+      }
+      queue.push({ urlPath, selector: 'h1.cat-title', outDir, outFile });
+    }
+    const totalJobs = queue.length + skipped;
 
     let nextIndex = 0;
 
     async function renderOne(page, job) {
-      const url = `${baseUrl}/products/${job.slug}`;
+      const url = `${baseUrl}${job.urlPath}`;
       for (let attempt = 1; attempt <= 3; attempt++) {
         try {
           await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-          await page.waitForSelector('h1.pd-title', { timeout: 15000 });
+          await page.waitForSelector(job.selector, { timeout: 15000 });
           break;
         } catch (e) {
           if (attempt === 3) throw e;
@@ -137,11 +152,11 @@ async function main() {
             await renderOne(page, job);
             success++;
             consecutiveFails = 0;
-            console.log(`[${++completed}/${products.length}] OK  /products/${job.slug}`);
+            console.log(`[${++completed}/${totalJobs}] OK  ${job.urlPath}`);
           } catch (err) {
             failed++;
             consecutiveFails++;
-            console.error(`[${++completed}/${products.length}] FAIL /products/${job.slug} — ${err.message}`);
+            console.error(`[${++completed}/${totalJobs}] FAIL ${job.urlPath} — ${err.message}`);
             if (consecutiveFails >= 5) {
               fatalError = new Error('5 pages failed in a row - aborting early');
               break;

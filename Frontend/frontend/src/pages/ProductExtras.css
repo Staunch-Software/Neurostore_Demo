@@ -1,0 +1,292 @@
+.pd-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: -8px 0 18px;
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.pd-breadcrumb a {
+    color: #6a4c93;
+    text-decoration: none;
+}
+
+.pd-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.pd-breadcrumb > span:last-child {
+    color: #334155;
+}
+
+.pd-overview {
+    margin-bottom: 24px;
+    padding: 18px 22px;
+    border-left: 3px solid #6a4c93;
+    border-radius: 0 12px 12px 0;
+    background: #faf5ff;
+}
+
+.pd-overview h2 {
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+}
+
+.pd-overview p {
+    margin: 0;
+    color: #475569;
+    line-height: 1.75;
+}
+
+.pd-extra-section {
+    margin-top: 28px;
+    padding: 28px 32px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.pd-extra-section h2 {
+    margin: 0 0 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    color: #0f172a;
+}
+
+.pd-extra-note {
+    margin: 0 0 18px;
+    color: #475569;
+    line-height: 1.7;
+}
+
+.pd-delivery-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin: 0;
+}
+
+.pd-delivery-list > div {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.pd-delivery-list dt {
+    margin-bottom: 2px;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.pd-delivery-list dd {
+    margin: 0;
+    color: #0f172a;
+    font-size: 0.9rem;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.pd-faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pd-faq-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.pd-faq-item summary {
+    padding: 14px 18px;
+    color: #0f172a;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pd-faq-item[open] summary {
+    color: #6a4c93;
+}
+
+.pd-faq-item p {
+    margin: 0;
+    padding: 0 18px 16px;
+    color: #475569;
+    line-height: 1.7;
+}
+
+.pd-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+.pd-related-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #fff;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pd-related-card:hover {
+    transform: translateY(-4px);
+    border-color: #6a4c93;
+    box-shadow: 0 14px 30px -12px rgba(106, 76, 147, 0.4);
+}
+
+.pd-related-media {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 10;
+    padding: 16px;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+}
+
+.pd-related-media img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.pd-related-card:hover .pd-related-media img {
+    transform: scale(1.05);
+}
+
+.pd-related-chip {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+    padding: 4px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    background: #fff;
+    color: #6a4c93;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pd-related-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+}
+
+.pd-related-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    color: #0f172a;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.pd-related-price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.pd-related-price strong {
+    color: #0f172a;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.pd-related-price small {
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.pd-related-price .pd-related-quote {
+    color: #6a4c93;
+    font-size: 1rem;
+}
+
+.pd-related-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(106, 76, 147, 0.09);
+    color: #6a4c93;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.pd-related-card:hover .pd-related-cta {
+    background: linear-gradient(135deg, #5b5b9a 0%, #8a5aa8 100%);
+    color: #fff;
+}
+
+.pd-related-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 11px 20px;
+    border: 1.5px solid #6a4c93;
+    border-radius: 10px;
+    color: #6a4c93;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.pd-related-all:hover {
+    background: #6a4c93;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .pd-related-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .pd-related-body {
+        padding: 12px;
+    }
+
+    .pd-related-price strong {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pd-related-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .pd-extra-section {
+        padding: 20px 18px;
+    }
+}

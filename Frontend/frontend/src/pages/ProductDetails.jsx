@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect,useRef } from 'react';
+import React, { useContext, useState, useEffect, useMemo, useRef } from 'react';
 import SEO from '../components/SEO';     
 import { trackEvent, trackAdsConversion } from '../adsTracking'; 
 import { useParams, Link, useNavigate,  } from 'react-router-dom';
@@ -6,8 +6,10 @@ import { createPortal } from 'react-dom';
 import { ShopContext } from '../components/context/ShopContext';
 import QuoteRequestModal from '../components/QuoteRequestModal';
 import { isQuoteOnly } from '../pricing';
+import { buildProductContent, getCategory, getRelatedProducts, productSlug } from '../catalog';
 import { Phone, CheckCircle2, Truck, Package, ShieldCheck, Mail, ChevronLeft, ShoppingCart, Check, Heart, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck as Shield, Smartphone, CreditCard, Building2, WalletCards } from 'lucide-react';
 import './ProductDetails.css';
+import './ProductExtras.css';
 const ADS_ADD_TO_CART = 'AW-17996663122/PASTE_THE_VALUE_FROM_GOOGLE_ADS';
 
 const generateSlug = (text) => {
@@ -40,6 +42,10 @@ const ProductDetails = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
     const product = products.find((p) => (p.slug || generateSlug(p.name)) === productName);
+
+    const category = useMemo(() => (product ? getCategory(product) : null), [product]);
+    const extraContent = useMemo(() => (product ? buildProductContent(product) : null), [product]);
+    const relatedProducts = useMemo(() => (product ? getRelatedProducts(product, products) : []), [product, products]);
     
     // GA4 View Item Tracking
     useEffect(() => {
@@ -326,6 +332,14 @@ const ProductDetails = () => {
                     <ChevronLeft size={16} /> Back
                 </Link>
 
+                <nav className="pd-breadcrumb" aria-label="Breadcrumb">
+                    <Link to="/categories">Categories</Link>
+                    <span aria-hidden="true">/</span>
+                    <Link to={`/category/${category.slug}`}>{category.title}</Link>
+                    <span aria-hidden="true">/</span>
+                    <span>{product.name}</span>
+                </nav>
+
                 <div className="pd-top-section">
 
                     <div className="pd-image-col">
@@ -521,6 +535,10 @@ const ProductDetails = () => {
                     <div className="pd-tab-content">
                         {activeTab === 'description' && (
                             <div className="tab-pane">
+                                <div className="pd-overview">
+                                    <h2>About {product.name}</h2>
+                                    <p>{extraContent.intro}</p>
+                                </div>
                                 <h2>Product Description</h2>
                                 <p>{product.description || 'No detailed description available.'}</p>
                             </div>
@@ -552,6 +570,64 @@ const ProductDetails = () => {
                         )}
                     </div>
                 </div>
+
+                <section className="pd-extra-section" aria-labelledby="pd-delivery-heading">
+                    <h2 id="pd-delivery-heading">Delivery &amp; licence details</h2>
+                    <p className="pd-extra-note">{extraContent.deliveryNote}</p>
+                    <dl className="pd-delivery-list">
+                        {extraContent.delivery.map(([label, value]) => (
+                            <div key={label}>
+                                <dt>{label}</dt>
+                                <dd>{value}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                </section>
+
+                <section className="pd-extra-section" aria-labelledby="pd-faq-heading">
+                    <h2 id="pd-faq-heading">Frequently asked questions</h2>
+                    <div className="pd-faq-list">
+                        {extraContent.faqs.map((faq) => (
+                            <details className="pd-faq-item" key={faq.q}>
+                                <summary>{faq.q}</summary>
+                                <p>{faq.a}</p>
+                            </details>
+                        ))}
+                    </div>
+                </section>
+
+                {relatedProducts.length > 0 && (
+                    <section className="pd-extra-section" aria-labelledby="pd-related-heading">
+                        <h2 id="pd-related-heading">Related products</h2>
+                        <div className="pd-related-grid">
+                            {relatedProducts.map((related) => (
+                                <Link className="pd-related-card" to={`/products/${productSlug(related)}`} key={related.id} title={related.name}>
+                                    <span className="pd-related-media">
+                                        {related.term && <span className="pd-related-chip">{related.term}</span>}
+                                        <img src={related.image} alt={related.name} loading="lazy" />
+                                    </span>
+                                    <span className="pd-related-body">
+                                        <span className="pd-related-name">{related.name}</span>
+                                        <span className="pd-related-price">
+                                            {isQuoteOnly(related) ? (
+                                                <strong className="pd-related-quote">Price on Request</strong>
+                                            ) : (
+                                                <>
+                                                    <strong>₹{Number(related.price).toLocaleString('en-IN')}</strong>
+                                                    <small>+ GST</small>
+                                                </>
+                                            )}
+                                        </span>
+                                        <span className="pd-related-cta">View product <ArrowRight size={15} /></span>
+                                    </span>
+                                </Link>
+                            ))}
+                        </div>
+                        <Link className="pd-related-all" to={`/category/${category.slug}`}>
+                            View all in {category.title} <ArrowRight size={15} />
+                        </Link>
+                    </section>
+                )}
             </div>
 
             {cartDrawer}

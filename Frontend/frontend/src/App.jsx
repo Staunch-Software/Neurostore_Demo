@@ -10,6 +10,7 @@ import Products from './pages/products';
 import ProductDetails from './pages/ProductDetails';
 import About from './pages/about';
 import Brands from './components/Brandcomponents';
+import { CategoryPage, CategoriesIndex } from './pages/Categories';
 import Wishlist from './components/wishlist';
 import Cart from './components/cart';
 import Contact from './components/contact';
@@ -62,6 +63,8 @@ function App() {
               <Route path="/products/:productName" element={<ProductDetails />} />
               <Route path="/about" element={<About />} />
               <Route path="/brands" element={<Brands />} />
+              <Route path="/categories" element={<CategoriesIndex />} />
+              <Route path="/category/:categorySlug" element={<CategoryPage />} />
 
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/cart" element={<Cart />} />
