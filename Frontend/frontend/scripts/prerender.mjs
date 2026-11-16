@@ -77,7 +77,7 @@ async function main() {
     });
 
     // ---------- Parallel rendering ----------
-    const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY) || 4;
+    const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY) || 2;
     const RECYCLE_EVERY = 20; // per worker
 
     let success = 0;
@@ -153,12 +153,18 @@ async function main() {
             success++;
             consecutiveFails = 0;
             console.log(`[${++completed}/${totalJobs}] OK  ${job.urlPath}`);
-          } catch (err) {
+            } catch (err) {
             failed++;
             consecutiveFails++;
             console.error(`[${++completed}/${totalJobs}] FAIL ${job.urlPath} — ${err.message}`);
-            if (consecutiveFails >= 5) {
-              fatalError = new Error('5 pages failed in a row - aborting early');
+
+            // A timed-out tab may be stuck, so open a fresh one
+            await page.close().catch(() => {});
+            page = await newPage(browser);
+            processed = 0;
+
+            if (consecutiveFails >= 5 * CONCURRENCY) {
+              fatalError = new Error('Too many pages failed in a row - aborting early');
               break;
             }
           }
@@ -183,6 +189,7 @@ async function main() {
     if (fatalError) throw fatalError;
 
     console.log(`\nDone. ${success} rendered, ${skipped} already done, ${failed} failed.`);
+    if (failed > 0) throw new Error(`${failed} pages failed to render`);
   } finally {
     browserClosedNormally = true;
 
