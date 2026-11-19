@@ -146,6 +146,7 @@ async function main() {
     const totalJobs = queue.length + skipped;
 
     let nextIndex = 0;
+    let lastRestartAt = completed;
 
     async function renderOne(page, job) {
       const url = `${baseUrl}${job.urlPath}`;
@@ -189,7 +190,7 @@ async function main() {
             console.log(`[${++completed}/${totalJobs}] OK  ${job.urlPath}`);
           } catch (err) {
             // Put the job back so it is retried, instead of counting it failed
-            const crashed = !browser.connected;
+            const crashed = !browser.isConnected();
             console.error(`FAIL ${job.urlPath} — ${err.message}`);
             consecutiveFails++;
 
@@ -222,8 +223,10 @@ async function main() {
           }
 
           // Proactively restart Chrome every 300 pages to stop memory build-up
-          if (completed % 300 === 0) {
+          if (completed - lastRestartAt >= 300) {
+            lastRestartAt = completed;
             await restartBrowser(gen);
+
             gen = browserGeneration;
             page = await newPage(browser);
           }
