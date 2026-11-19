@@ -76,7 +76,7 @@ async function main() {
         ],
       });
       b.on('disconnected', () => {
-        if (!browserClosedNormally) {
+        if (!browserClosedNormally && !b._intentionalClose) {
           console.error('\n!! Chrome disconnected/crashed unexpectedly !!');
         }
       });
@@ -96,6 +96,7 @@ async function main() {
           const old = browser;
           browser = await launchBrowser();
           browserGeneration++;
+          old._intentionalClose = true;
           await old.close().catch(() => {});
           restarting = null;
         })();
@@ -190,7 +191,7 @@ async function main() {
             console.log(`[${++completed}/${totalJobs}] OK  ${job.urlPath}`);
           } catch (err) {
             // Put the job back so it is retried, instead of counting it failed
-            const crashed = !browser.isConnected();
+            const crashed = !browser.connected;
             console.error(`FAIL ${job.urlPath} — ${err.message}`);
             consecutiveFails++;
 
